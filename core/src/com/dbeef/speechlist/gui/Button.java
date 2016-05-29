@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Button {
 
+	boolean selected = false;
+
+	float alpha = 1;
+
 	Sprite image;
 
 	Rectangle mouse;
@@ -25,7 +29,24 @@ public class Button {
 		bounds.setPosition(x, y);
 	}
 
-	public void render(Batch batch) {
+	public void render(Batch batch, float delta) {
+
+		if (selected == true) {
+			if (alpha < 0)
+				alpha += delta;
+			if (alpha > 1)
+				alpha = 1;
+		}
+		if (selected == false) {
+			if (alpha > 0.5f)
+				alpha -= delta;
+			if (alpha < 0.5f)
+				alpha = 0.5f;
+		}
+
+		image.setAlpha(alpha);
+		
+		
 		image.draw(batch);
 	}
 
@@ -37,6 +58,14 @@ public class Button {
 			return true;
 		else
 			return false;
+	}
+
+	public void select() {
+		selected = true;
+	}
+
+	public void deselect() {
+		selected = false;
 	}
 
 	public void dispose() {

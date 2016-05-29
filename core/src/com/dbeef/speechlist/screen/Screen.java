@@ -25,8 +25,12 @@ public class Screen {
 
 	BitmapFont ralewayBlack42;
 	BitmapFont ralewayThinItalic16;
-
-	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16) {
+	BitmapFont ralewayThinItalic32;
+	BitmapFont ralewayRegular32;
+	BitmapFont ralewayMedium38;
+	
+	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16,
+			BitmapFont ralewayThinItalic32, BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
 		strings = new Array<String>();
@@ -37,6 +41,10 @@ public class Screen {
 		stringsFontAndAlpha = new Array<Vector2>();
 		this.ralewayBlack42 = ralewayBlack42;
 		this.ralewayThinItalic16 = ralewayThinItalic16;
+		this.ralewayThinItalic32 = ralewayThinItalic32;
+		this.ralewayRegular32 = ralewayRegular32;
+		this.ralewayMedium38 = ralewayMedium38;
+		
 	}
 
 	public void add(Sprite sprite) {
@@ -48,7 +56,8 @@ public class Screen {
 		texturesPositions.add(position);
 	}
 
-	public void add(String s, Vector2 position, Vector2 fontAndAlpha, Vector3 color) {
+	public void add(String s, Vector2 position, Vector2 fontAndAlpha,
+			Vector3 color) {
 		strings.add(s);
 		stringsPositions.add(position);
 		stringsFontAndAlpha.add(fontAndAlpha);
@@ -63,7 +72,7 @@ public class Screen {
 		updateTimers(delta);
 		renderTextures(batch);
 		renderStrings(batch);
-		renderButtons(batch);
+		renderButtons(batch, delta);
 	}
 
 	public void renderTextures(Batch batch) {
@@ -102,7 +111,33 @@ public class Screen {
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}
+			case 3: {
+				ralewayThinItalic32.setColor(stringsColors.get(a).x,
+						stringsColors.get(a).y, stringsColors.get(a).z,
+						stringsFontAndAlpha.get(a).y);
 
+				ralewayThinItalic32.draw(batch, strings.get(a),
+						stringsPositions.get(a).x, stringsPositions.get(a).y);
+				break;
+			}
+			case 4: {
+				ralewayRegular32.setColor(stringsColors.get(a).x,
+						stringsColors.get(a).y, stringsColors.get(a).z,
+						stringsFontAndAlpha.get(a).y);
+
+				ralewayRegular32.draw(batch, strings.get(a),
+						stringsPositions.get(a).x, stringsPositions.get(a).y);
+				break;
+			}
+			case 5: {
+				ralewayMedium38.setColor(stringsColors.get(a).x,
+						stringsColors.get(a).y, stringsColors.get(a).z,
+						stringsFontAndAlpha.get(a).y);
+
+				ralewayMedium38.draw(batch, strings.get(a),
+						stringsPositions.get(a).x, stringsPositions.get(a).y);
+				break;
+			}
 			default: {
 
 			}
@@ -110,17 +145,18 @@ public class Screen {
 		}
 	}
 
-	public void renderButtons(Batch batch) {
+	public void renderButtons(Batch batch, float delta) {
 		for (int a = 0; a < buttons.size; a++) {
-			buttons.get(a).render(batch);
+			buttons.get(a).render(batch, delta);
 		}
 	}
-	public float changeStringAlpha(String search, float accumulator){
-	stringsFontAndAlpha.get(strings.indexOf(search, true)).y += accumulator;
-	if(stringsFontAndAlpha.get(strings.indexOf(search, true)).y > 1)
-		stringsFontAndAlpha.get(strings.indexOf(search, true)).y = 1;
-	
-	return stringsFontAndAlpha.get(strings.indexOf(search, true)).y;
+
+	public float changeStringAlpha(String search, float accumulator) {
+		stringsFontAndAlpha.get(strings.indexOf(search, true)).y += accumulator;
+		if (stringsFontAndAlpha.get(strings.indexOf(search, true)).y > 1)
+			stringsFontAndAlpha.get(strings.indexOf(search, true)).y = 1;
+
+		return stringsFontAndAlpha.get(strings.indexOf(search, true)).y;
 	}
 
 	public void updateTimers(float delta) {
