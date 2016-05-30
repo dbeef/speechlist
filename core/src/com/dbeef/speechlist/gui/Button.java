@@ -48,6 +48,7 @@ public class Button {
 		
 		
 		image.draw(batch);
+	
 	}
 
 	public boolean checkCollision(int x, int y) {

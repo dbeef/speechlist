@@ -34,7 +34,7 @@ public class Camera extends OrthographicCamera {
 				this.position.x += accumulatePlus;
 
 				if(Math.abs(this.position.x - destination.x) <= 100){
-					accumulatePlus -= delta * 13.5f * accumulatePlus; 
+					accumulatePlus -= delta * 13f * accumulatePlus; 
 				}
 				else
 					accumulatePlus += delta * 5 * accumulatePlus;
@@ -46,7 +46,7 @@ public class Camera extends OrthographicCamera {
 				this.position.x += accumulateMinus;
 				
 				if(Math.abs(this.position.x - destination.x) <= 100){
-					accumulateMinus += delta * 13.5f * Math.abs(accumulateMinus);
+					accumulateMinus += delta * 13f * Math.abs(accumulateMinus);
 					}
 				else
 					accumulateMinus -= delta * 5 * Math.abs(accumulateMinus);
@@ -57,8 +57,8 @@ public class Camera extends OrthographicCamera {
 			}
 
 			if (this.position.x == destination.x) {
-				accumulatePlus = 4;
-				accumulateMinus = -4;
+				accumulatePlus = 5;
+				accumulateMinus = -5;
 			}
 
 		}

@@ -24,13 +24,14 @@ public class Screen {
 	Array<Button> buttons;
 
 	BitmapFont ralewayBlack42;
+	BitmapFont ralewayThinItalic12;
 	BitmapFont ralewayThinItalic16;
 	BitmapFont ralewayThinItalic32;
 	BitmapFont ralewayRegular32;
 	BitmapFont ralewayMedium38;
 	
 	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16,
-			BitmapFont ralewayThinItalic32, BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
+			BitmapFont ralewayThinItalic32, BitmapFont ralewayThinItalic12, BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
 		strings = new Array<String>();
@@ -40,6 +41,7 @@ public class Screen {
 		stringsColors = new Array<Vector3>();
 		stringsFontAndAlpha = new Array<Vector2>();
 		this.ralewayBlack42 = ralewayBlack42;
+		this.ralewayThinItalic12 = ralewayThinItalic12;
 		this.ralewayThinItalic16 = ralewayThinItalic16;
 		this.ralewayThinItalic32 = ralewayThinItalic32;
 		this.ralewayRegular32 = ralewayRegular32;
@@ -135,6 +137,15 @@ public class Screen {
 						stringsFontAndAlpha.get(a).y);
 
 				ralewayMedium38.draw(batch, strings.get(a),
+						stringsPositions.get(a).x, stringsPositions.get(a).y);
+				break;
+			}
+			case 6: {
+				ralewayThinItalic12.setColor(stringsColors.get(a).x,
+						stringsColors.get(a).y, stringsColors.get(a).z,
+						stringsFontAndAlpha.get(a).y);
+
+				ralewayThinItalic12.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}

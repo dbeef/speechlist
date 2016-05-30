@@ -10,8 +10,8 @@ import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.logics.ActionManager;
 
 public class ScreenBoard implements Screen {
+	
 	SpriteBatch batch;
-
 	Viewport viewport;
 	Viewport guiViewport;
 	Camera camera;
@@ -21,7 +21,7 @@ public class ScreenBoard implements Screen {
 
 	public ScreenBoard(final Starter gam) {
 
-this.game = gam;
+		this.game = gam;
 
 		camera = new Camera(480, 800);
 		camera.position.x = -240;
@@ -38,8 +38,8 @@ this.game = gam;
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
-		actionManager = new ActionManager(camera, guiCamera, game.initial, game.gui,
-				game.menuHome, game.menuTests, game.menuDownloads,
+		actionManager = new ActionManager(game.inputInterpreter, camera, guiCamera, game.initial,
+				game.gui, game.menuHome, game.menuTests, game.menuDownloads,
 				game.assetsManager, game.home, game.tests, game.downloads);
 
 	}
@@ -54,19 +54,18 @@ this.game = gam;
 		guiCamera.updateTimers(delta);
 		guiCamera.update();
 
-
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		game.initial.render(batch, delta);
-		
 		batch.end();
-		
+
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
 		game.gui.render(batch, delta);
+		game.menuHome.render(batch, delta);
 		batch.end();
 
 	}
