@@ -26,12 +26,12 @@ public class ScreenBoard implements Screen {
 		camera = new Camera(480, 800);
 		camera.position.x = -240;
 		camera.position.y = 400;
-		camera.moveRight(240);
+		camera.move(240);
 
 		guiCamera = new Camera(480, 800);
 		guiCamera.position.x = -240;
 		guiCamera.position.y = 400;
-		guiCamera.moveRight(240);
+		guiCamera.move(240);
 
 		batch = new SpriteBatch();
 
@@ -60,11 +60,13 @@ public class ScreenBoard implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		game.initial.render(batch, delta);
+		game.menuHome.render(batch, delta);
+		game.menuTests.render(batch, delta);
+		game.menuDownloads.render(batch, delta);
 		batch.end();
 
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
-		game.menuHome.render(batch, delta);
 		game.gui.render(batch, delta);
 		batch.end();
 

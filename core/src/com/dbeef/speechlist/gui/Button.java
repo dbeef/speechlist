@@ -67,6 +67,9 @@ public class Button {
 	public void deselect() {
 		selected = false;
 	}
+	public boolean getSelection(){
+		return selected;
+	}
 
 	public void dispose() {
 	}

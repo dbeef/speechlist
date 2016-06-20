@@ -10,8 +10,9 @@ import com.dbeef.speechlist.utils.AssetsManager;
 
 public class ActionManager {
 
-	static final int menuScreenPosition = 720;
+	static final int homeScreenPosition = 720;
 	static final int testsScreenPosition = 1200;
+	static final int downloadsScreenPosition = 1680;
 
 	int tapX;
 	int tapY;
@@ -24,6 +25,7 @@ public class ActionManager {
 	Button tests;
 	Button downloads;
 
+	boolean initialCameraMovements = false;
 	boolean logoCameOnScreen = false;
 	boolean loadingTextAdded = false;
 	boolean assetsLoaded = false;
@@ -65,6 +67,7 @@ public class ActionManager {
 		addAssetsToScreens();
 		updateCamerasLogics();
 		updateButtonsLogics();
+		updateFlingCamera();
 	}
 
 	void updateInitialScreenLogics(float delta) {
@@ -108,7 +111,7 @@ public class ActionManager {
 
 			home.select();
 
-			// gui.add(assetsManager.homeBackground, new Vector2(480, 0));
+			// gui.add(assetsManager.mainBackground, new Vector2(480, 0));
 			// gui.add(assetsManager.guiFrame, new Vector2(480, 720));
 
 			menuHome.add(assetsManager.clock, new Vector2(550, 530));
@@ -155,6 +158,7 @@ public class ActionManager {
 			gui.add(tests);
 			gui.add(downloads);
 			gui.add(assetsManager.logoLittle, new Vector2(705, 680));
+
 			readyToGoMenu = true;
 
 		}
@@ -162,11 +166,12 @@ public class ActionManager {
 	}
 
 	void updateCamerasLogics() {
-
 		if (readyToGoMenu == true
-				&& (initial.changeStringAlpha("loading...", 0) == 1)) {
-			camera.moveRight(menuScreenPosition);
-			guiCamera.moveRight(menuScreenPosition);
+				&& (initial.changeStringAlpha("loading...", 0) == 1)
+				&& initialCameraMovements == false) {
+			camera.move(homeScreenPosition);
+			guiCamera.move(homeScreenPosition);
+			initialCameraMovements = true;
 		}
 
 	}
@@ -182,19 +187,57 @@ public class ActionManager {
 				home.select();
 				tests.deselect();
 				downloads.deselect();
+				camera.move(homeScreenPosition);
 			}
 			if (tests.checkCollision((int) vec.x, (int) vec.y) == true) {
 				home.deselect();
 				tests.select();
 				downloads.deselect();
+				camera.move(testsScreenPosition);
 			}
 			if (downloads.checkCollision((int) vec.x, (int) vec.y) == true) {
 				home.deselect();
 				tests.deselect();
 				downloads.select();
+				camera.move(downloadsScreenPosition);
 			}
 
 		}
 
+	}
+
+	void updateFlingCamera() {
+		double flingedDelta = inputInterpreter.getFlingDeltaX();
+
+		if (flingedDelta > 0) {
+
+			if (tests.getSelection() == true) {
+				home.select();
+				tests.deselect();
+				downloads.deselect();
+				camera.move(homeScreenPosition);
+			}
+			if (downloads.getSelection() == true) {
+				home.deselect();
+				tests.select();
+				downloads.deselect();
+				camera.move(testsScreenPosition);
+			}
+		}
+		if (flingedDelta < 0) {
+			if (tests.getSelection() == true) {
+				home.deselect();
+				tests.deselect();
+				downloads.select();
+				camera.move(downloadsScreenPosition);
+			}
+			if (home.getSelection() == true) {
+				home.deselect();
+				tests.select();
+				downloads.deselect();
+				camera.move(testsScreenPosition);
+			}
+
+		}
 	}
 }

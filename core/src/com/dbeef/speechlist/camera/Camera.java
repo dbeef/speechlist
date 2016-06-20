@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Camera extends OrthographicCamera {
 
+	static final float accumulateMax = 30;
+	
 	Vector2 destination;
 	float accumulatePlus = 1f;
 	float accumulateMinus = -1f;
@@ -14,13 +16,11 @@ public class Camera extends OrthographicCamera {
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.near = 0;
-
 		update();
-
 		destination = new Vector2();
 	}
 
-	public void moveRight(float dest) {
+	public void move(float dest) {
 		destination.x = dest;
 	}
 
@@ -29,8 +29,9 @@ public class Camera extends OrthographicCamera {
 		timer += delta;
 		if (timer > 0.01f) {
 			timer = 0;
-
+			
 			if (this.position.x < destination.x) {
+				
 				this.position.x += accumulatePlus;
 
 				if(Math.abs(this.position.x - destination.x) <= 100){
@@ -42,6 +43,8 @@ public class Camera extends OrthographicCamera {
 				if (this.position.x > destination.x)
 					this.position.x = destination.x;
 			}
+			
+			
 			if (this.position.x > destination.x) {
 				this.position.x += accumulateMinus;
 				
@@ -51,16 +54,19 @@ public class Camera extends OrthographicCamera {
 				else
 					accumulateMinus -= delta * 5 * Math.abs(accumulateMinus);
 				
-				
 				if (this.position.x < destination.x)
 					this.position.x = destination.x;
 			}
+			
 
 			if (this.position.x == destination.x) {
 				accumulatePlus = 5;
 				accumulateMinus = -5;
 			}
 
+			if(accumulatePlus > accumulateMax)accumulatePlus = accumulateMax;
+			if(accumulateMinus < -accumulateMax)accumulateMinus = -accumulateMax;
+			
 		}
 	}
 }
