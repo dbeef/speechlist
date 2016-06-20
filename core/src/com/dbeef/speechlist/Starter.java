@@ -36,6 +36,7 @@ public class Starter extends Game {
 	public Button tests;
 	public Button downloads;
 
+	public Texture logoBackground;
 	public Texture logo;
 
 	@Override
@@ -43,6 +44,8 @@ public class Starter extends Game {
 
 		inputInterpreter = new InputInterpreter();
 
+		logoBackground = new Texture("backgrounds/logoBackground.png");
+		logoBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		logo = new Texture("icons/speechlistlogo.png");
 		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
@@ -52,7 +55,9 @@ public class Starter extends Game {
 				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
 				ralewayMedium38);
 		initial.add("Speechlist", new Vector2(130, 450), new Vector2(1, 1),
-				new Vector3(0, 0, 0));
+				new Vector3(1, 1, 1));
+		initial.add(logoBackground, new Vector2(0, 0));
+		initial.add(logoBackground, new Vector2(-480, 0));
 		initial.add(logo, new Vector2(210, 480));
 
 		gui = new Screen(ralewayBlack42, ralewayThinItalic16,
@@ -63,8 +68,9 @@ public class Starter extends Game {
 				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
 				ralewayMedium38);
 
+		menuHome.add(logoBackground, new Vector2(480, 0));
 		home = new Button(480, 0, logo);
-		
+
 		this.setScreen(new ScreenBoard(this));
 	}
 

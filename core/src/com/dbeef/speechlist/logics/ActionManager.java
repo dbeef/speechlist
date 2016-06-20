@@ -73,7 +73,7 @@ public class ActionManager {
 		}
 		if (logoCameOnScreen == true && loadingTextAdded == false) {
 			initial.add("loading...", new Vector2(215, 350), new Vector2(2, 0),
-					new Vector3(0, 0, 0));
+					new Vector3(1, 1, 1));
 			loadingTextAdded = true;
 		}
 		if (loadingTextAdded == true) {
@@ -102,60 +102,59 @@ public class ActionManager {
 	void addAssetsToScreens() {
 
 		if (assetsLoaded == true && readyToGoMenu == false) {
-			home = new Button(550, 728, assetsManager.home);
-			tests = new Button(700, 728, assetsManager.pencil);
-			downloads = new Button(840, 728, assetsManager.cloud);
+			home = new Button(520, 713, assetsManager.home);
+			tests = new Button(670, 713, assetsManager.pencil);
+			downloads = new Button(810, 713, assetsManager.cloud);
 
 			home.select();
 
-			gui.add(home);
-			gui.add(tests);
-			gui.add(downloads);
-
-			gui.add(assetsManager.homeBackground, new Vector2(480, 0));
-			gui.add(assetsManager.guiFrame, new Vector2(480, 720));
-			gui.add(assetsManager.logoLittle, new Vector2(700, 680));
+			// gui.add(assetsManager.homeBackground, new Vector2(480, 0));
+			// gui.add(assetsManager.guiFrame, new Vector2(480, 720));
 
 			menuHome.add(assetsManager.clock, new Vector2(550, 530));
 			menuHome.add(assetsManager.chart, new Vector2(690, 530));
 			menuHome.add(assetsManager.checked, new Vector2(835, 530));
 
 			menuHome.add("Summary", new Vector2(655, 660), new Vector2(3, 1),
-					new Vector3(0, 0, 0));
+					new Vector3(1, 1, 1));
 
 			menuHome.add("Time spent:", new Vector2(545, 510),
-					new Vector2(2, 1), new Vector3(0, 0, 0));
+					new Vector2(2, 1), new Vector3(1, 1, 1));
 			menuHome.add("Accuracy:", new Vector2(690, 510), new Vector2(2, 1),
-					new Vector3(0, 0, 0));
-			menuHome.add("Tests solved:", new Vector2(820, 510), new Vector2(2,
-					1), new Vector3(0, 0, 0));
+					new Vector3(1, 1, 1));
+			menuHome.add("Tests solved:", new Vector2(828, 510), new Vector2(2,
+					1), new Vector3(1, 1, 1));
 
-			menuHome.add("Speechlist", new Vector2(615, 370),
-					new Vector2(1, 1), new Vector3(0, 0, 0));
+			menuHome.add("Speechlist", new Vector2(610, 370),
+					new Vector2(1, 1), new Vector3(1, 1, 1));
 
 			menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(650, 290),
-					new Vector2(6, 1), new Vector3(0, 0, 0));
+					new Vector2(6, 1), new Vector3(1, 1, 1));
 			menuHome.add("This software uses Sphinx4, which is under:",
-					new Vector2(615, 255), new Vector2(6, 1), new Vector3(0, 0,
-							0));
+					new Vector2(615, 255), new Vector2(6, 1), new Vector3(1, 1,
+							1));
 			menuHome.add("Copyright 1999-2015 Carnegie Mellon University.  ",
-					new Vector2(600, 220), new Vector2(6, 1), new Vector3(0, 0,
-							0));
+					new Vector2(600, 220), new Vector2(6, 1), new Vector3(1, 1,
+							1));
 			menuHome.add(
 					"Portions Copyright 2002-2008 Sun Microsystems, Inc.  ",
-					new Vector2(585, 185), new Vector2(6, 1), new Vector3(0, 0,
-							0));
+					new Vector2(585, 185), new Vector2(6, 1), new Vector3(1, 1,
+							1));
 			menuHome.add(
 					"Portions Copyright 2002-2008 Mitsubishi Electric Research Laboratories.",
-					new Vector2(535, 150), new Vector2(6, 1), new Vector3(0, 0,
-							0));
+					new Vector2(535, 150), new Vector2(6, 1), new Vector3(1, 1,
+							1));
 			menuHome.add("Portions Copyright 2013-2015 Alpha Cephei, Inc.",
-					new Vector2(590, 115), new Vector2(6, 1), new Vector3(0, 0,
-							0));
+					new Vector2(590, 115), new Vector2(6, 1), new Vector3(1, 1,
+							1));
 			menuHome.add("All Rights Reserved.", new Vector2(680, 80),
-					new Vector2(6, 1), new Vector3(0, 0, 0));
+					new Vector2(6, 1), new Vector3(1, 1, 1));
 			menuHome.add("Version 0.1", new Vector2(700, 45),
-					new Vector2(6, 1), new Vector3(0, 0, 0));
+					new Vector2(6, 1), new Vector3(1, 1, 1));
+			gui.add(home);
+			gui.add(tests);
+			gui.add(downloads);
+			gui.add(assetsManager.logoLittle, new Vector2(705, 680));
 			readyToGoMenu = true;
 
 		}
@@ -179,7 +178,22 @@ public class ActionManager {
 
 			guiCamera.unproject(vec);
 
-			System.out.println(home.checkCollision((int) vec.x, (int) vec.y));
+			if (home.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.select();
+				tests.deselect();
+				downloads.deselect();
+			}
+			if (tests.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.deselect();
+				tests.select();
+				downloads.deselect();
+			}
+			if (downloads.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.deselect();
+				tests.deselect();
+				downloads.select();
+			}
+
 		}
 
 	}

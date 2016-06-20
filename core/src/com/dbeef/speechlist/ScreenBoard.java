@@ -64,8 +64,8 @@ public class ScreenBoard implements Screen {
 
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
-		game.gui.render(batch, delta);
 		game.menuHome.render(batch, delta);
+		game.gui.render(batch, delta);
 		batch.end();
 
 	}

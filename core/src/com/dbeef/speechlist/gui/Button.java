@@ -32,7 +32,8 @@ public class Button {
 	public void render(Batch batch, float delta) {
 
 		if (selected == true) {
-			if (alpha < 0)
+		
+			if (alpha < 1)
 				alpha += delta;
 			if (alpha > 1)
 				alpha = 1;
@@ -45,8 +46,6 @@ public class Button {
 		}
 
 		image.setAlpha(alpha);
-		
-		
 		image.draw(batch);
 	
 	}

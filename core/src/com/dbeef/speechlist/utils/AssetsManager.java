@@ -14,7 +14,7 @@ public class AssetsManager {
 	public Texture clock;
 	public Texture chart;
 	public Texture checked;
-	
+
 	public AssetsManager() {
 		home = new Texture("icons/home.png");
 		pencil = new Texture("icons/pencil.png");
@@ -35,7 +35,6 @@ public class AssetsManager {
 		clock.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
 
 	}
 }
