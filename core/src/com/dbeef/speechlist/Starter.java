@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.gui.Button;
+import com.dbeef.speechlist.gui.GlareButton;
 import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
@@ -38,6 +40,9 @@ public class Starter extends Game {
 
 	public Texture mainBackground;
 	public Texture logo;
+	public Texture glareButton;
+
+	Array<GlareButton> sheetButtons;
 
 	@Override
 	public void create() {
@@ -48,6 +53,8 @@ public class Starter extends Game {
 		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		logo = new Texture("icons/speechlistlogo.png");
 		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		glareButton = new Texture("buttons/glareButton.png");
+		glareButton.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		createFonts();
 
@@ -81,6 +88,8 @@ public class Starter extends Game {
 				ralewayMedium38);
 
 		menuDownloads.add(mainBackground, new Vector2(1440, 0));
+
+		initiateSheetButtons();
 
 		this.setScreen(new ScreenBoard(this));
 	}
@@ -153,5 +162,19 @@ public class Starter extends Game {
 
 		generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
+	}
+
+	void initiateSheetButtons() {
+		sheetButtons = new Array();
+		sheetButtons.add(new GlareButton(960, 500, glareButton,
+				ralewayMedium38, "Sample test"));
+		sheetButtons.add(new GlareButton(960, 420, glareButton,
+				ralewayMedium38, "Sample test"));
+		sheetButtons.add(new GlareButton(960, 340, glareButton,
+				ralewayMedium38, "Sample test"));
+
+		for (int a = 0; a < sheetButtons.size; a++) {
+			menuTests.add(sheetButtons.get(a));
+		}
 	}
 }

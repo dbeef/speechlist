@@ -10,7 +10,7 @@ import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.logics.ActionManager;
 
 public class ScreenBoard implements Screen {
-	
+
 	SpriteBatch batch;
 	Viewport viewport;
 	Viewport guiViewport;
@@ -38,9 +38,10 @@ public class ScreenBoard implements Screen {
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
-		actionManager = new ActionManager(game.inputInterpreter, camera, guiCamera, game.initial,
-				game.gui, game.menuHome, game.menuTests, game.menuDownloads,
-				game.assetsManager, game.home, game.tests, game.downloads);
+		actionManager = new ActionManager(game.inputInterpreter, camera,
+				guiCamera, game.initial, game.gui, game.menuHome,
+				game.menuTests, game.menuDownloads, game.assetsManager,
+				game.home, game.tests, game.downloads, game.sheetButtons);
 
 	}
 

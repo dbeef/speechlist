@@ -8,8 +8,6 @@ public class AssetsManager {
 	public Texture home;
 	public Texture pencil;
 	public Texture cloud;
-	public Texture mainBackground;
-	public Texture guiFrame;
 	public Texture logoLittle;
 	public Texture clock;
 	public Texture chart;
@@ -19,8 +17,6 @@ public class AssetsManager {
 		home = new Texture("icons/home.png");
 		pencil = new Texture("icons/pencil.png");
 		cloud = new Texture("icons/cloud.png");
-		mainBackground = new Texture("backgrounds/mainBackground.png");
-		guiFrame = new Texture("backgrounds/guiframe.png");
 		logoLittle = new Texture("icons/speechlistlogolittle.png");
 		clock = new Texture("icons/clock.png");
 		chart = new Texture("icons/chart.png");
@@ -29,8 +25,6 @@ public class AssetsManager {
 		home.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		pencil.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		cloud.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		guiFrame.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		logoLittle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		clock.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);

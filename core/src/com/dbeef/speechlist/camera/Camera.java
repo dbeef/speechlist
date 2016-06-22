@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Camera extends OrthographicCamera {
 
-	static final float accumulateMax = 30;
+	static final float accumulateMax = 40;
+	static final float accumulateDecreaseSpeed = 13f;
+	static final float accumulateIncreaseSpeed = 5.3f;
 	
 	Vector2 destination;
 	float accumulatePlus = 1f;
@@ -25,7 +27,6 @@ public class Camera extends OrthographicCamera {
 	}
 
 	public void updateTimers(float delta) {
-		
 		timer += delta;
 		if (timer > 0.01f) {
 			timer = 0;
@@ -35,10 +36,10 @@ public class Camera extends OrthographicCamera {
 				this.position.x += accumulatePlus;
 
 				if(Math.abs(this.position.x - destination.x) <= 100){
-					accumulatePlus -= delta * 13f * accumulatePlus; 
+					accumulatePlus -= delta * accumulateDecreaseSpeed * accumulatePlus; 
 				}
 				else
-					accumulatePlus += delta * 5 * accumulatePlus;
+					accumulatePlus += delta * accumulateIncreaseSpeed * accumulatePlus;
 				
 				if (this.position.x > destination.x)
 					this.position.x = destination.x;
@@ -49,10 +50,10 @@ public class Camera extends OrthographicCamera {
 				this.position.x += accumulateMinus;
 				
 				if(Math.abs(this.position.x - destination.x) <= 100){
-					accumulateMinus += delta * 13f * Math.abs(accumulateMinus);
+					accumulateMinus += delta * accumulateDecreaseSpeed * Math.abs(accumulateMinus);
 					}
 				else
-					accumulateMinus -= delta * 5 * Math.abs(accumulateMinus);
+					accumulateMinus -= delta * accumulateIncreaseSpeed * Math.abs(accumulateMinus);
 				
 				if (this.position.x < destination.x)
 					this.position.x = destination.x;
@@ -60,8 +61,8 @@ public class Camera extends OrthographicCamera {
 			
 
 			if (this.position.x == destination.x) {
-				accumulatePlus = 5;
-				accumulateMinus = -5;
+				accumulatePlus = accumulateIncreaseSpeed;
+				accumulateMinus = -accumulateIncreaseSpeed;
 			}
 
 			if(accumulatePlus > accumulateMax)accumulatePlus = accumulateMax;

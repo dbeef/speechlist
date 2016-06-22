@@ -124,6 +124,7 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	public Vector3 getLastTouchPosition() {
+		touched = false;
 		xyzTap.x = (float) xTap;
 		xyzTap.y = (float) yTap;
 		return xyzTap;

@@ -2,8 +2,10 @@ package com.dbeef.speechlist.logics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.gui.Button;
+import com.dbeef.speechlist.gui.GlareButton;
 import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
@@ -42,11 +44,13 @@ public class ActionManager {
 	Screen menuDownloads;
 	Screen gui;
 
+	Array<GlareButton> sheetButtons;
+
 	public ActionManager(InputInterpreter inputInterpreter, Camera camera,
 			Camera guiCamera, Screen initial, Screen gui, Screen menuHome,
 			Screen menuTests, Screen menuDownloads,
 			AssetsManager assetsManager, Button home, Button tests,
-			Button downloads) {
+			Button downloads, Array<GlareButton> sheetButtons) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
@@ -59,6 +63,7 @@ public class ActionManager {
 		this.menuTests = menuTests;
 		this.menuDownloads = menuDownloads;
 		this.inputInterpreter = inputInterpreter;
+		this.sheetButtons = sheetButtons;
 	}
 
 	public void updateLogics(float delta) {
@@ -66,8 +71,11 @@ public class ActionManager {
 		updateAssetsLoaderLogics();
 		addAssetsToScreens();
 		updateCamerasLogics();
-		updateButtonsLogics();
-		updateFlingCamera();
+		if (isCameraChangingPosition() == false
+				&& initialCameraMovements == true) {
+			updateButtonsLogics();
+			updateFlingCamera();
+		}
 	}
 
 	void updateInitialScreenLogics(float delta) {
@@ -110,9 +118,6 @@ public class ActionManager {
 			downloads = new Button(810, 713, assetsManager.cloud);
 
 			home.select();
-
-			// gui.add(assetsManager.mainBackground, new Vector2(480, 0));
-			// gui.add(assetsManager.guiFrame, new Vector2(480, 720));
 
 			menuHome.add(assetsManager.clock, new Vector2(550, 530));
 			menuHome.add(assetsManager.chart, new Vector2(690, 530));
@@ -159,6 +164,12 @@ public class ActionManager {
 			gui.add(downloads);
 			gui.add(assetsManager.logoLittle, new Vector2(705, 680));
 
+			menuTests.add("Your tests", new Vector2(1133, 660), new Vector2(3,
+					1), new Vector3(1, 1, 1));
+
+			menuDownloads.add("Download", new Vector2(1610, 660), new Vector2(
+					3, 1), new Vector3(1, 1, 1));
+
 			readyToGoMenu = true;
 
 		}
@@ -202,6 +213,10 @@ public class ActionManager {
 				camera.move(downloadsScreenPosition);
 			}
 
+			Vector3 vecNonGui = inputInterpreter.getLastTouchPosition();
+
+			camera.unproject(vecNonGui);
+			manageSheetButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
 		}
 
 	}
@@ -238,6 +253,26 @@ public class ActionManager {
 				camera.move(testsScreenPosition);
 			}
 
+		}
+	}
+
+	boolean isCameraChangingPosition() {
+		if (camera.position.x == homeScreenPosition
+				|| camera.position.x == testsScreenPosition
+				|| camera.position.x == downloadsScreenPosition)
+			return false;
+		else
+			return true;
+	}
+
+	void manageSheetButtonsCollisions(float x, float y) {
+		for (int a = 0; a < sheetButtons.size; a++) {
+			if (sheetButtons.get(a).checkCollision((int) x, (int) y) == true) {
+				for (int b = 0; b < sheetButtons.size; b++)
+					if (a != b)
+						sheetButtons.get(b).deselect();
+				sheetButtons.get(a).reverseSelection();
+			}
 		}
 	}
 }

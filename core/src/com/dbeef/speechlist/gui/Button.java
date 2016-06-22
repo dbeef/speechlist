@@ -10,6 +10,7 @@ public class Button {
 	boolean selected = false;
 
 	float alpha = 1;
+	float alphaMinimum = 0.5f;
 
 	Sprite image;
 
@@ -32,22 +33,22 @@ public class Button {
 	public void render(Batch batch, float delta) {
 
 		if (selected == true) {
-		
+
 			if (alpha < 1)
 				alpha += delta;
 			if (alpha > 1)
 				alpha = 1;
 		}
 		if (selected == false) {
-			if (alpha > 0.5f)
+			if (alpha > alphaMinimum)
 				alpha -= delta;
-			if (alpha < 0.5f)
-				alpha = 0.5f;
+			if (alpha < alphaMinimum)
+				alpha = alphaMinimum;
 		}
 
 		image.setAlpha(alpha);
 		image.draw(batch);
-	
+
 	}
 
 	public boolean checkCollision(int x, int y) {
@@ -67,7 +68,8 @@ public class Button {
 	public void deselect() {
 		selected = false;
 	}
-	public boolean getSelection(){
+
+	public boolean getSelection() {
 		return selected;
 	}
 
