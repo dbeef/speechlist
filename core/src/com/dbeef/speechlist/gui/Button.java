@@ -7,13 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Button {
 
+	static final float alphaMinimum = 0.5f;
 	boolean selected = false;
-
 	float alpha = 1;
-	float alphaMinimum = 0.5f;
-
 	Sprite image;
-
 	Rectangle mouse;
 	Rectangle bounds;
 
@@ -75,4 +72,5 @@ public class Button {
 
 	public void dispose() {
 	}
+
 }

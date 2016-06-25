@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.gui.Button;
-import com.dbeef.speechlist.gui.GlareButton;
+import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
@@ -40,9 +40,8 @@ public class Starter extends Game {
 
 	public Texture mainBackground;
 	public Texture logo;
-	public Texture glareButton;
 
-	Array<GlareButton> sheetButtons;
+	Array<TestButton> sheetButtons;
 
 	@Override
 	public void create() {
@@ -53,8 +52,6 @@ public class Starter extends Game {
 		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		logo = new Texture("icons/speechlistlogo.png");
 		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		glareButton = new Texture("buttons/glareButton.png");
-		glareButton.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		createFonts();
 
@@ -89,14 +86,12 @@ public class Starter extends Game {
 
 		menuDownloads.add(mainBackground, new Vector2(1440, 0));
 
-		initiateSheetButtons();
-
 		this.setScreen(new ScreenBoard(this));
 	}
 
 	@Override
 	public void render() {
-		super.render(); // important!
+		super.render();
 	}
 
 	public void createFonts() {
@@ -108,8 +103,8 @@ public class Starter extends Game {
 		parameter.minFilter = TextureFilter.Linear;
 		parameter.magFilter = TextureFilter.Linear;
 
-		ralewayBlack42 = generator.generateFont(parameter); // font size 12
-															// pixels
+		ralewayBlack42 = generator.generateFont(parameter);
+
 		ralewayBlack42.setColor(Color.BLACK);
 
 		generator = new FreeTypeFontGenerator(
@@ -120,20 +115,20 @@ public class Starter extends Game {
 		parameter.minFilter = TextureFilter.Linear;
 		parameter.magFilter = TextureFilter.Linear;
 
-		ralewayThinItalic16 = generator.generateFont(parameter); // font size 12
-																	// // pixels
+		ralewayThinItalic16 = generator.generateFont(parameter);
+
 		ralewayThinItalic16.setColor(Color.BLACK);
 
 		parameter.size = 32;
 
-		ralewayThinItalic32 = generator.generateFont(parameter); // font size 12
-																	// // pixels
+		ralewayThinItalic32 = generator.generateFont(parameter);
+
 		ralewayThinItalic32.setColor(Color.BLACK);
 
 		parameter.size = 12;
 
-		ralewayThinItalic12 = generator.generateFont(parameter); // font size 12
-																	// // pixels
+		ralewayThinItalic12 = generator.generateFont(parameter);
+
 		ralewayThinItalic12.setColor(Color.BLACK);
 
 		generator = new FreeTypeFontGenerator(
@@ -144,8 +139,8 @@ public class Starter extends Game {
 		parameter.minFilter = TextureFilter.Linear;
 		parameter.magFilter = TextureFilter.Linear;
 
-		ralewayRegular32 = generator.generateFont(parameter); // font size 12
-																// // pixels
+		ralewayRegular32 = generator.generateFont(parameter);
+
 		ralewayRegular32.setColor(Color.BLACK);
 
 		generator = new FreeTypeFontGenerator(
@@ -156,25 +151,11 @@ public class Starter extends Game {
 		parameter.minFilter = TextureFilter.Linear;
 		parameter.magFilter = TextureFilter.Linear;
 
-		ralewayMedium38 = generator.generateFont(parameter); // font size 12
-																// // pixels
+		ralewayMedium38 = generator.generateFont(parameter);
+
 		ralewayMedium38.setColor(Color.BLACK);
 
-		generator.dispose(); // don't forget to dispose to avoid memory leaks!
+		generator.dispose();
 
-	}
-
-	void initiateSheetButtons() {
-		sheetButtons = new Array();
-		sheetButtons.add(new GlareButton(960, 500, glareButton,
-				ralewayMedium38, "Sample test"));
-		sheetButtons.add(new GlareButton(960, 420, glareButton,
-				ralewayMedium38, "Sample test"));
-		sheetButtons.add(new GlareButton(960, 340, glareButton,
-				ralewayMedium38, "Sample test"));
-
-		for (int a = 0; a < sheetButtons.size; a++) {
-			menuTests.add(sheetButtons.get(a));
-		}
 	}
 }

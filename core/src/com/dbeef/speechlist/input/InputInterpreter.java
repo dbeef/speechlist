@@ -9,15 +9,22 @@ import com.badlogic.gdx.math.Vector3;
 public class InputInterpreter implements GestureListener {
 
 	Vector3 xyzTap = new Vector3();
-	double xTap;
-	double yTap;
+	double tapX;
+	double tapY;
 	double flingVelocityX = 0;
+	double flingVelocityY = 0;
+	double panX = 0;
+	double panY = 0;
+	double touchDownX = 0;
+	double touchDownY = 0;
 	double zoomDelta;
-	boolean deltaChanged;
 
 	public String message = "No data yet";
 	public boolean touched;
 	public boolean flinged;
+	public boolean panned;
+	public boolean touchedDown;
+	public boolean deltaChanged;
 
 	public double getZoomDelta() {
 		if (deltaChanged == true) {
@@ -26,6 +33,27 @@ public class InputInterpreter implements GestureListener {
 		} else
 			return 0;
 	}
+
+	public double getPanX() {
+		return panX;
+	}
+
+	public double getPanY() {
+		return panY;
+	}
+
+	public boolean getPanned() {
+		return panned;
+	}
+
+	public double getTouchDownX() {
+		return touchDownX;
+	}
+
+	public double getTouchDownY() {
+		return touchDownY;
+	}
+
 	public double getFlingDeltaX() {
 		if (flinged == true) {
 			flinged = false;
@@ -33,20 +61,39 @@ public class InputInterpreter implements GestureListener {
 		} else
 			return 0;
 	}
-	
-	public double getXTap() {
-		touched = false;
-		return xTap;
+
+	public double getFlingDeltaY() {
+		if (flinged == true) {
+			flinged = false;
+			return flingVelocityY;
+		} else
+			return 0;
 	}
 
-	public double getYTap() {
+	public double gettapX() {
 		touched = false;
-		return yTap;
+		return tapX;
+	}
+
+	public double gettapY() {
+		touched = false;
+		return tapY;
+	}
+
+	public boolean getTouchDown() {
+		if (touchedDown == true) {
+			touchedDown = false;
+			return true;
+		} else
+			return false;
 	}
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
+		touchedDown = true;
+		touchDownX = x;
+		touchDownY = y;
 		System.out.println("touchDown");
 		return false;
 	}
@@ -56,8 +103,8 @@ public class InputInterpreter implements GestureListener {
 		// TODO Auto-generated method stub
 		System.out.println("tap");
 		touched = true;
-		xTap = x;
-		yTap = y;
+		tapX = x;
+		tapY = y;
 		return false;
 	}
 
@@ -73,6 +120,7 @@ public class InputInterpreter implements GestureListener {
 		// TODO Auto-generated method stub
 		flinged = true;
 		flingVelocityX = velocityX;
+		flingVelocityY = velocityY;
 		System.out.println("fling");
 		return false;
 	}
@@ -80,7 +128,11 @@ public class InputInterpreter implements GestureListener {
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		// TODO Auto-generated method stub
+		panned = true;
+		panX = x;
+		panY = y;
 		System.out.println("pan");
+
 		return false;
 	}
 
@@ -88,6 +140,7 @@ public class InputInterpreter implements GestureListener {
 	public boolean panStop(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
 		System.out.println("panStop");
+		panned = false;
 		return false;
 	}
 
@@ -125,8 +178,8 @@ public class InputInterpreter implements GestureListener {
 
 	public Vector3 getLastTouchPosition() {
 		touched = false;
-		xyzTap.x = (float) xTap;
-		xyzTap.y = (float) yTap;
+		xyzTap.x = (float) tapX;
+		xyzTap.y = (float) tapY;
 		return xyzTap;
 	}
 }

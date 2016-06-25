@@ -12,8 +12,10 @@ public class AssetsManager {
 	public Texture clock;
 	public Texture chart;
 	public Texture checked;
+	public Texture glareButtonVignette;
 
 	public AssetsManager() {
+		glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
 		home = new Texture("icons/home.png");
 		pencil = new Texture("icons/pencil.png");
 		cloud = new Texture("icons/cloud.png");
@@ -22,6 +24,8 @@ public class AssetsManager {
 		chart = new Texture("icons/chart.png");
 		checked = new Texture("icons/checked.png");
 
+		glareButtonVignette.setFilter(TextureFilter.Linear,
+				TextureFilter.Linear);
 		home.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		pencil.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		cloud.setFilter(TextureFilter.Linear, TextureFilter.Linear);

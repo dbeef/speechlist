@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.gui.Button;
+import com.dbeef.speechlist.gui.TestButton;
 
 public class Screen {
 
@@ -29,9 +30,10 @@ public class Screen {
 	BitmapFont ralewayThinItalic32;
 	BitmapFont ralewayRegular32;
 	BitmapFont ralewayMedium38;
-	
+
 	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16,
-			BitmapFont ralewayThinItalic32, BitmapFont ralewayThinItalic12, BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
+			BitmapFont ralewayThinItalic32, BitmapFont ralewayThinItalic12,
+			BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
 		strings = new Array<String>();
@@ -46,7 +48,7 @@ public class Screen {
 		this.ralewayThinItalic32 = ralewayThinItalic32;
 		this.ralewayRegular32 = ralewayRegular32;
 		this.ralewayMedium38 = ralewayMedium38;
-		
+
 	}
 
 	public void add(Sprite sprite) {
@@ -67,6 +69,11 @@ public class Screen {
 	}
 
 	public void add(Button button) {
+		buttons.add(button);
+	}
+
+	public void add(TestButton button) {
+		button.loadFont(ralewayMedium38);
 		buttons.add(button);
 	}
 
