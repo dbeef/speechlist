@@ -38,10 +38,10 @@ public class ScreenBoard implements Screen {
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
-		actionManager = new ActionManager(game.inputInterpreter, camera,
+		actionManager = new ActionManager(camera,
 				guiCamera, game.initial, game.gui, game.menuHome,
-				game.menuTests, game.menuDownloads, game.assetsManager,
-				game.home, game.tests, game.downloads, game.sheetButtons);
+				game.menuTests, game.menuDownloads, game.menuBrief,
+				game.menuSphinx);
 
 	}
 
@@ -64,6 +64,8 @@ public class ScreenBoard implements Screen {
 		game.menuHome.render(batch, delta);
 		game.menuTests.render(batch, delta);
 		game.menuDownloads.render(batch, delta);
+		game.menuBrief.render(batch, delta);
+		game.menuSphinx.render(batch, delta);
 		batch.end();
 
 		batch.setProjectionMatrix(guiCamera.combined);

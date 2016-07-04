@@ -72,4 +72,8 @@ public class Camera extends OrthographicCamera {
 
 		}
 	}
+	public void changePosition(float x){
+		this.position.x = x;
+		this.update();
+	}
 }

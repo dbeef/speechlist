@@ -15,6 +15,7 @@ public class AssetsManager {
 	public Texture glareButtonVignette;
 	public Texture tick;
 	public Texture sadPhone;
+	public Texture cross;
 
 	public AssetsManager() {
 		glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
@@ -26,7 +27,8 @@ public class AssetsManager {
 		clock = new Texture("icons/clock.png");
 		chart = new Texture("icons/chart.png");
 		checked = new Texture("icons/checked.png");
-		sadPhone = new Texture("icons/sadPhone.png");
+		sadPhone = new Texture("icons/sadphone.png");
+		cross = new Texture("icons/cross.png");
 
 		glareButtonVignette.setFilter(TextureFilter.Linear,
 				TextureFilter.Linear);
@@ -39,6 +41,7 @@ public class AssetsManager {
 		chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 	}
 }

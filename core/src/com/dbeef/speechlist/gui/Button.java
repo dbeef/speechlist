@@ -7,7 +7,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Button {
 
-	static final float alphaMinimum = 0.5f;
+	float blinkTimer = 0;
+	boolean blinking = false;
+
+	float alphaMinimum = 0.5f;
+	float multiplier = 1;
 	boolean selected = false;
 	float alpha = 1;
 	Sprite image;
@@ -60,19 +64,48 @@ public class Button {
 
 	void updateTimers(float delta) {
 
+		if (blinking == true) {
+			if (blinkTimer < 0.5f) {
+				select();
+				blinkTimer += delta;
+				if (blinkTimer > 0.5f) {
+					blinkTimer = 0;
+					deselect();
+					blinking = false;
+				}
+			}
+		}
+		
 		if (selected == true) {
 
 			if (alpha < 1)
-				alpha += delta;
+				alpha += delta * multiplier;
 			if (alpha > 1)
 				alpha = 1;
 		}
 		if (selected == false) {
 			if (alpha > alphaMinimum)
-				alpha -= delta;
+				alpha -= delta * multiplier;
 			if (alpha < alphaMinimum)
 				alpha = alphaMinimum;
 		}
 
+	}
+
+public	void setPosition(float x, float y) {
+		image.setPosition(x, y);
+		bounds.setPosition(x, y);
+	}
+
+public	void setAlphaMinimum(float alphaMinimum) {
+		this.alphaMinimum = alphaMinimum;
+	}
+
+	public void setMultiplier(float multiplier) {
+		this.multiplier = multiplier;
+	}
+
+	public void blink() {
+		blinking = true;
 	}
 }

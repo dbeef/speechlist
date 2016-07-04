@@ -179,4 +179,11 @@ public class Screen {
 	public void dispose() {
 
 	}
+
+	public void removeAllStrings() {
+		strings.clear();
+		stringsPositions.clear();
+		stringsFontAndAlpha.clear();
+		stringsColors.clear();
+	}
 }

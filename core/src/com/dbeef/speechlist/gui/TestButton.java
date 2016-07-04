@@ -3,7 +3,6 @@ package com.dbeef.speechlist.gui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class TestButton extends Button {
 
@@ -14,21 +13,16 @@ public class TestButton extends Button {
 	double originPositionY;
 	private String name;
 	public BitmapFont font;
-	public Sprite tick;
-	float alphaTick;
-	
-	Button tickButton;
-	
+	Button tick;
+	boolean highlightButton = false;
+
 	public TestButton(int x, int y, Texture texture, String name) {
 		super(x, y, texture);
 		this.name = name;
-
 		this.deselect();
-
 		originPositionX = x;
 		originPositionY = y;
 		maximumYPosition = y;
-		alphaTick = 0;
 	}
 
 	public void render(Batch batch, float delta) {
@@ -36,7 +30,6 @@ public class TestButton extends Button {
 		updateTimers(delta);
 
 		tick.setPosition(this.image.getX() + 400, this.image.getY() + 10);
-		tick.setAlpha(alphaTick);
 
 		image.setAlpha(alpha);
 		image.draw(batch);
@@ -44,7 +37,7 @@ public class TestButton extends Button {
 		font.draw(batch, name, (float) this.image.getX() + 15,
 				(float) this.image.getY() + 55);
 
-		tick.draw(batch);
+		tick.render(batch, delta);
 	}
 
 	public void reverseSelection() {
@@ -79,6 +72,10 @@ public class TestButton extends Button {
 			return false;
 	}
 
+	public boolean checkCollisionTick(int x, int y) {
+		return tick.checkCollision(x, y);
+	}
+
 	public void applyGravity(double delta) {
 		gravityTimer += delta;
 		gravityTimer *= gravity;
@@ -100,34 +97,54 @@ public class TestButton extends Button {
 	}
 
 	public void loadTick(Texture tick) {
-		this.tick = new Sprite(tick);
+		this.tick = new Button((int) this.image.getX(),
+				(int) this.image.getY(), tick);
+		this.tick.setAlphaMinimum(0);
+		this.tick.setMultiplier(5);
 	}
-	void updateTimers(float delta){
+
+	void updateTimers(float delta) {
 
 		if (selected == true) {
+			tick.select();
 
-			if (alphaTick < 1f)
-				alphaTick += delta*5;
-			if (alphaTick > 1)
-				alphaTick = 1f;
-			
-			if (alpha < 0.1f)
-				alpha += delta;
-			if (alpha > 0.1)
-				alpha = 0.1f;
+			if (highlightButton == false) {
+				if (alpha < 0.1f)
+					alpha += delta;
+				if (alpha > 0.1)
+					alpha = 0.1f;
+			}
+			if (highlightButton == true) {
+				if (alpha < 0.4f)
+					alpha += delta;
+				if (alpha > 0.4f) {
+					alpha = 0.4f;
+				}
+			}
+
 		}
 		if (selected == false) {
+			tick.deselect();
 			if (alpha > 0f)
 				alpha -= delta;
 			if (alpha < 0f)
 				alpha = 0f;
-			
-			if (alphaTick > 0f)
-				alphaTick -= delta*5;
-			if (alphaTick < 0f)
-				alphaTick = 0f;
-			
 		}
 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void highlight() {
+		highlightButton = true;
+	}
+	public void lowlight(){
+		highlightButton = false;
+	}
+
+	public boolean isHighlighted() {
+		return highlightButton;
 	}
 }

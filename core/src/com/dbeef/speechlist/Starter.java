@@ -10,39 +10,28 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.dbeef.speechlist.gui.Button;
-import com.dbeef.speechlist.gui.TestButton;
-import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.screen.Screen;
-import com.dbeef.speechlist.utils.AssetsManager;
 
 public class Starter extends Game {
 
-	public AssetsManager assetsManager;
-	public InputInterpreter inputInterpreter;
 	public Screen gui;
 	public Screen initial;
 	public Screen menuHome;
 	public Screen menuTests;
 	public Screen menuDownloads;
+	public Screen menuBrief;
+	public Screen menuSphinx;
 	public BitmapFont ralewayBlack42;
 	public BitmapFont ralewayThinItalic12;
 	public BitmapFont ralewayThinItalic16;
 	public BitmapFont ralewayThinItalic32;
 	public BitmapFont ralewayRegular32;
 	public BitmapFont ralewayMedium38;
-	public Button home;
-	public Button tests;
-	public Button downloads;
 	public Texture mainBackground;
 	public Texture logo;
 
-	Array<TestButton> sheetButtons;
-
 	@Override
 	public void create() {
-		inputInterpreter = new InputInterpreter();
 
 		loadBasicTextures();
 		createFonts();
@@ -159,6 +148,16 @@ public class Starter extends Game {
 				ralewayMedium38);
 
 		menuDownloads.add(mainBackground, new Vector2(1440, 0));
+
+		menuBrief = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+		menuBrief.add(mainBackground, new Vector2(1920, 0));
+
+		menuSphinx = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+		menuSphinx.add(mainBackground, new Vector2(2400, 0));
 
 	}
 }

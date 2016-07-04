@@ -14,9 +14,11 @@ import com.dbeef.speechlist.utils.TestsManager;
 
 public class ActionManager {
 
+	static final int guiCameraPosition = 720;
 	static final int homeScreenPosition = 720;
 	static final int testsScreenPosition = 1200;
 	static final int downloadsScreenPosition = 1680;
+	static final int briefScreenPosition = 2160;
 
 	int tapX;
 	int tapY;
@@ -32,6 +34,8 @@ public class ActionManager {
 	Button home;
 	Button tests;
 	Button downloads;
+	Button accept;
+	Button decline;
 
 	boolean wasPannedBefore = false;
 	boolean initialCameraMovementsDone = false;
@@ -49,28 +53,25 @@ public class ActionManager {
 	Screen menuHome;
 	Screen menuTests;
 	Screen menuDownloads;
+	Screen menuBrief;
+	Screen menuSphinx;
 	Screen gui;
 
 	Array<TestButton> testsButtons;
 
-	public ActionManager(InputInterpreter inputInterpreter, Camera camera,
-			Camera guiCamera, Screen initial, Screen gui, Screen menuHome,
-			Screen menuTests, Screen menuDownloads,
-			AssetsManager assetsManager, Button home, Button tests,
-			Button downloads, Array<TestButton> testsButtons) {
+	public ActionManager(Camera camera, Camera guiCamera, Screen initial,
+			Screen gui, Screen menuHome, Screen menuTests,
+			Screen menuDownloads, Screen menuBrief, Screen menuSphinx) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
-		this.assetsManager = assetsManager;
-		this.home = home;
-		this.tests = tests;
-		this.downloads = downloads;
 		this.gui = gui;
 		this.menuHome = menuHome;
 		this.menuTests = menuTests;
 		this.menuDownloads = menuDownloads;
-		this.inputInterpreter = inputInterpreter;
-		this.testsButtons = testsButtons;
+		this.menuBrief = menuBrief;
+		this.menuSphinx = menuSphinx;
+		inputInterpreter = new InputInterpreter();
 	}
 
 	public void updateLogics(float delta) {
@@ -193,6 +194,16 @@ public class ActionManager {
 					170), new Vector2(4, 1), new Vector3(1, 1, 1));
 			menuDownloads.add("for now.", new Vector2(1625, 135), new Vector2(
 					4, 1), new Vector3(1, 1, 1));
+
+			accept = new Button(2080, 100, assetsManager.checked);
+			decline = new Button(2180, 100, assetsManager.cross);
+
+			decline.setMultiplier(4);
+			accept.setMultiplier(4);
+
+			menuBrief.add(accept);
+			menuBrief.add(decline);
+
 			readyToGoMenu = true;
 
 		}
@@ -206,6 +217,10 @@ public class ActionManager {
 			camera.move(homeScreenPosition);
 			guiCamera.move(homeScreenPosition);
 			initialCameraMovementsDone = true;
+		}
+		if (camera.position.x > downloadsScreenPosition) {
+			guiCamera.changePosition(guiCameraPosition
+					+ (camera.position.x - downloadsScreenPosition));
 		}
 
 	}
@@ -239,9 +254,9 @@ public class ActionManager {
 			Vector3 vecNonGui = inputInterpreter.getLastTouchPosition();
 
 			camera.unproject(vecNonGui);
-			managetestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+			manageTestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+			manageBriefButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
 		}
-
 	}
 
 	void updateFlingCamera() {
@@ -282,27 +297,76 @@ public class ActionManager {
 	boolean isCameraChangingPosition() {
 		if (camera.position.x == homeScreenPosition
 				|| camera.position.x == testsScreenPosition
-				|| camera.position.x == downloadsScreenPosition)
+				|| camera.position.x == downloadsScreenPosition
+				|| camera.position.x == briefScreenPosition)
 			return false;
 		else
 			return true;
 	}
 
-	void managetestsButtonsCollisions(float x, float y) {
+	void manageBriefButtonsCollisions(float x, float y) {
+
+		if (decline.checkCollision((int) x, (int) y) == true) {
+			camera.move(testsScreenPosition);
+			guiCamera.move(guiCameraPosition);
+			decline.blink();
+			tests.select();
+			for (int a = 0; a < testsButtons.size; a++) {
+				if (testsButtons.get(a).isHighlighted() == true) {
+					testsButtons.get(a).lowlight();
+				}
+			}
+		}
+
+		if (accept.checkCollision((int) x, (int) y) == true) {
+			accept.blink();
+		}
+
+	}
+
+	void manageTestsButtonsCollisions(float x, float y) {
+
+		for (int a = 0; a < testsButtons.size; a++) {
+
+			if (testsButtons.get(a).getSelection() == true) {
+				if (testsButtons.get(a).checkCollisionTick((int) x, (int) y) == true) {
+					testsButtons.get(a).highlight();
+					tests.deselect();
+					camera.move(briefScreenPosition);
+					menuBrief.removeAllStrings();
+					menuBrief.add("Briefing", new Vector2(2110, 780),
+							new Vector2(3, 1), new Vector3(1, 1, 1));
+					menuBrief.add("Vocabulary", new Vector2(2080, 630),
+							new Vector2(3, 1), new Vector3(1, 1, 1));
+					menuBrief.add("Last result", new Vector2(2085, 350),
+							new Vector2(3, 1), new Vector3(1, 1, 1));
+					menuBrief
+							.add(testsButtons.get(a).getName(), new Vector2(
+									2040, 710), new Vector2(5, 1), new Vector3(
+									1, 1, 1));
+
+				}
+			}
+
+		}
 		boolean anyCollisions = false;
 		for (int a = 0; a < testsButtons.size; a++) {
 			if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
 				anyCollisions = true;
+
 				for (int b = 0; b < testsButtons.size; b++)
 					if (a != b)
 						testsButtons.get(b).deselect();
-				testsButtons.get(a).reverseSelection();
+
+				if (testsButtons.get(a).isHighlighted() == false)
+					testsButtons.get(a).reverseSelection();
 			}
 		}
 		if (anyCollisions == false) {
 			for (int a = 0; a < testsButtons.size; a++)
 				testsButtons.get(a).deselect();
 		}
+
 	}
 
 	void manageSheetSliding() {
@@ -344,10 +408,11 @@ public class ActionManager {
 		for (int a = 0; a < tests.size; a++) {
 			testsButtons.add(new TestButton(960, 500 - 80 * a,
 					assetsManager.glareButtonVignette, tests.get(a).getName()));
-			testsButtons.get(a).loadTick(assetsManager.tick);
+			testsButtons.get(a).loadTick(assetsManager.checked);
 		}
 		for (int a = 0; a < testsButtons.size; a++) {
 			menuTests.add(testsButtons.get(a));
 		}
 	}
+
 }
