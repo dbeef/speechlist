@@ -7,7 +7,7 @@ import com.dbeef.speechlist.Starter;
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		// config.samples = 4;
+		config.samples = 4;
 		config.width = 360;
 		config.height = 600;
 		config.title = "Speechlist";

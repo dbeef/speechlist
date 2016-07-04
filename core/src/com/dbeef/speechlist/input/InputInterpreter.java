@@ -24,11 +24,12 @@ public class InputInterpreter implements GestureListener {
 	public boolean flinged;
 	public boolean panned;
 	public boolean touchedDown;
-	public boolean deltaChanged;
+
+	public boolean zoomDeltaChanged;
 
 	public double getZoomDelta() {
-		if (deltaChanged == true) {
-			deltaChanged = false;
+		if (zoomDeltaChanged == true) {
+			zoomDeltaChanged = false;
 			return zoomDelta / 100;
 		} else
 			return 0;
@@ -159,7 +160,7 @@ public class InputInterpreter implements GestureListener {
 		if (distance > initialDistance) {
 			zoomDelta *= (-1);
 		}
-		deltaChanged = true;
+		zoomDeltaChanged = true;
 
 		return false;
 	}

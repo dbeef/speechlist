@@ -14,16 +14,12 @@ public class Screen {
 
 	Array<Texture> textures;
 	Array<Vector2> texturesPositions;
-
 	Array<String> strings;
 	Array<Vector2> stringsPositions;
 	Array<Vector2> stringsFontAndAlpha;
 	Array<Vector3> stringsColors;
-
 	Array<Sprite> sprites;
-
 	Array<Button> buttons;
-
 	BitmapFont ralewayBlack42;
 	BitmapFont ralewayThinItalic12;
 	BitmapFont ralewayThinItalic16;

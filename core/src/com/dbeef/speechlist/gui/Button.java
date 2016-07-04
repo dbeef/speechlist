@@ -28,24 +28,9 @@ public class Button {
 	}
 
 	public void render(Batch batch, float delta) {
-
-		if (selected == true) {
-
-			if (alpha < 1)
-				alpha += delta;
-			if (alpha > 1)
-				alpha = 1;
-		}
-		if (selected == false) {
-			if (alpha > alphaMinimum)
-				alpha -= delta;
-			if (alpha < alphaMinimum)
-				alpha = alphaMinimum;
-		}
-
+		updateTimers(delta);
 		image.setAlpha(alpha);
 		image.draw(batch);
-
 	}
 
 	public boolean checkCollision(int x, int y) {
@@ -73,4 +58,21 @@ public class Button {
 	public void dispose() {
 	}
 
+	void updateTimers(float delta) {
+
+		if (selected == true) {
+
+			if (alpha < 1)
+				alpha += delta;
+			if (alpha > 1)
+				alpha = 1;
+		}
+		if (selected == false) {
+			if (alpha > alphaMinimum)
+				alpha -= delta;
+			if (alpha < alphaMinimum)
+				alpha = alphaMinimum;
+		}
+
+	}
 }

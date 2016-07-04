@@ -30,14 +30,11 @@ public class Starter extends Game {
 	public BitmapFont ralewayThinItalic12;
 	public BitmapFont ralewayThinItalic16;
 	public BitmapFont ralewayThinItalic32;
-
 	public BitmapFont ralewayRegular32;
 	public BitmapFont ralewayMedium38;
-
 	public Button home;
 	public Button tests;
 	public Button downloads;
-
 	public Texture mainBackground;
 	public Texture logo;
 
@@ -45,46 +42,11 @@ public class Starter extends Game {
 
 	@Override
 	public void create() {
-
 		inputInterpreter = new InputInterpreter();
 
-		mainBackground = new Texture("backgrounds/mainBackground.png");
-		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		logo = new Texture("icons/speechlistlogo.png");
-		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
+		loadBasicTextures();
 		createFonts();
-
-		initial = new Screen(ralewayBlack42, ralewayThinItalic16,
-				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
-				ralewayMedium38);
-		initial.add("Speechlist", new Vector2(130, 450), new Vector2(1, 1),
-				new Vector3(1, 1, 1));
-		initial.add(mainBackground, new Vector2(0, 0));
-		initial.add(mainBackground, new Vector2(-480, 0));
-		initial.add(logo, new Vector2(210, 480));
-
-		gui = new Screen(ralewayBlack42, ralewayThinItalic16,
-				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
-				ralewayMedium38);
-
-		menuHome = new Screen(ralewayBlack42, ralewayThinItalic16,
-				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
-				ralewayMedium38);
-
-		menuHome.add(mainBackground, new Vector2(480, 0));
-
-		menuTests = new Screen(ralewayBlack42, ralewayThinItalic16,
-				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
-				ralewayMedium38);
-
-		menuTests.add(mainBackground, new Vector2(960, 0));
-
-		menuDownloads = new Screen(ralewayBlack42, ralewayThinItalic16,
-				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
-				ralewayMedium38);
-
-		menuDownloads.add(mainBackground, new Vector2(1440, 0));
+		createScreens();
 
 		this.setScreen(new ScreenBoard(this));
 	}
@@ -156,6 +118,47 @@ public class Starter extends Game {
 		ralewayMedium38.setColor(Color.BLACK);
 
 		generator.dispose();
+
+	}
+
+	void loadBasicTextures() {
+		mainBackground = new Texture("backgrounds/mainBackground.png");
+		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		logo = new Texture("icons/speechlistlogo.png");
+		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	}
+
+	void createScreens() {
+		initial = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+		initial.add("Speechlist", new Vector2(130, 450), new Vector2(1, 1),
+				new Vector3(1, 1, 1));
+		initial.add(mainBackground, new Vector2(0, 0));
+		initial.add(mainBackground, new Vector2(-480, 0));
+		initial.add(logo, new Vector2(210, 480));
+
+		gui = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+
+		menuHome = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+
+		menuHome.add(mainBackground, new Vector2(480, 0));
+
+		menuTests = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+
+		menuTests.add(mainBackground, new Vector2(960, 0));
+
+		menuDownloads = new Screen(ralewayBlack42, ralewayThinItalic16,
+				ralewayThinItalic32, ralewayThinItalic12, ralewayRegular32,
+				ralewayMedium38);
+
+		menuDownloads.add(mainBackground, new Vector2(1440, 0));
 
 	}
 }

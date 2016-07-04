@@ -9,6 +9,8 @@ import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
+import com.dbeef.speechlist.utils.TestModel;
+import com.dbeef.speechlist.utils.TestsManager;
 
 public class ActionManager {
 
@@ -24,7 +26,7 @@ public class ActionManager {
 	double initialPanY;
 
 	InputInterpreter inputInterpreter;
-
+	TestsManager testsManager;
 	float timer = 0;
 
 	Button home;
@@ -32,7 +34,7 @@ public class ActionManager {
 	Button downloads;
 
 	boolean wasPannedBefore = false;
-	boolean initialCameraMovements = false;
+	boolean initialCameraMovementsDone = false;
 	boolean logoCameOnScreen = false;
 	boolean loadingTextAdded = false;
 	boolean assetsLoaded = false;
@@ -49,13 +51,13 @@ public class ActionManager {
 	Screen menuDownloads;
 	Screen gui;
 
-	Array<TestButton> sheetButtons;
+	Array<TestButton> testsButtons;
 
 	public ActionManager(InputInterpreter inputInterpreter, Camera camera,
 			Camera guiCamera, Screen initial, Screen gui, Screen menuHome,
 			Screen menuTests, Screen menuDownloads,
 			AssetsManager assetsManager, Button home, Button tests,
-			Button downloads, Array<TestButton> sheetButtons) {
+			Button downloads, Array<TestButton> testsButtons) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
@@ -68,7 +70,7 @@ public class ActionManager {
 		this.menuTests = menuTests;
 		this.menuDownloads = menuDownloads;
 		this.inputInterpreter = inputInterpreter;
-		this.sheetButtons = sheetButtons;
+		this.testsButtons = testsButtons;
 	}
 
 	public void updateLogics(float delta) {
@@ -77,7 +79,7 @@ public class ActionManager {
 		addAssetsToScreens();
 		updateCamerasLogics();
 		if (isCameraChangingPosition() == false
-				&& initialCameraMovements == true) {
+				&& initialCameraMovementsDone == true) {
 			updateButtonsLogics();
 			updateFlingCamera();
 			manageSheetSliding();
@@ -115,6 +117,7 @@ public class ActionManager {
 
 			if (assetsLoaded == false) {
 				assetsManager = new AssetsManager();
+				testsManager = new TestsManager();
 				assetsLoaded = true;
 			}
 
@@ -128,7 +131,7 @@ public class ActionManager {
 			tests = new Button(670, 713, assetsManager.pencil);
 			downloads = new Button(810, 713, assetsManager.cloud);
 
-			initiateSheetButtons();
+			initiateTestsButtons();
 
 			home.select();
 
@@ -183,6 +186,13 @@ public class ActionManager {
 			menuDownloads.add("Download", new Vector2(1610, 660), new Vector2(
 					3, 1), new Vector3(1, 1, 1));
 
+			menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
+			menuDownloads.add("We're sorry", new Vector2(1575, 550),
+					new Vector2(5, 1), new Vector3(1, 1, 1));
+			menuDownloads.add("This service is unavailable", new Vector2(1485,
+					170), new Vector2(4, 1), new Vector3(1, 1, 1));
+			menuDownloads.add("for now.", new Vector2(1625, 135), new Vector2(
+					4, 1), new Vector3(1, 1, 1));
 			readyToGoMenu = true;
 
 		}
@@ -192,10 +202,10 @@ public class ActionManager {
 	void updateCamerasLogics() {
 		if (readyToGoMenu == true
 				&& (initial.changeStringAlpha("loading...", 0) == 1)
-				&& initialCameraMovements == false) {
+				&& initialCameraMovementsDone == false) {
 			camera.move(homeScreenPosition);
 			guiCamera.move(homeScreenPosition);
-			initialCameraMovements = true;
+			initialCameraMovementsDone = true;
 		}
 
 	}
@@ -229,7 +239,7 @@ public class ActionManager {
 			Vector3 vecNonGui = inputInterpreter.getLastTouchPosition();
 
 			camera.unproject(vecNonGui);
-			manageSheetButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+			managetestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
 		}
 
 	}
@@ -278,28 +288,28 @@ public class ActionManager {
 			return true;
 	}
 
-	void manageSheetButtonsCollisions(float x, float y) {
+	void managetestsButtonsCollisions(float x, float y) {
 		boolean anyCollisions = false;
-		for (int a = 0; a < sheetButtons.size; a++) {
-			if (sheetButtons.get(a).checkCollision((int) x, (int) y) == true) {
+		for (int a = 0; a < testsButtons.size; a++) {
+			if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
 				anyCollisions = true;
-				for (int b = 0; b < sheetButtons.size; b++)
+				for (int b = 0; b < testsButtons.size; b++)
 					if (a != b)
-						sheetButtons.get(b).deselect();
-				sheetButtons.get(a).reverseSelection();
+						testsButtons.get(b).deselect();
+				testsButtons.get(a).reverseSelection();
 			}
 		}
 		if (anyCollisions == false) {
-			for (int a = 0; a < sheetButtons.size; a++)
-				sheetButtons.get(a).deselect();
+			for (int a = 0; a < testsButtons.size; a++)
+				testsButtons.get(a).deselect();
 		}
 	}
 
 	void manageSheetSliding() {
 
 		if (wasPannedBefore == true && inputInterpreter.getPanned() == false) {
-			for (int a = 0; a < sheetButtons.size; a++)
-				sheetButtons.get(a).savePositionAsOriginPosition();
+			for (int a = 0; a < testsButtons.size; a++)
+				testsButtons.get(a).savePositionAsOriginPosition();
 		}
 
 		if (tests.getSelection() == true) {
@@ -312,8 +322,8 @@ public class ActionManager {
 				panX = inputInterpreter.getPanX();
 				panY = inputInterpreter.getPanY();
 
-				for (int a = 0; a < sheetButtons.size; a++)
-					sheetButtons.get(a).move(0, initialPanY - panY);
+				for (int a = 0; a < testsButtons.size; a++)
+					testsButtons.get(a).move(0, initialPanY - panY);
 			}
 
 		}
@@ -321,22 +331,23 @@ public class ActionManager {
 	}
 
 	void updateButtonsGravity(double delta) {
-		for (int a = 0; a < sheetButtons.size; a++)
-			sheetButtons.get(a).applyGravity(delta);
+		for (int a = 0; a < testsButtons.size; a++)
+			testsButtons.get(a).applyGravity(delta);
 	}
 
-	void initiateSheetButtons() {
+	void initiateTestsButtons() {
 
-		sheetButtons = new Array<TestButton>();
-		sheetButtons.add(new TestButton(960, 500,
-				assetsManager.glareButtonVignette, "Sample test"));
-		sheetButtons.add(new TestButton(960, 420,
-				assetsManager.glareButtonVignette, "Sample test"));
-		sheetButtons.add(new TestButton(960, 340,
-				assetsManager.glareButtonVignette, "Sample test"));
+		testsButtons = new Array<TestButton>();
 
-		for (int a = 0; a < sheetButtons.size; a++) {
-			menuTests.add(sheetButtons.get(a));
+		Array<TestModel> tests = testsManager.getTests();
+
+		for (int a = 0; a < tests.size; a++) {
+			testsButtons.add(new TestButton(960, 500 - 80 * a,
+					assetsManager.glareButtonVignette, tests.get(a).getName()));
+			testsButtons.get(a).loadTick(assetsManager.tick);
+		}
+		for (int a = 0; a < testsButtons.size; a++) {
+			menuTests.add(testsButtons.get(a));
 		}
 	}
 }

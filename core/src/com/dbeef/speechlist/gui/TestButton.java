@@ -3,17 +3,22 @@ package com.dbeef.speechlist.gui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class TestButton extends Button {
 
 	static final double gravity = 1.10f;
-	double gravityFrontier;
+	double maximumYPosition;
 	double gravityTimer = 0;
 	double originPositionX;
 	double originPositionY;
 	private String name;
 	public BitmapFont font;
-
+	public Sprite tick;
+	float alphaTick;
+	
+	Button tickButton;
+	
 	public TestButton(int x, int y, Texture texture, String name) {
 		super(x, y, texture);
 		this.name = name;
@@ -22,29 +27,24 @@ public class TestButton extends Button {
 
 		originPositionX = x;
 		originPositionY = y;
-		gravityFrontier = y;
+		maximumYPosition = y;
+		alphaTick = 0;
 	}
 
 	public void render(Batch batch, float delta) {
-		if (selected == true) {
 
-			if (alpha < 0.1f)
-				alpha += delta;
-			if (alpha > 0.1)
-				alpha = 0.1f;
-		}
-		if (selected == false) {
-			if (alpha > 0f)
-				alpha -= delta;
-			if (alpha < 0f)
-				alpha = 0f;
-		}
+		updateTimers(delta);
+
+		tick.setPosition(this.image.getX() + 400, this.image.getY() + 10);
+		tick.setAlpha(alphaTick);
 
 		image.setAlpha(alpha);
 		image.draw(batch);
 
 		font.draw(batch, name, (float) this.image.getX() + 15,
 				(float) this.image.getY() + 55);
+
+		tick.draw(batch);
 	}
 
 	public void reverseSelection() {
@@ -57,8 +57,8 @@ public class TestButton extends Button {
 
 		gravityTimer = 1;
 
-		if (image.getY() > gravityFrontier)
-			image.setPosition(image.getX(), (float) gravityFrontier);
+		if (image.getY() > maximumYPosition)
+			image.setPosition(image.getX(), (float) maximumYPosition);
 
 	}
 
@@ -87,8 +87,8 @@ public class TestButton extends Button {
 		move(0, gravityTimer);
 		gravityTimer = temp;
 
-		if (originPositionY >= gravityFrontier) {
-			originPositionY = gravityFrontier;
+		if (originPositionY >= maximumYPosition) {
+			originPositionY = maximumYPosition;
 			gravityTimer = 0;
 		}
 		savePositionAsOriginPosition();
@@ -97,5 +97,37 @@ public class TestButton extends Button {
 	public void loadFont(BitmapFont font) {
 		this.font = font;
 		font.setColor(1, 1, 1, 1);
+	}
+
+	public void loadTick(Texture tick) {
+		this.tick = new Sprite(tick);
+	}
+	void updateTimers(float delta){
+
+		if (selected == true) {
+
+			if (alphaTick < 1f)
+				alphaTick += delta*5;
+			if (alphaTick > 1)
+				alphaTick = 1f;
+			
+			if (alpha < 0.1f)
+				alpha += delta;
+			if (alpha > 0.1)
+				alpha = 0.1f;
+		}
+		if (selected == false) {
+			if (alpha > 0f)
+				alpha -= delta;
+			if (alpha < 0f)
+				alpha = 0f;
+			
+			if (alphaTick > 0f)
+				alphaTick -= delta*5;
+			if (alphaTick < 0f)
+				alphaTick = 0f;
+			
+		}
+
 	}
 }
