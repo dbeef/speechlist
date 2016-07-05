@@ -3,6 +3,7 @@ package com.dbeef.speechlist.utils;
 public class TestModel {
 	String name;
 	String[] sentences;
+	String[] vocabulary;
 
 	int id;
 	int length;
@@ -13,6 +14,9 @@ public class TestModel {
 
 	public String[] getSentences() {
 		return sentences;
+	}
+	public String[] getVocabulary() {
+		return vocabulary;
 	}
 
 	public int getLength() {

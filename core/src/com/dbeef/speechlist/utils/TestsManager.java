@@ -56,16 +56,25 @@ public class TestsManager {
 
 		defaultTests = new String[4];
 
-		defaultTests[0] = "{  \"sentences\": [    \"Today I found a dog.\",   \"It's brown and lazy.\",    \"It quickly jumps over\",    \"a black fox.\"  ], \"name\": \"Animals test\",  \"id\": 1,  \"length\": 4}";
-		defaultTests[1] = "{  \"sentences\": [    \"Today I found a dog.\",   \"It's brown and lazy.\",    \"It quickly jumps over\",    \"a black fox.\"  ], \"name\": \"Animals test\",  \"id\": 1,  \"length\": 4}";
-		defaultTests[2] = "{  \"sentences\": [    \"Today I found a dog.\",   \"It's brown and lazy.\",    \"It quickly jumps over\",    \"a black fox.\"  ], \"name\": \"Animals test\",  \"id\": 1,  \"length\": 4}";
-		defaultTests[3] = "{  \"sentences\": [    \"Today I found a dog.\",   \"It's brown and lazy.\",    \"It quickly jumps over\",    \"a black fox.\"  ], \"name\": \"Animals test\",  \"id\": 1,  \"length\": 4}";
-
+		defaultTests[0] = "{\"sentences\": [\"German people live in\",\"France's south neighbour is\",\"The biggest continent is\",\"Australia is both country and\",\"Russia's capital is\",\"Paris is the capital of\"],\"vocabulary\": [\"Germany\",\"Spain\",\"Asia\",\"continent\",\"Moscow\",\"France\"],\"name\": \"Countries test\",\"id\": 4,\"length\": 6}";
+		defaultTests[1] = "{\"sentences\": [\"German people live in\",\"France's south neighbour is\",\"The biggest continent is\",\"Australia is both country and\",\"Russia's capital is\",\"Paris is the capital of\"],\"vocabulary\": [\"Germany\",\"Spain\",\"Asia\",\"continent\",\"Moscow\",\"France\"],\"name\": \"Countries test\",\"id\": 4,\"length\": 6}";
+		defaultTests[2] = "{\"sentences\": [\"German people live in\",\"France's south neighbour is\",\"The biggest continent is\",\"Australia is both country and\",\"Russia's capital is\",\"Paris is the capital of\"],\"vocabulary\": [\"Germany\",\"Spain\",\"Asia\",\"continent\",\"Moscow\",\"France\"],\"name\": \"Countries test\",\"id\": 4,\"length\": 6}";
+		defaultTests[3] = "{\"sentences\": [\"German people live in\",\"France's south neighbour is\",\"The biggest continent is\",\"Australia is both country and\",\"Russia's capital is\",\"Paris is the capital of\"],\"vocabulary\": [\"Germany\",\"Spain\",\"Asia\",\"continent\",\"Moscow\",\"France\"],\"name\": \"Countries test\",\"id\": 4,\"length\": 6}";
+		
 		for (int a = 0; a < 3; a++) {
 			Json json = new Json();
 			TestModel model = json.fromJson(TestModel.class, defaultTests[a]);
 			tests.add(model);
 		}
 
+	}
+
+	public TestModel getTest(String testName) {
+
+		for (int a = 0; a < tests.size; a++) {
+			if (tests.get(a).getName() == testName)
+				return tests.get(a);
+		}
+		return new TestModel();
 	}
 }

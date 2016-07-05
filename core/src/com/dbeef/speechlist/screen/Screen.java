@@ -27,6 +27,8 @@ public class Screen {
 	BitmapFont ralewayRegular32;
 	BitmapFont ralewayMedium38;
 
+	boolean render = true;
+
 	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16,
 			BitmapFont ralewayThinItalic32, BitmapFont ralewayThinItalic12,
 			BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
@@ -74,10 +76,12 @@ public class Screen {
 	}
 
 	public void render(Batch batch, float delta) {
-		updateTimers(delta);
-		renderTextures(batch);
-		renderStrings(batch);
-		renderButtons(batch, delta);
+		if (render == true) {
+			updateTimers(delta);
+			renderTextures(batch);
+			renderStrings(batch);
+			renderButtons(batch, delta);
+		}
 	}
 
 	public void renderTextures(Batch batch) {
@@ -186,4 +190,13 @@ public class Screen {
 		stringsFontAndAlpha.clear();
 		stringsColors.clear();
 	}
+
+	public void startRendering() {
+		render = true;
+	}
+
+	public void stopRendering() {
+		render = false;
+	}
+
 }

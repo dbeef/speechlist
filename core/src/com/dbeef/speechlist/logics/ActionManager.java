@@ -11,14 +11,17 @@ import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
 import com.dbeef.speechlist.utils.TestModel;
 import com.dbeef.speechlist.utils.TestsManager;
+import com.dbeef.speechlist.utils.VocabularyFormatter;
 
 public class ActionManager {
 
 	static final int guiCameraPosition = 720;
+	static final int initialScreenPosition = 240;
 	static final int homeScreenPosition = 720;
 	static final int testsScreenPosition = 1200;
 	static final int downloadsScreenPosition = 1680;
 	static final int briefScreenPosition = 2160;
+	static final int sphinxScreenPosition = 2640;
 
 	int tapX;
 	int tapY;
@@ -75,6 +78,8 @@ public class ActionManager {
 	}
 
 	public void updateLogics(float delta) {
+		if (isCameraChangingPosition() == true)
+			optimizeRendering();
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
 		addAssetsToScreens();
@@ -320,6 +325,7 @@ public class ActionManager {
 
 		if (accept.checkCollision((int) x, (int) y) == true) {
 			accept.blink();
+			camera.move(sphinxScreenPosition);
 		}
 
 	}
@@ -327,46 +333,18 @@ public class ActionManager {
 	void manageTestsButtonsCollisions(float x, float y) {
 
 		for (int a = 0; a < testsButtons.size; a++) {
-
 			if (testsButtons.get(a).getSelection() == true) {
 				if (testsButtons.get(a).checkCollisionTick((int) x, (int) y) == true) {
 					testsButtons.get(a).highlight();
 					tests.deselect();
 					camera.move(briefScreenPosition);
-					menuBrief.removeAllStrings();
-					menuBrief.add("Briefing", new Vector2(2110, 780),
-							new Vector2(3, 1), new Vector3(1, 1, 1));
-					menuBrief.add("Vocabulary", new Vector2(2080, 630),
-							new Vector2(3, 1), new Vector3(1, 1, 1));
-					menuBrief.add("Last result", new Vector2(2085, 350),
-							new Vector2(3, 1), new Vector3(1, 1, 1));
-					menuBrief
-							.add(testsButtons.get(a).getName(), new Vector2(
-									2040, 710), new Vector2(5, 1), new Vector3(
-									1, 1, 1));
-
+					addMenuBriefStrings(a);
+					addMenuSphinxStrings(a);
 				}
 			}
 
 		}
-		boolean anyCollisions = false;
-		for (int a = 0; a < testsButtons.size; a++) {
-			if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
-				anyCollisions = true;
-
-				for (int b = 0; b < testsButtons.size; b++)
-					if (a != b)
-						testsButtons.get(b).deselect();
-
-				if (testsButtons.get(a).isHighlighted() == false)
-					testsButtons.get(a).reverseSelection();
-			}
-		}
-		if (anyCollisions == false) {
-			for (int a = 0; a < testsButtons.size; a++)
-				testsButtons.get(a).deselect();
-		}
-
+		manageTestButtonsHighlighting(x, y);
 	}
 
 	void manageSheetSliding() {
@@ -415,4 +393,105 @@ public class ActionManager {
 		}
 	}
 
+	void optimizeRendering() {
+		if (assetsLoaded == true) {
+			if (home.getSelection() == false && tests.getSelection() == false
+					&& downloads.getSelection() == false) {
+				menuHome.stopRendering();
+				menuBrief.startRendering();
+				menuSphinx.startRendering();
+				if (camera.position.x > downloadsScreenPosition + 100)
+					menuTests.stopRendering();
+
+			} else {
+				if (camera.position.x < briefScreenPosition - 490)
+					menuBrief.stopRendering();
+				if (camera.position.x < sphinxScreenPosition - 490)
+					menuSphinx.stopRendering();
+
+				menuHome.startRendering();
+				menuTests.startRendering();
+			}
+			if (tests.getSelection() == true)
+				initial.stopRendering();
+
+		}
+	}
+
+	void addMenuBriefStrings(int a) {
+
+		menuBrief.removeAllStrings();
+		menuBrief.add("Briefing", new Vector2(2110, 780), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
+		menuBrief.add("Vocabulary", new Vector2(2080, 630), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
+		menuBrief.add("Last result", new Vector2(2085, 350), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
+
+		VocabularyFormatter vocabuleryFormatter = new VocabularyFormatter();
+
+		String[] formatted = vocabuleryFormatter
+				.formatVocabulary(
+						testsManager.getTest(testsButtons.get(a).getName())
+								.getVocabulary(),
+						testsManager.getTest(testsButtons.get(a).getName())
+								.getLength());
+
+		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
+				.getLength(); c++) {
+
+			int span = (17 - formatted[c].length()) * 11;
+
+			menuBrief.add(formatted[c], new Vector2(1975 + span, 550 - c * 60),
+					new Vector2(1, 1), new Vector3(1, 1, 1));
+
+		}
+
+		int span = testsButtons.get(a).getName().length() * 11;
+
+		menuBrief.add(testsButtons.get(a).getName(), new Vector2(2165 - span,
+				710), new Vector2(1, 1), new Vector3(1, 1, 1));
+
+	}
+
+	void addMenuSphinxStrings(int a) {
+
+		menuSphinx.removeAllStrings();
+
+		String[] sentences = testsManager.getTest(
+				testsButtons.get(a).getName()).getSentences();
+
+		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
+				.getLength(); c++) {
+
+			int span = (24 - sentences[c].length()) * 11;
+
+			menuSphinx.add(sentences[c],
+					new Vector2(2465 + span, 860 - c * 120), new Vector2(4, 1),
+					new Vector3(1, 1, 1));
+			
+
+		}
+
+	}
+
+	void manageTestButtonsHighlighting(float x, float y) {
+		boolean anyCollisions = false;
+		for (int a = 0; a < testsButtons.size; a++) {
+			if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
+				anyCollisions = true;
+				for (int b = 0; b < testsButtons.size; b++)
+					if (a != b)
+						testsButtons.get(b).deselect();
+
+				if (testsButtons.get(a).isHighlighted() == false)
+					testsButtons.get(a).reverseSelection();
+			}
+		}
+		if (anyCollisions == false) {
+			for (int a = 0; a < testsButtons.size; a++)
+				testsButtons.get(a).deselect();
+		}
+
+	}
 }
