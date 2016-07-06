@@ -77,4 +77,6 @@ public class TestsManager {
 		}
 		return new TestModel();
 	}
+	void saveDefaultDictionary(){	
+	}
 }

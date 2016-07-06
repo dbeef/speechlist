@@ -1,5 +1,7 @@
 package com.dbeef.speechlist.logics;
 
+import java.io.IOException;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -7,6 +9,8 @@ import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
+import com.dbeef.speechlist.recognition.AcousticModelWriter;
+import com.dbeef.speechlist.recognition.SpeechRecognizer;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.AssetsManager;
 import com.dbeef.speechlist.utils.TestModel;
@@ -15,6 +19,8 @@ import com.dbeef.speechlist.utils.VocabularyFormatter;
 
 public class ActionManager {
 
+	SpeechRecognizer speechRecognizer = new SpeechRecognizer();
+	
 	static final int guiCameraPosition = 720;
 	static final int initialScreenPosition = 240;
 	static final int homeScreenPosition = 720;
@@ -94,6 +100,12 @@ public class ActionManager {
 				&& assetsLoaded) {
 			updateButtonsGravity(delta);
 		}
+		try {
+			recognizeSpeech();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -124,6 +136,8 @@ public class ActionManager {
 			if (assetsLoaded == false) {
 				assetsManager = new AssetsManager();
 				testsManager = new TestsManager();
+				AcousticModelWriter acousticModelWriter = new AcousticModelWriter();
+				acousticModelWriter.write();
 				assetsLoaded = true;
 			}
 
@@ -458,8 +472,8 @@ public class ActionManager {
 
 		menuSphinx.removeAllStrings();
 
-		String[] sentences = testsManager.getTest(
-				testsButtons.get(a).getName()).getSentences();
+		String[] sentences = testsManager
+				.getTest(testsButtons.get(a).getName()).getSentences();
 
 		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
 				.getLength(); c++) {
@@ -469,7 +483,6 @@ public class ActionManager {
 			menuSphinx.add(sentences[c],
 					new Vector2(2465 + span, 860 - c * 120), new Vector2(4, 1),
 					new Vector3(1, 1, 1));
-			
 
 		}
 
@@ -493,5 +506,18 @@ public class ActionManager {
 				testsButtons.get(a).deselect();
 		}
 
+	}
+
+	void recognizeSpeech() throws IOException {
+		if (camera.position.x == sphinxScreenPosition) {
+		if(speechRecognizer.isAlive() == false)
+		speechRecognizer.start();
+		if(speechRecognizer.isAlive() ==true){
+			menuSphinx.removeAllStrings();
+			menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
+					new Vector2(2500, 100), new Vector2(4, 1),
+					new Vector3(1, 1, 1));
+		}
+		}
 	}
 }

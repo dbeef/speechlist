@@ -1,0 +1,81 @@
+Language model created by QuickLM on Sat May 28 18:39:46 EDT 2016
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 14 sentences and 16 words
+
+\data\
+ngram 1=16
+ngram 2=28
+ngram 3=14
+
+\1-grams:
+-0.7782 </s> -0.3010
+-0.7782 <s> -0.2218
+-1.9243 APPLE -0.2218
+-1.9243 CAT -0.2218
+-1.9243 DENSITY -0.2218
+-1.9243 DOG -0.2218
+-1.9243 FIELD -0.2218
+-1.9243 HIGH -0.2218
+-1.9243 MINE -0.2218
+-1.9243 OPEN -0.2218
+-1.9243 PLEASE -0.2218
+-1.9243 SEE -0.2218
+-1.9243 SOUND -0.2218
+-1.9243 SPEAKER -0.2218
+-1.9243 THE -0.2218
+-1.9243 WINDOW -0.2218
+
+\2-grams:
+-1.4472 <s> APPLE 0.0000
+-1.4472 <s> CAT 0.0000
+-1.4472 <s> DENSITY 0.0000
+-1.4472 <s> DOG 0.0000
+-1.4472 <s> FIELD 0.0000
+-1.4472 <s> HIGH 0.0000
+-1.4472 <s> MINE 0.0000
+-1.4472 <s> OPEN 0.0000
+-1.4472 <s> PLEASE 0.0000
+-1.4472 <s> SEE 0.0000
+-1.4472 <s> SOUND 0.0000
+-1.4472 <s> SPEAKER 0.0000
+-1.4472 <s> THE 0.0000
+-1.4472 <s> WINDOW 0.0000
+-0.3010 APPLE </s> -0.3010
+-0.3010 CAT </s> -0.3010
+-0.3010 DENSITY </s> -0.3010
+-0.3010 DOG </s> -0.3010
+-0.3010 FIELD </s> -0.3010
+-0.3010 HIGH </s> -0.3010
+-0.3010 MINE </s> -0.3010
+-0.3010 OPEN </s> -0.3010
+-0.3010 PLEASE </s> -0.3010
+-0.3010 SEE </s> -0.3010
+-0.3010 SOUND </s> -0.3010
+-0.3010 SPEAKER </s> -0.3010
+-0.3010 THE </s> -0.3010
+-0.3010 WINDOW </s> -0.3010
+
+\3-grams:
+-0.3010 <s> APPLE </s>
+-0.3010 <s> CAT </s>
+-0.3010 <s> DENSITY </s>
+-0.3010 <s> DOG </s>
+-0.3010 <s> FIELD </s>
+-0.3010 <s> HIGH </s>
+-0.3010 <s> MINE </s>
+-0.3010 <s> OPEN </s>
+-0.3010 <s> PLEASE </s>
+-0.3010 <s> SEE </s>
+-0.3010 <s> SOUND </s>
+-0.3010 <s> SPEAKER </s>
+-0.3010 <s> THE </s>
+-0.3010 <s> WINDOW </s>
+
+\end\
