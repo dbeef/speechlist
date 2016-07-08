@@ -1,4 +1,4 @@
-package com.dbeef.speechlist.utils;
+package com.dbeef.speechlist.text;
 
 import com.badlogic.gdx.utils.Array;
 

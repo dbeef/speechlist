@@ -3,12 +3,15 @@ package com.dbeef.speechlist.recognition;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-public class AcousticModelWriter {
+public class DefaultFilesWriter extends Thread {
+
+	public void run() {
+		System.out.println("SpeechRecognizer thread is in running state.");
+		write();
+	}
 
 	public void write() {
 
-		
-		
 		FileHandle acousticModelOrigin = Gdx.files
 				.internal("acousticModels/en-us/feat.params");
 		FileHandle acousticModelDestination = Gdx.files
@@ -71,30 +74,20 @@ public class AcousticModelWriter {
 		if (acousticModelDestination.exists() == false) {
 			acousticModelOrigin.copyTo(acousticModelDestination);
 		}
-		
-		
-		acousticModelOrigin = Gdx.files
-				.internal("dictionaries/9401.dic");
+
+		acousticModelOrigin = Gdx.files.internal("dictionaries/9401.dic");
 		acousticModelDestination = Gdx.files
 				.external("/Speechlist/dictionaries/9401.dic");
 		if (acousticModelDestination.exists() == false) {
 			acousticModelOrigin.copyTo(acousticModelDestination);
 		}
-		
 
-		acousticModelOrigin = Gdx.files
-				.internal("languageModel/9401.lm");
+		acousticModelOrigin = Gdx.files.internal("languageModel/9401.lm");
 		acousticModelDestination = Gdx.files
 				.external("/Speechlist/languageModels/9401.lm");
 		if (acousticModelDestination.exists() == false) {
 			acousticModelOrigin.copyTo(acousticModelDestination);
 		}
-		
-		
-		
-		
-		
-		
 
 	}
 }

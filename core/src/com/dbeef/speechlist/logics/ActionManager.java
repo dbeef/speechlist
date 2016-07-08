@@ -6,21 +6,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
+import com.dbeef.speechlist.files.AssetsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
-import com.dbeef.speechlist.recognition.AcousticModelWriter;
+import com.dbeef.speechlist.recognition.DefaultFilesWriter;
 import com.dbeef.speechlist.recognition.SpeechRecognizer;
 import com.dbeef.speechlist.screen.Screen;
-import com.dbeef.speechlist.utils.AssetsManager;
-import com.dbeef.speechlist.utils.TestModel;
-import com.dbeef.speechlist.utils.TestsManager;
-import com.dbeef.speechlist.utils.VocabularyFormatter;
+import com.dbeef.speechlist.tests.TestModel;
+import com.dbeef.speechlist.tests.TestsManager;
+import com.dbeef.speechlist.text.DefaultStringsManager;
+import com.dbeef.speechlist.text.VocabularyFormatter;
 
 public class ActionManager {
 
-	SpeechRecognizer speechRecognizer = new SpeechRecognizer();
-	
+	SpeechRecognizer speechRecognizer;
+
+	DefaultStringsManager defaultStringsManager;
+
 	static final int guiCameraPosition = 720;
 	static final int initialScreenPosition = 240;
 	static final int homeScreenPosition = 720;
@@ -80,26 +83,31 @@ public class ActionManager {
 		this.menuDownloads = menuDownloads;
 		this.menuBrief = menuBrief;
 		this.menuSphinx = menuSphinx;
+
+		camera.loadScreensPositions(guiCameraPosition, initialScreenPosition,
+				homeScreenPosition, testsScreenPosition,
+				downloadsScreenPosition, briefScreenPosition,
+				sphinxScreenPosition);
 		inputInterpreter = new InputInterpreter();
+		speechRecognizer = new SpeechRecognizer();
+		defaultStringsManager = new DefaultStringsManager();
 	}
 
 	public void updateLogics(float delta) {
-		if (isCameraChangingPosition() == true)
-			optimizeRendering();
+		optimizeRendering();
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
 		addAssetsToScreens();
 		updateCamerasLogics();
-		if (isCameraChangingPosition() == false
+		updateButtonsGravity(delta);
+
+		if (camera.isCameraChangingPosition() == false
 				&& initialCameraMovementsDone == true) {
 			updateButtonsLogics();
 			updateFlingCamera();
 			manageSheetSliding();
 		}
-		if (wasPannedBefore == false && inputInterpreter.panned == false
-				&& assetsLoaded) {
-			updateButtonsGravity(delta);
-		}
+
 		try {
 			recognizeSpeech();
 		} catch (IOException e) {
@@ -136,8 +144,8 @@ public class ActionManager {
 			if (assetsLoaded == false) {
 				assetsManager = new AssetsManager();
 				testsManager = new TestsManager();
-				AcousticModelWriter acousticModelWriter = new AcousticModelWriter();
-				acousticModelWriter.write();
+				DefaultFilesWriter defaultFilesWriter = new DefaultFilesWriter();
+				defaultFilesWriter.run();
 				assetsLoaded = true;
 			}
 
@@ -145,86 +153,15 @@ public class ActionManager {
 	}
 
 	void addAssetsToScreens() {
-
 		if (assetsLoaded == true && readyToGoMenu == false) {
-			home = new Button(520, 713, assetsManager.home);
-			tests = new Button(670, 713, assetsManager.pencil);
-			downloads = new Button(810, 713, assetsManager.cloud);
-
+			initiateGuiButtons();
 			initiateTestsButtons();
-
-			home.select();
-
-			menuHome.add(assetsManager.clock, new Vector2(550, 530));
-			menuHome.add(assetsManager.chart, new Vector2(690, 530));
-			menuHome.add(assetsManager.checked, new Vector2(835, 530));
-
-			menuHome.add("Summary", new Vector2(655, 660), new Vector2(3, 1),
-					new Vector3(1, 1, 1));
-
-			menuHome.add("Time spent:", new Vector2(545, 510),
-					new Vector2(2, 1), new Vector3(1, 1, 1));
-			menuHome.add("Accuracy:", new Vector2(690, 510), new Vector2(2, 1),
-					new Vector3(1, 1, 1));
-			menuHome.add("Tests solved:", new Vector2(828, 510), new Vector2(2,
-					1), new Vector3(1, 1, 1));
-
-			menuHome.add("Speechlist", new Vector2(610, 370),
-					new Vector2(1, 1), new Vector3(1, 1, 1));
-
-			menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(650, 290),
-					new Vector2(6, 1), new Vector3(1, 1, 1));
-			menuHome.add("This software uses Sphinx4, which is under:",
-					new Vector2(615, 255), new Vector2(6, 1), new Vector3(1, 1,
-							1));
-			menuHome.add("Copyright 1999-2015 Carnegie Mellon University.  ",
-					new Vector2(600, 220), new Vector2(6, 1), new Vector3(1, 1,
-							1));
-			menuHome.add(
-					"Portions Copyright 2002-2008 Sun Microsystems, Inc.  ",
-					new Vector2(585, 185), new Vector2(6, 1), new Vector3(1, 1,
-							1));
-			menuHome.add(
-					"Portions Copyright 2002-2008 Mitsubishi Electric Research Laboratories.",
-					new Vector2(535, 150), new Vector2(6, 1), new Vector3(1, 1,
-							1));
-			menuHome.add("Portions Copyright 2013-2015 Alpha Cephei, Inc.",
-					new Vector2(590, 115), new Vector2(6, 1), new Vector3(1, 1,
-							1));
-			menuHome.add("All Rights Reserved.", new Vector2(680, 80),
-					new Vector2(6, 1), new Vector3(1, 1, 1));
-			menuHome.add("Version 0.1", new Vector2(700, 45),
-					new Vector2(6, 1), new Vector3(1, 1, 1));
-			gui.add(home);
-			gui.add(tests);
-			gui.add(downloads);
-			gui.add(assetsManager.logoLittle, new Vector2(705, 680));
-
-			menuTests.add("Your tests", new Vector2(1133, 660), new Vector2(3,
-					1), new Vector3(1, 1, 1));
-
-			menuDownloads.add("Download", new Vector2(1610, 660), new Vector2(
-					3, 1), new Vector3(1, 1, 1));
-
-			menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
-			menuDownloads.add("We're sorry", new Vector2(1575, 550),
-					new Vector2(5, 1), new Vector3(1, 1, 1));
-			menuDownloads.add("This service is unavailable", new Vector2(1485,
-					170), new Vector2(4, 1), new Vector3(1, 1, 1));
-			menuDownloads.add("for now.", new Vector2(1625, 135), new Vector2(
-					4, 1), new Vector3(1, 1, 1));
-
-			accept = new Button(2080, 100, assetsManager.checked);
-			decline = new Button(2180, 100, assetsManager.cross);
-
-			decline.setMultiplier(4);
-			accept.setMultiplier(4);
-
-			menuBrief.add(accept);
-			menuBrief.add(decline);
-
+			addMenuHomeStaticElements();
+			addGuiStaticElements();
+			addMenuTestsStaticElements();
+			addMenuDownloadsStaticElements();
+			addMenuBriefStaticElements();
 			readyToGoMenu = true;
-
 		}
 
 	}
@@ -313,16 +250,6 @@ public class ActionManager {
 		}
 	}
 
-	boolean isCameraChangingPosition() {
-		if (camera.position.x == homeScreenPosition
-				|| camera.position.x == testsScreenPosition
-				|| camera.position.x == downloadsScreenPosition
-				|| camera.position.x == briefScreenPosition)
-			return false;
-		else
-			return true;
-	}
-
 	void manageBriefButtonsCollisions(float x, float y) {
 
 		if (decline.checkCollision((int) x, (int) y) == true) {
@@ -363,7 +290,7 @@ public class ActionManager {
 
 	void manageSheetSliding() {
 
-		if (wasPannedBefore == true && inputInterpreter.getPanned() == false) {
+		if (inputInterpreter.justStoppedPanning() == true) {
 			for (int a = 0; a < testsButtons.size; a++)
 				testsButtons.get(a).savePositionAsOriginPosition();
 		}
@@ -387,8 +314,10 @@ public class ActionManager {
 	}
 
 	void updateButtonsGravity(double delta) {
-		for (int a = 0; a < testsButtons.size; a++)
-			testsButtons.get(a).applyGravity(delta);
+		if (wasPannedBefore == false && inputInterpreter.panned == false
+				&& assetsLoaded)
+			for (int a = 0; a < testsButtons.size; a++)
+				testsButtons.get(a).applyGravity(delta);
 	}
 
 	void initiateTestsButtons() {
@@ -408,9 +337,8 @@ public class ActionManager {
 	}
 
 	void optimizeRendering() {
-		if (assetsLoaded == true) {
-			if (home.getSelection() == false && tests.getSelection() == false
-					&& downloads.getSelection() == false) {
+		if (assetsLoaded == true && camera.isCameraChangingPosition() == true) {
+			if (gui.allButtonsDeselected() == true) {
 				menuHome.stopRendering();
 				menuBrief.startRendering();
 				menuSphinx.startRendering();
@@ -435,13 +363,8 @@ public class ActionManager {
 	void addMenuBriefStrings(int a) {
 
 		menuBrief.removeAllStrings();
-		menuBrief.add("Briefing", new Vector2(2110, 780), new Vector2(3, 1),
-				new Vector3(1, 1, 1));
-		menuBrief.add("Vocabulary", new Vector2(2080, 630), new Vector2(3, 1),
-				new Vector3(1, 1, 1));
-		menuBrief.add("Last result", new Vector2(2085, 350), new Vector2(3, 1),
-				new Vector3(1, 1, 1));
-
+		menuBrief = defaultStringsManager.setMenuBriefStrings(menuBrief);
+		
 		VocabularyFormatter vocabuleryFormatter = new VocabularyFormatter();
 
 		String[] formatted = vocabuleryFormatter
@@ -510,14 +433,59 @@ public class ActionManager {
 
 	void recognizeSpeech() throws IOException {
 		if (camera.position.x == sphinxScreenPosition) {
-		if(speechRecognizer.isAlive() == false)
-		speechRecognizer.start();
-		if(speechRecognizer.isAlive() ==true){
-			menuSphinx.removeAllStrings();
-			menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
-					new Vector2(2500, 100), new Vector2(4, 1),
-					new Vector3(1, 1, 1));
-		}
+			if (speechRecognizer.isAlive() == false)
+				speechRecognizer.start();
+			if (speechRecognizer.isAlive() == true) {
+				menuSphinx.removeAllStrings();
+				menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
+						new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
+								1, 1, 1));
+			}
 		}
 	}
+
+	void addMenuHomeStaticElements() {
+		menuHome.add(assetsManager.clock, new Vector2(550, 530));
+		menuHome.add(assetsManager.chart, new Vector2(690, 530));
+		menuHome.add(assetsManager.checked, new Vector2(835, 530));
+		menuHome = defaultStringsManager.setMenuHomeStrings(menuHome);
+	}
+
+	void addGuiStaticElements() {
+		gui.add(home);
+		gui.add(tests);
+		gui.add(downloads);
+		gui.add(assetsManager.logoLittle, new Vector2(705, 680));
+	}
+
+	void initiateGuiButtons() {
+
+		home = new Button(520, 713, assetsManager.home);
+		tests = new Button(670, 713, assetsManager.pencil);
+		downloads = new Button(810, 713, assetsManager.cloud);
+		home.select();
+	}
+
+	void addMenuTestsStaticElements() {
+	menuTests = defaultStringsManager.setMenuTestsStrings(menuTests);
+	}
+
+	void addMenuDownloadsStaticElements() {
+		menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
+		menuDownloads = defaultStringsManager.setMenuDownloadsStrings(menuDownloads);
+	}
+
+	void addMenuBriefStaticElements() {
+
+		accept = new Button(2080, 100, assetsManager.checked);
+		decline = new Button(2180, 100, assetsManager.cross);
+
+		decline.setMultiplier(4);
+		accept.setMultiplier(4);
+
+		menuBrief.add(accept);
+		menuBrief.add(decline);
+
+	}
+
 }

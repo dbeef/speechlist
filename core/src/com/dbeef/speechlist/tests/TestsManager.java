@@ -1,4 +1,4 @@
-package com.dbeef.speechlist.utils;
+package com.dbeef.speechlist.tests;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

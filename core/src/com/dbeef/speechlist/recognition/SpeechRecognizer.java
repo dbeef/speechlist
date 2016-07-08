@@ -11,12 +11,12 @@ import edu.cmu.sphinx.api.SpeechResult;
 
 public class SpeechRecognizer extends Thread {
 
-	String lastRecognizedWord = "no recognized words";
-	
+	String lastRecognizedWord = "No recognized words.";
+
 	public void run() {
-		
-		
-		System.out.println("My thread is in running state.");
+
+		System.out.println("SpeechRecognizer is in running state.");
+
 		Logger cmRootLogger = Logger.getLogger("default.config");
 		cmRootLogger.setLevel(java.util.logging.Level.OFF);
 		String conFile = System.getProperty("java.util.logging.config.file");
@@ -24,20 +24,17 @@ public class SpeechRecognizer extends Thread {
 			System.setProperty("java.util.logging.config.file",
 					"ignoreAllSphinx4LoggingOutput");
 		}
-		
-		
+
 		String PATH = Gdx.files.getExternalStoragePath().toString();
 		System.out.println(PATH);
 		Configuration configuration = new Configuration();
-		configuration.setAcousticModelPath("file:" + PATH
-				+ "/Speechlist/en-us");
-		configuration.setDictionaryPath("file:" + PATH + "/Speechlist/dictionaries/"+ "9401.dic");
-		configuration.setLanguageModelPath("file:" + PATH + "/Speechlist/languageModels/"+ "9401.lm");
-		
-		// configuration
-		// .setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
-		// configuration
-		// .setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+		configuration
+				.setAcousticModelPath("file:" + PATH + "/Speechlist/en-us");
+		configuration.setDictionaryPath("file:" + PATH
+				+ "/Speechlist/dictionaries/" + "9401.dic");
+		configuration.setLanguageModelPath("file:" + PATH
+				+ "/Speechlist/languageModels/" + "9401.lm");
+
 		LiveSpeechRecognizer recognizer = null;
 		try {
 			recognizer = new LiveSpeechRecognizer(configuration);
@@ -51,15 +48,10 @@ public class SpeechRecognizer extends Thread {
 		while (true) {
 			recognizer.startRecognition(true);
 			SpeechResult result = recognizer.getResult();
-			// Pause recognition process. It can be resumed then with
-			// startRecognition(false).
 			recognizer.stopRecognition();
-			// Print utterance string without filler words.
 
-			for (int a = 0; a < 1000; a++)
-				System.out.println(result.getHypothesis());
+			System.out.println(result.getHypothesis());
 			lastRecognizedWord = result.getHypothesis();
-			// Get individual words and their times.
 			// for (WordResult r : result.getWords()) {
 			// System.out.println(r);
 			// }

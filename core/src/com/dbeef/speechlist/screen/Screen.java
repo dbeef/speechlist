@@ -199,4 +199,11 @@ public class Screen {
 		render = false;
 	}
 
+	public boolean allButtonsDeselected() {
+		for (Button b : buttons) {
+			if (b.getSelection() == true)
+				return false;
+		}
+		return true;
+	}
 }

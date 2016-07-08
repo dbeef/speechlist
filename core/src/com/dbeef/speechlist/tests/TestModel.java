@@ -1,4 +1,4 @@
-package com.dbeef.speechlist.utils;
+package com.dbeef.speechlist.tests;
 
 public class TestModel {
 	String name;

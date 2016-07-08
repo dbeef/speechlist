@@ -24,6 +24,7 @@ public class InputInterpreter implements GestureListener {
 	public boolean flinged;
 	public boolean panned;
 	public boolean touchedDown;
+	boolean justStoppedPanning;
 
 	public boolean zoomDeltaChanged;
 
@@ -142,6 +143,7 @@ public class InputInterpreter implements GestureListener {
 		// TODO Auto-generated method stub
 		System.out.println("panStop");
 		panned = false;
+		justStoppedPanning = true;
 		return false;
 	}
 
@@ -183,6 +185,16 @@ public class InputInterpreter implements GestureListener {
 		xyzTap.y = (float) tapY;
 		return xyzTap;
 	}
+
+	public boolean justStoppedPanning() {
+		if (justStoppedPanning == true) {
+			justStoppedPanning = false;
+			return true;
+		} else
+			return false;
+
+	}
+
 }
 /*
  * touchDown: A user touches the screen.

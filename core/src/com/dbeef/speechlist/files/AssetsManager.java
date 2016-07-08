@@ -1,4 +1,4 @@
-package com.dbeef.speechlist.utils;
+package com.dbeef.speechlist.files;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;

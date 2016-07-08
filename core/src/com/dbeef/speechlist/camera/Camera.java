@@ -5,6 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Camera extends OrthographicCamera {
 
+	int guiCameraPosition;
+	int initialScreenPosition;
+	int homeScreenPosition;
+	int testsScreenPosition;
+	int downloadsScreenPosition;
+	int briefScreenPosition;
+	int sphinxScreenPosition;
+
 	static final float accumulateMax = 40;
 	static final float accumulateDecreaseSpeed = 13f;
 	static final float accumulateIncreaseSpeed = 5.3f;
@@ -72,8 +80,35 @@ public class Camera extends OrthographicCamera {
 
 		}
 	}
-	public void changePosition(float x){
+
+	public void changePosition(float x) {
 		this.position.x = x;
 		this.update();
+	}
+
+	public boolean isCameraChangingPosition() {
+
+		if (this.position.x == homeScreenPosition
+				|| this.position.x == testsScreenPosition
+				|| this.position.x == downloadsScreenPosition
+				|| this.position.x == briefScreenPosition)
+			return false;
+		else
+			return true;
+	}
+
+	public void loadScreensPositions(int guiCameraPosition,
+			int initialScreenPosition, int homeScreenPosition,
+			int testsScreenPosition, int downloadsScreenPosition,
+			int briefScreenPosition, int sphinxScreenPosition) {
+
+		this.guiCameraPosition = guiCameraPosition;
+		this.initialScreenPosition = initialScreenPosition;
+		this.homeScreenPosition = homeScreenPosition;
+		this.testsScreenPosition = testsScreenPosition;
+		this.downloadsScreenPosition = downloadsScreenPosition;
+		this.briefScreenPosition = briefScreenPosition;
+		this.sphinxScreenPosition = sphinxScreenPosition;
+
 	}
 }
