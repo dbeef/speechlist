@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import com.badlogic.gdx.Gdx;
+import com.dbeef.speechlist.utils.Variables;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
@@ -12,10 +13,12 @@ import edu.cmu.sphinx.api.SpeechResult;
 public class SpeechRecognizer extends Thread {
 
 	String lastRecognizedWord = "No recognized words.";
-
+	Variables variables = new Variables();
+	
 	public void run() {
 
-		System.out.println("SpeechRecognizer is in running state.");
+		if(variables.getDebugMode() == true)
+		System.out.println("SpeechRecognizer thread is in running state.");
 
 		Logger cmRootLogger = Logger.getLogger("default.config");
 		cmRootLogger.setLevel(java.util.logging.Level.OFF);
@@ -26,6 +29,7 @@ public class SpeechRecognizer extends Thread {
 		}
 
 		String PATH = Gdx.files.getExternalStoragePath().toString();
+		if(new Variables().getDebugMode() == true)
 		System.out.println(PATH);
 		Configuration configuration = new Configuration();
 		configuration
@@ -43,13 +47,16 @@ public class SpeechRecognizer extends Thread {
 			e.printStackTrace();
 		}
 
-		System.out.println("done loading");
+
+		if(variables.getDebugMode() == true)
+			System.out.println("Done loading acoustic model, dictionary and language model.");
 
 		while (true) {
 			recognizer.startRecognition(true);
 			SpeechResult result = recognizer.getResult();
 			recognizer.stopRecognition();
 
+			
 			System.out.println(result.getHypothesis());
 			lastRecognizedWord = result.getHypothesis();
 			// for (WordResult r : result.getWords()) {

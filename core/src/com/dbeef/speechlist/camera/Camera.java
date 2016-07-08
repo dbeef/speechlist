@@ -2,20 +2,15 @@ package com.dbeef.speechlist.camera;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.dbeef.speechlist.utils.Variables;
 
 public class Camera extends OrthographicCamera {
 
-	int guiCameraPosition;
-	int initialScreenPosition;
-	int homeScreenPosition;
-	int testsScreenPosition;
-	int downloadsScreenPosition;
-	int briefScreenPosition;
-	int sphinxScreenPosition;
-
-	static final float accumulateMax = 40;
+	Variables variables = new Variables();
+	
+	static final float accumulateMax = 50;
 	static final float accumulateDecreaseSpeed = 13f;
-	static final float accumulateIncreaseSpeed = 5.3f;
+	static final float accumulateIncreaseSpeed = 5.4f;
 
 	Vector2 destination;
 	float accumulatePlus = 1f;
@@ -88,27 +83,13 @@ public class Camera extends OrthographicCamera {
 
 	public boolean isCameraChangingPosition() {
 
-		if (this.position.x == homeScreenPosition
-				|| this.position.x == testsScreenPosition
-				|| this.position.x == downloadsScreenPosition
-				|| this.position.x == briefScreenPosition)
+		if (this.position.x == variables.getHomeScreenPosition()
+				|| this.position.x == variables.getTestsScreenPosition()
+				|| this.position.x == variables.getDownloadsScreenPosition()
+				|| this.position.x == variables.getBriefScreenPosition())
 			return false;
 		else
 			return true;
 	}
 
-	public void loadScreensPositions(int guiCameraPosition,
-			int initialScreenPosition, int homeScreenPosition,
-			int testsScreenPosition, int downloadsScreenPosition,
-			int briefScreenPosition, int sphinxScreenPosition) {
-
-		this.guiCameraPosition = guiCameraPosition;
-		this.initialScreenPosition = initialScreenPosition;
-		this.homeScreenPosition = homeScreenPosition;
-		this.testsScreenPosition = testsScreenPosition;
-		this.downloadsScreenPosition = downloadsScreenPosition;
-		this.briefScreenPosition = briefScreenPosition;
-		this.sphinxScreenPosition = sphinxScreenPosition;
-
-	}
 }

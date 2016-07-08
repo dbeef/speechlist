@@ -2,11 +2,14 @@ package com.dbeef.speechlist.recognition;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.dbeef.speechlist.utils.Variables;
 
 public class DefaultFilesWriter extends Thread {
 
 	public void run() {
-		System.out.println("SpeechRecognizer thread is in running state.");
+		if (new Variables().getDebugMode() == true)
+			System.out
+					.println("DefaultFilesWriter thread is in running state.\nWriting files if not found.");
 		write();
 	}
 

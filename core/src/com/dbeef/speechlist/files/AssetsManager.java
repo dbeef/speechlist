@@ -2,6 +2,7 @@ package com.dbeef.speechlist.files;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.dbeef.speechlist.utils.Variables;
 
 public class AssetsManager {
 
@@ -18,6 +19,9 @@ public class AssetsManager {
 	public Texture cross;
 
 	public AssetsManager() {
+		if (new Variables().getDebugMode() == true)
+			System.out.println("Started loading assets.");
+
 		glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
 		home = new Texture("icons/home.png");
 		tick = new Texture("icons/tick.png");
@@ -42,6 +46,5 @@ public class AssetsManager {
 		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
 	}
 }

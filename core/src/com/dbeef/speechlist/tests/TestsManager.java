@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.dbeef.speechlist.utils.Variables;
 
 public class TestsManager {
 
@@ -21,14 +22,17 @@ public class TestsManager {
 
 	void loadExternalTests() {
 
+		if(new Variables().getDebugMode() == true)
 		System.out.println("External storage path: "
-				+ Gdx.files.getExternalStoragePath() + "\n");
+				+ Gdx.files.getExternalStoragePath() + "\n" + "Loading .json files.");
 
 		FileHandle[] files = Gdx.files.external("").list();
 
 		for (FileHandle externalFile : files) {
 			if (externalFile.name().contains(".json")) {
 
+
+				if(new Variables().getDebugMode() == true)
 				System.out.println("Loading: " + externalFile.name());
 
 				FileHandle file = Gdx.files.external(externalFile.name());
@@ -36,18 +40,23 @@ public class TestsManager {
 				Json json = new Json();
 				TestModel model = json.fromJson(TestModel.class, test);
 				tests.add(model);
+				
+
+				if(new Variables().getDebugMode() == true){
 				System.out.println("Model name:" + model.name);
 				System.out.println("Model length:" + model.length);
 				System.out.println("Model id:" + model.id);
-
+				
 				for (int a = 0; a < model.length; a++) {
 					System.out.println(model.sentences[a]);
 				}
 
 				System.out.println();
-
+				}
 			}
 		}
+
+		if(new Variables().getDebugMode() == true)
 		System.out.println("Total number of tests:" + tests.size);
 
 	}

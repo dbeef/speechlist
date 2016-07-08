@@ -46,7 +46,6 @@ public class Screen {
 		this.ralewayThinItalic32 = ralewayThinItalic32;
 		this.ralewayRegular32 = ralewayRegular32;
 		this.ralewayMedium38 = ralewayMedium38;
-
 	}
 
 	public void add(Sprite sprite) {
