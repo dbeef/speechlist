@@ -47,8 +47,9 @@ public class ActionManager {
 	boolean initialCameraMovementsDone = false;
 	boolean logoCameOnScreen = false;
 	boolean loadingTextAdded = false;
-	boolean assetsLoaded = false;
 	boolean readyToGoMenu = false;
+	boolean assetsLoaded = false;
+	boolean startedLoadingAssets = false;
 
 	public ActionManager(Camera camera, Camera guiCamera, Screen initial,
 			Screen gui, Screen menuHome, Screen menuTests,
@@ -67,6 +68,10 @@ public class ActionManager {
 	}
 
 	public void updateLogics(float delta) {
+
+		if(assetsManager != null && assetsManager.getAssetsLoaded() == true)
+			assetsLoaded = true;
+	
 		optimizeRendering();
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
@@ -105,14 +110,14 @@ public class ActionManager {
 
 	void updateAssetsLoaderLogics() {
 		if (loadingTextAdded == true) {
-			if (assetsLoaded == false) {
+			if (startedLoadingAssets == false) {
 				assetsManager = new AssetsManager();
+				assetsManager.start();
 				testsManager = new TestsManager();
 				DefaultFilesWriter defaultFilesWriter = new DefaultFilesWriter();
 				defaultFilesWriter.run();
-				assetsLoaded = true;
+				startedLoadingAssets = true;
 			}
-
 		}
 	}
 
@@ -198,14 +203,14 @@ public class ActionManager {
 
 	void recognizeSpeech() throws IOException {
 		if (camera.position.x == variables.getSphinxScreenPosition()) {
-//			if (speechRecognizer.isAlive() == false)
-//				speechRecognizer.start();
-//			if (speechRecognizer.isAlive() == true) {
-//				menuSphinx.removeAllStrings();
-//				menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
-//						new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
-//								1, 1, 1));
-//			}
+			// if (speechRecognizer.isAlive() == false)
+			// speechRecognizer.start();
+			// if (speechRecognizer.isAlive() == true) {
+			// menuSphinx.removeAllStrings();
+			// menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
+			// new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
+			// 1, 1, 1));
+			// }
 		}
 	}
 

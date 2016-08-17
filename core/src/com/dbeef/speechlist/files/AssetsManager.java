@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.dbeef.speechlist.utils.Variables;
 
-public class AssetsManager {
+public class AssetsManager extends Thread {
 
 	public Texture home;
 	public Texture pencil;
@@ -18,7 +18,12 @@ public class AssetsManager {
 	public Texture sadPhone;
 	public Texture cross;
 
-	public AssetsManager() {
+	private boolean assetsLoaded;
+
+	
+	
+	public void run() {
+		
 		if (new Variables().getDebugMode() == true)
 			System.out.println("Started loading assets.");
 
@@ -46,5 +51,11 @@ public class AssetsManager {
 		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		assetsLoaded = true;
+	}
+
+	public boolean getAssetsLoaded() {
+		return assetsLoaded;
 	}
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dbeef.speechlist.camera.Camera;
+import com.dbeef.speechlist.internet.RESTClient;
 import com.dbeef.speechlist.logics.ActionManager;
 
 public class ScreenBoard implements Screen {
@@ -18,8 +19,12 @@ public class ScreenBoard implements Screen {
 	Camera guiCamera;
 	ActionManager actionManager;
 	final Starter game;
+	RESTClient client;
 
 	public ScreenBoard(final Starter gam) {
+
+		client = new RESTClient();
+		client.start();
 
 		this.game = gam;
 
@@ -38,10 +43,9 @@ public class ScreenBoard implements Screen {
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
-		actionManager = new ActionManager(camera,
-				guiCamera, game.initial, game.gui, game.menuHome,
-				game.menuTests, game.menuDownloads, game.menuBrief,
-				game.menuSphinx);
+		actionManager = new ActionManager(camera, guiCamera, game.initial,
+				game.gui, game.menuHome, game.menuTests, game.menuDownloads,
+				game.menuBrief, game.menuSphinx);
 
 	}
 
