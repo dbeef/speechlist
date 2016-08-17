@@ -198,14 +198,14 @@ public class ActionManager {
 
 	void recognizeSpeech() throws IOException {
 		if (camera.position.x == variables.getSphinxScreenPosition()) {
-			if (speechRecognizer.isAlive() == false)
-				speechRecognizer.start();
-			if (speechRecognizer.isAlive() == true) {
-				menuSphinx.removeAllStrings();
-				menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
-						new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
-								1, 1, 1));
-			}
+//			if (speechRecognizer.isAlive() == false)
+//				speechRecognizer.start();
+//			if (speechRecognizer.isAlive() == true) {
+//				menuSphinx.removeAllStrings();
+//				menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
+//						new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
+//								1, 1, 1));
+//			}
 		}
 	}
 
