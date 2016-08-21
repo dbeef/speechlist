@@ -112,7 +112,7 @@ public class Starter extends Game {
 
 	void loadBasicTextures() {
 		mainBackground = new Texture("backgrounds/mainBackground.png");
-		mainBackground.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		mainBackground.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		logo = new Texture("icons/speechlistlogo.png");
 		logo.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}

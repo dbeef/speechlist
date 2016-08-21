@@ -10,10 +10,22 @@ public class Variables {
 	static final int briefScreenPosition = 2160;
 	static final int sphinxScreenPosition = 2640;
 
-	static final boolean debugMode = false;
-	
+	static final String retrieveTest = "retrieveTest";
+	static final String retrieveTestName = "retrieveTestName";
+
+	static final boolean debugMode = true;
+	static final boolean debugInput = false;
+
 	public int getGuiCameraPosition() {
 		return guiCameraPosition;
+	}
+
+	public String RetrieveTestName() {
+		return retrieveTestName;
+	}
+
+	public String retrieveTest() {
+		return retrieveTest;
 	}
 
 	public int getInitialScreenPosition() {
@@ -39,8 +51,12 @@ public class Variables {
 	public int getSphinxScreenPosition() {
 		return sphinxScreenPosition;
 	}
+
 	public boolean getDebugMode() {
 		return debugMode;
 	}
 
+	public boolean getDebugInput() {
+		return debugInput;
+	}
 }

@@ -7,17 +7,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
+import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.screen.Screen;
-import com.dbeef.speechlist.tests.TestsManager;
-import com.dbeef.speechlist.text.DefaultStringsManager;
+import com.dbeef.speechlist.text.DefaultStringsSetter;
+import com.dbeef.speechlist.text.SentencesFormatter;
 import com.dbeef.speechlist.text.VocabularyFormatter;
 import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
 
 	Variables variables = new Variables();
+
+	VocabularyFormatter vocabularyFormatter;
+
 	boolean wasPannedBefore;
 	boolean assetsLoaded;
 	boolean initialCameraMovements;
@@ -101,7 +105,7 @@ public class InputInterpreter implements GestureListener {
 		touchDownX = x;
 		touchDownY = y;
 
-		if(variables.getDebugMode() == true)
+		if (variables.getDebugInput() == true)
 			System.out.println("touchDown");
 		return false;
 	}
@@ -109,54 +113,57 @@ public class InputInterpreter implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		// TODO Auto-generated method stub
-		
+		if (assetsLoaded == true) {
 
-		if(variables.getDebugMode() == true)
-			System.out.println("tap");
-		touched = true;
+			if (variables.getDebugInput() == true)
+				System.out.println("tap");
+			touched = true;
 
-		Vector3 vec = new Vector3();
-		vec.x = x;
-		vec.y = y;
+			Vector3 vec = new Vector3();
+			vec.x = x;
+			vec.y = y;
 
-		guiCamera.unproject(vec);
+			guiCamera.unproject(vec);
 
-		if (home.checkCollision((int) vec.x, (int) vec.y) == true) {
-			home.select();
-			tests.deselect();
-			downloads.deselect();
-			camera.move(variables.getHomeScreenPosition());
+			if (home.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.select();
+				tests.deselect();
+				downloads.deselect();
+				camera.move(variables.getHomeScreenPosition());
+			}
+			if (tests.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.deselect();
+				tests.select();
+				downloads.deselect();
+				camera.move(variables.getTestsScreenPosition());
+			}
+			if (downloads.checkCollision((int) vec.x, (int) vec.y) == true) {
+				home.deselect();
+				tests.deselect();
+				downloads.select();
+				camera.move(variables.getDownloadsScreenPosition());
+			}
+
+			manageBriefButtonsCollisions((int) vec.x, (int) vec.y);
+
+			Vector3 vecNonGui = new Vector3();
+			vecNonGui.x = x;
+			vecNonGui.y = y;
+			camera.unproject(vecNonGui);
+
+			manageTestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+
+			tapX = x;
+			tapY = y;
+			return false;
 		}
-		if (tests.checkCollision((int) vec.x, (int) vec.y) == true) {
-			home.deselect();
-			tests.select();
-			downloads.deselect();
-			camera.move(variables.getTestsScreenPosition());
-		}
-		if (downloads.checkCollision((int) vec.x, (int) vec.y) == true) {
-			home.deselect();
-			tests.deselect();
-			downloads.select();
-			camera.move(variables.getDownloadsScreenPosition());
-		}
-
-		Vector3 vecNonGui = new Vector3();
-		vecNonGui.x = x;
-		vecNonGui.y = y;
-		camera.unproject(vecNonGui);
-
-		manageTestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
-		manageBriefButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
-
-		tapX = x;
-		tapY = y;
 		return false;
 	}
 
 	@Override
 	public boolean longPress(float x, float y) {
 		// TODO Auto-generated method stub
-		if(variables.getDebugMode() == true)
+		if (variables.getDebugInput() == true)
 			System.out.println("longPress");
 		return false;
 	}
@@ -210,7 +217,7 @@ public class InputInterpreter implements GestureListener {
 		panX = x;
 		panY = y;
 
-		if(variables.getDebugMode() == true)		
+		if (variables.getDebugInput() == true)
 			System.out.println("pan");
 
 		if (camera.isCameraChangingPosition() == false
@@ -224,8 +231,8 @@ public class InputInterpreter implements GestureListener {
 	public boolean panStop(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
 
-		if(variables.getDebugMode() == true)
-		System.out.println("panStop");
+		if (variables.getDebugInput() == true)
+			System.out.println("panStop");
 		panned = false;
 		justStoppedPanning = true;
 
@@ -239,13 +246,12 @@ public class InputInterpreter implements GestureListener {
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
 
-		if(variables.getDebugMode() == true)
-		{	System.out.println("zoom");
-	
-		System.out.println("initialDistance: " + initialDistance + "distance: "
-				+ distance);
-		message = "initialDistance: " + initialDistance + "distance: "
-				+ distance;
+		if (variables.getDebugInput() == true) {
+			System.out.println("zoom");
+			System.out.println("initialDistance: " + initialDistance
+					+ "distance: " + distance);
+			message = "initialDistance: " + initialDistance + "distance: "
+					+ distance;
 		}
 		if (initialDistance > distance)
 			zoomDelta = initialDistance / distance;
@@ -264,7 +270,7 @@ public class InputInterpreter implements GestureListener {
 			Vector2 pointer1, Vector2 pointer2) {
 		// TODO Auto-generated method stub
 
-		if(variables.getDebugMode() == true)
+		if (variables.getDebugInput() == true)
 			System.out.println("pinch");
 		return false;
 	}
@@ -308,23 +314,24 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	void manageBriefButtonsCollisions(float x, float y) {
-
-		if (decline.checkCollision((int) x, (int) y) == true) {
-			camera.move(variables.getTestsScreenPosition());
-			decline.blink();
-			tests.select();
-			for (int a = 0; a < testsButtons.size; a++) {
-				if (testsButtons.get(a).isHighlighted() == true) {
-					testsButtons.get(a).lowlight();
+		if (home.getSelection() == false && tests.getSelection() == false
+				&& downloads.getSelection() == false) {
+			if (decline.checkCollision((int) x, (int) y) == true) {
+				camera.move(variables.getTestsScreenPosition());
+				decline.blink();
+				tests.select();
+				for (int a = 0; a < testsButtons.size; a++) {
+					if (testsButtons.get(a).isHighlighted() == true) {
+						testsButtons.get(a).lowlight();
+					}
 				}
 			}
-		}
 
-		if (accept.checkCollision((int) x, (int) y) == true) {
-			accept.blink();
-			camera.move(variables.getSphinxScreenPosition());
+			if (accept.checkCollision((int) x, (int) y) == true) {
+				accept.blink();
+				camera.move(variables.getSphinxScreenPosition());
+			}
 		}
-
 	}
 
 	void manageTestsButtonsCollisions(float x, float y) {
@@ -366,22 +373,22 @@ public class InputInterpreter implements GestureListener {
 
 	void addMenuBriefStrings(int a) {
 		menuBrief.removeAllStrings();
-		menuBrief = new DefaultStringsManager().setMenuBriefStrings(menuBrief);
-		VocabularyFormatter vocabuleryFormatter = new VocabularyFormatter();
+		menuBrief = new DefaultStringsSetter().setMenuBriefStrings(menuBrief);
 
-		String[] formatted = vocabuleryFormatter
-				.formatVocabulary(
-						testsManager.getTest(testsButtons.get(a).getName())
-								.getVocabulary(),
-						testsManager.getTest(testsButtons.get(a).getName())
-								.getLength());
+		if (vocabularyFormatter == null)
+			vocabularyFormatter = new VocabularyFormatter();
+
+		String[] formatted = vocabularyFormatter.formatVocabulary(testsManager
+				.getTest(testsButtons.get(a).getName()).getVocabulary(),
+				testsManager.getTest(testsButtons.get(a).getName())
+						.getVocabulary().length);
 
 		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
-				.getLength(); c++) {
+				.getVocabulary().length; c++) {
 
 			int span = (17 - formatted[c].length()) * 11;
 
-			menuBrief.add(formatted[c], new Vector2(1975 + span, 550 - c * 60),
+			menuBrief.add(formatted[c], new Vector2(1975 + span, 500 - c * 60),
 					new Vector2(1, 1), new Vector3(1, 1, 1));
 
 		}
@@ -389,20 +396,22 @@ public class InputInterpreter implements GestureListener {
 		int span = testsButtons.get(a).getName().length() * 11;
 
 		menuBrief.add(testsButtons.get(a).getName(), new Vector2(2165 - span,
-				710), new Vector2(1, 1), new Vector3(1, 1, 1));
+				640), new Vector2(1, 1), new Vector3(1, 1, 1));
 
 	}
 
 	void addMenuSphinxStrings(int a) {
 		menuSphinx.removeAllStrings();
-		String[] sentences = testsManager
-				.getTest(testsButtons.get(a).getName()).getSentences();
-		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
-				.getLength(); c++) {
-			int span = (24 - sentences[c].length()) * 11;
-			menuSphinx.add(sentences[c],
-					new Vector2(2465 + span, 860 - c * 120), new Vector2(4, 1),
-					new Vector3(1, 1, 1));
+		String sentences = testsManager.getTest(testsButtons.get(a).getName())
+				.getSentences();
+		SentencesFormatter sentencesFormatter = new SentencesFormatter(
+				sentences);
+
+		for (int b = 0; b < sentencesFormatter.getFormatted().size; b++) {
+			if (b < 11)
+				menuSphinx.add(sentencesFormatter.getFormatted().get(b),
+						new Vector2(2410, 735 - b * 60), new Vector2(4, 1),
+						new Vector3(1, 1, 1));
 		}
 
 	}
@@ -413,7 +422,7 @@ public class InputInterpreter implements GestureListener {
 				testsButtons.get(a).savePositionAsOriginPosition();
 		}
 
-		if (tests.getSelection() == true) {
+		if (tests.getSelection() == true || downloads.getSelection() == true) {
 			if (this.getTouchDown() == true) {
 				initialPanX = this.getTouchDownX();
 				initialPanY = this.getTouchDownY();

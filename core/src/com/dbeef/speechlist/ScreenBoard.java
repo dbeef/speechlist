@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dbeef.speechlist.camera.Camera;
-import com.dbeef.speechlist.internet.RESTClient;
 import com.dbeef.speechlist.logics.ActionManager;
 
 public class ScreenBoard implements Screen {
@@ -19,12 +18,11 @@ public class ScreenBoard implements Screen {
 	Camera guiCamera;
 	ActionManager actionManager;
 	final Starter game;
-	RESTClient client;
+
+	float span = 0.5f;
+	boolean start;
 
 	public ScreenBoard(final Starter gam) {
-
-		client = new RESTClient();
-		client.start();
 
 		this.game = gam;
 
@@ -52,7 +50,16 @@ public class ScreenBoard implements Screen {
 	@Override
 	public void render(float delta) {
 
-		actionManager.updateLogics(delta);
+		delta = manageLowFpsOnLaunch(delta);
+		if (delta > 0.3f)
+			delta = 0;
+
+		try {
+			actionManager.updateLogics(delta);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		camera.updateTimers(delta);
 		camera.update();
@@ -113,5 +120,18 @@ public class ScreenBoard implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	float manageLowFpsOnLaunch(float delta) {
+		if (delta < 0.3f)
+			start = true;
+
+		if (start == true)
+			span -= delta;
+
+		if (span >= 0)
+			return 0;
+		else
+			return delta;
 	}
 }

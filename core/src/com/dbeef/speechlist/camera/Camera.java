@@ -8,13 +8,13 @@ public class Camera extends OrthographicCamera {
 
 	Variables variables = new Variables();
 	
-	static final float accumulateMax = 50;
-	static final float accumulateDecreaseSpeed = 13f;
-	static final float accumulateIncreaseSpeed = 5.4f;
+	static final float accumulateMax = 25;
+	static final float accumulateDecreaseSpeed = 5f;
+	static final float accumulateIncreaseSpeed = 6.5f;
 
 	Vector2 destination;
-	float accumulatePlus = 1f;
-	float accumulateMinus = -1f;
+	float accumulatedPlus = 1f;
+	float accumulatedMinus = -1f;
 	float timer = 0;
 
 	public Camera(float viewportWidth, float viewportHeight) {
@@ -36,42 +36,42 @@ public class Camera extends OrthographicCamera {
 
 			if (this.position.x < destination.x) {
 
-				this.position.x += accumulatePlus;
+				this.position.x += accumulatedPlus;
 
 				if (Math.abs(this.position.x - destination.x) <= 100) {
-					accumulatePlus -= delta * accumulateDecreaseSpeed
-							* accumulatePlus;
+					accumulatedPlus -= delta * accumulateDecreaseSpeed
+							* accumulatedPlus;
 				} else
-					accumulatePlus += delta * accumulateIncreaseSpeed
-							* accumulatePlus;
+					accumulatedPlus += delta * accumulateIncreaseSpeed
+							* accumulatedPlus;
 
 				if (this.position.x > destination.x)
 					this.position.x = destination.x;
 			}
 
 			if (this.position.x > destination.x) {
-				this.position.x += accumulateMinus;
+				this.position.x += accumulatedMinus;
 
 				if (Math.abs(this.position.x - destination.x) <= 100) {
-					accumulateMinus += delta * accumulateDecreaseSpeed
-							* Math.abs(accumulateMinus);
+					accumulatedMinus += delta * accumulateDecreaseSpeed
+							* Math.abs(accumulatedMinus);
 				} else
-					accumulateMinus -= delta * accumulateIncreaseSpeed
-							* Math.abs(accumulateMinus);
+					accumulatedMinus -= delta * accumulateIncreaseSpeed
+							* Math.abs(accumulatedMinus);
 
 				if (this.position.x < destination.x)
 					this.position.x = destination.x;
 			}
 
 			if (this.position.x == destination.x) {
-				accumulatePlus = accumulateIncreaseSpeed;
-				accumulateMinus = -accumulateIncreaseSpeed;
+				accumulatedPlus = accumulateIncreaseSpeed;
+				accumulatedMinus = -accumulateIncreaseSpeed;
 			}
 
-			if (accumulatePlus > accumulateMax)
-				accumulatePlus = accumulateMax;
-			if (accumulateMinus < -accumulateMax)
-				accumulateMinus = -accumulateMax;
+			if (accumulatedPlus > accumulateMax)
+				accumulatedPlus = accumulateMax;
+			if (accumulatedMinus < -accumulateMax)
+				accumulatedMinus = -accumulateMax;
 
 		}
 	}

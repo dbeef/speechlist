@@ -1,27 +1,26 @@
 package com.dbeef.speechlist.logics;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
+import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
-import com.dbeef.speechlist.recognition.DefaultFilesWriter;
-import com.dbeef.speechlist.recognition.SpeechRecognizer;
+import com.dbeef.speechlist.internet.DownloadableTestsManager;
+import com.dbeef.speechlist.internet.RESTClient;
+import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.screen.Screen;
-import com.dbeef.speechlist.tests.TestModel;
-import com.dbeef.speechlist.tests.TestsManager;
-import com.dbeef.speechlist.text.DefaultStringsManager;
+import com.dbeef.speechlist.text.DefaultStringsSetter;
 import com.dbeef.speechlist.utils.Variables;
 
 public class ActionManager {
 
+	DownloadableTestsManager downloadableTestsManager;
+	RESTClient client;
 	Variables variables = new Variables();
-	SpeechRecognizer speechRecognizer;
 	InputInterpreter inputInterpreter;
 	TestsManager testsManager;
 	Button home;
@@ -40,16 +39,19 @@ public class ActionManager {
 	Screen menuSphinx;
 	Screen gui;
 	Array<TestButton> testsButtons;
+	Array<TestButton> downloadableTestsButtons;
 
 	float timer = 0;
 
+	boolean addedDownloadables = false;
 	boolean wasPannedBefore = false;
 	boolean initialCameraMovementsDone = false;
 	boolean logoCameOnScreen = false;
 	boolean loadingTextAdded = false;
-	boolean readyToGoMenu = false;
 	boolean assetsLoaded = false;
+	boolean readyToGoMenu = false;
 	boolean startedLoadingAssets = false;
+	boolean initiatedInput = false;
 
 	public ActionManager(Camera camera, Camera guiCamera, Screen initial,
 			Screen gui, Screen menuHome, Screen menuTests,
@@ -63,29 +65,23 @@ public class ActionManager {
 		this.menuDownloads = menuDownloads;
 		this.menuBrief = menuBrief;
 		this.menuSphinx = menuSphinx;
-		inputInterpreter = new InputInterpreter();
-		speechRecognizer = new SpeechRecognizer();
+
+		client = new RESTClient();
+		client.start();
 	}
 
-	public void updateLogics(float delta) {
+	public void updateLogics(float delta) throws InterruptedException {
 
-		if(assetsManager != null && assetsManager.getAssetsLoaded() == true)
-			assetsLoaded = true;
-	
+		if (startedLoadingAssets == true && assetsManager.loaded == false)
+			delta = 0;
+
 		optimizeRendering();
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
 		addAssetsToScreens();
 		updateCamerasLogics();
 		updateButtonsGravity(delta);
-
-		try {
-			recognizeSpeech();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		manageMenuDownloadsElements();
 	}
 
 	void updateInitialScreenLogics(float delta) {
@@ -112,13 +108,14 @@ public class ActionManager {
 		if (loadingTextAdded == true) {
 			if (startedLoadingAssets == false) {
 				assetsManager = new AssetsManager();
-				assetsManager.start();
 				testsManager = new TestsManager();
-				DefaultFilesWriter defaultFilesWriter = new DefaultFilesWriter();
-				defaultFilesWriter.run();
 				startedLoadingAssets = true;
+				assetsManager.run();
 			}
 		}
+		if (startedLoadingAssets == true && assetsManager.loaded == true)
+			assetsLoaded = true;
+
 	}
 
 	void addAssetsToScreens() {
@@ -130,42 +127,55 @@ public class ActionManager {
 			addMenuTestsStaticElements();
 			addMenuDownloadsStaticElements();
 			addMenuBriefStaticElements();
-			inputInterpreter.loadGesturesReceivers(camera, guiCamera, home,
-					tests, downloads, accept, decline, testsButtons, menuBrief,
-					menuSphinx, testsManager);
 			readyToGoMenu = true;
 		}
-
 	}
 
 	void updateCamerasLogics() {
+
+		if (camera.position.x > (variables.getInitialScreenPosition() + variables
+				.getHomeScreenPosition()) / 2 && initiatedInput == false) {
+			inputInterpreter = new InputInterpreter();
+			inputInterpreter.loadGesturesReceivers(camera, guiCamera, home,
+					tests, downloads, accept, decline, testsButtons, menuBrief,
+					menuSphinx, testsManager);
+			inputInterpreter.setInitialCameraMovementsDone();
+			initiatedInput = true;
+		}
+
 		if (readyToGoMenu == true
 				&& (initial.changeStringAlpha("loading...", 0) == 1)
 				&& initialCameraMovementsDone == false) {
 			camera.move(variables.getHomeScreenPosition());
 			guiCamera.move(variables.getHomeScreenPosition());
 			initialCameraMovementsDone = true;
-			inputInterpreter.setInitialCameraMovementsDone();
-
 		}
+
 		if (camera.position.x > variables.getDownloadsScreenPosition()) {
-			guiCamera.changePosition(variables.getGuiCameraPosition()
-					+ (camera.position.x - variables
-							.getDownloadsScreenPosition()));
+			if (camera.position.x < variables.getBriefScreenPosition())
+				guiCamera.changePosition(variables.getGuiCameraPosition()
+						+ (camera.position.x - variables
+								.getDownloadsScreenPosition()));
+			else
+				guiCamera.changePosition(variables.getGuiCameraPosition()
+						+ (variables.getBriefScreenPosition() - variables
+								.getDownloadsScreenPosition()));
+
 		}
 
 	}
 
 	void updateButtonsGravity(double delta) {
-		if (wasPannedBefore == false && inputInterpreter.panned == false
-				&& assetsLoaded)
-			for (int a = 0; a < testsButtons.size; a++)
-				testsButtons.get(a).applyGravity(delta);
+		if (inputInterpreter != null)
+			if (wasPannedBefore == false && inputInterpreter.panned == false
+					&& assetsLoaded)
+				for (int a = 0; a < testsButtons.size; a++)
+					testsButtons.get(a).applyGravity(delta);
 	}
 
 	void initiateTestsButtons() {
 		testsButtons = new Array<TestButton>();
-		Array<TestModel> tests = testsManager.getTests();
+		Array<Test> tests = testsManager.getTests();
 
 		for (int a = 0; a < tests.size; a++) {
 			testsButtons.add(new TestButton(960, 500 - 80 * a,
@@ -201,24 +211,11 @@ public class ActionManager {
 		}
 	}
 
-	void recognizeSpeech() throws IOException {
-		if (camera.position.x == variables.getSphinxScreenPosition()) {
-			// if (speechRecognizer.isAlive() == false)
-			// speechRecognizer.start();
-			// if (speechRecognizer.isAlive() == true) {
-			// menuSphinx.removeAllStrings();
-			// menuSphinx.add(speechRecognizer.getLastRecognizedWord(),
-			// new Vector2(2500, 100), new Vector2(4, 1), new Vector3(
-			// 1, 1, 1));
-			// }
-		}
-	}
-
 	void addMenuHomeStaticElements() {
 		menuHome.add(assetsManager.clock, new Vector2(550, 530));
 		menuHome.add(assetsManager.chart, new Vector2(690, 530));
 		menuHome.add(assetsManager.checked, new Vector2(835, 530));
-		menuHome = new DefaultStringsManager().setMenuHomeStrings(menuHome);
+		menuHome = new DefaultStringsSetter().setMenuHomeStrings(menuHome);
 	}
 
 	void addGuiStaticElements() {
@@ -226,6 +223,7 @@ public class ActionManager {
 		gui.add(tests);
 		gui.add(downloads);
 		gui.add(assetsManager.logoLittle, new Vector2(705, 680));
+		gui.add(assetsManager.logoLittle, new Vector2(1165, 750));
 	}
 
 	void initiateGuiButtons() {
@@ -236,21 +234,75 @@ public class ActionManager {
 	}
 
 	void addMenuTestsStaticElements() {
-		menuTests = new DefaultStringsManager().setMenuTestsStrings(menuTests);
+		menuTests = new DefaultStringsSetter().setMenuTestsStrings(menuTests);
 	}
 
 	void addMenuDownloadsStaticElements() {
 		menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
-		menuDownloads = new DefaultStringsManager()
+		menuDownloads = new DefaultStringsSetter()
 				.setMenuDownloadsStrings(menuDownloads);
 	}
 
+	void manageMenuDownloadsElements() throws InterruptedException {
+
+		if (client != null && client.getUNIQUE_IDS_RETRIEVED() == true
+				&& downloadableTestsManager == null && testsManager != null) {
+
+			downloadableTestsManager = new DownloadableTestsManager();
+			downloadableTestsManager.run(client.getUniqueIdContainer(),
+					testsManager.getTests());
+		}
+
+		if (downloadableTestsManager != null
+				&& downloadableTestsManager.RETRIEVED_DOWNLOADABLES()
+				&& addedDownloadables == false) {
+
+			downloadableTestsButtons = new Array<TestButton>();
+
+			for (int a = 0; a < downloadableTestsManager.getNames().size(); a++) {
+				downloadableTestsButtons.add(new TestButton(new Variables()
+						.getDownloadsScreenPosition() - 240, 500 - 80 * a,
+						assetsManager.glareButtonVignette,
+						downloadableTestsManager.getNames().get(a)));
+				downloadableTestsButtons.get(a).loadTick(assetsManager.checked);
+			}
+
+			for (int a = 0; a < downloadableTestsButtons.size; a++) {
+				menuDownloads.add(downloadableTestsButtons.get(a));
+			}
+
+			testsButtons.addAll(downloadableTestsButtons);
+
+			addedDownloadables = true;
+		}
+
+		if (assetsManager != null && assetsManager.loaded == true) {
+			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == true) {
+				menuDownloads.removeTextureWithPosition(new Vector2(1560, 200));
+				menuDownloads = new DefaultStringsSetter()
+						.deleteMenuDownloadsStrings(menuDownloads);
+			}
+			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == false
+					&& menuDownloads.textureArrayEmpty() == true) {
+				menuDownloads.add(assetsManager.sadPhone,
+						new Vector2(1560, 200));
+				menuDownloads = new DefaultStringsSetter()
+						.setMenuDownloadsStrings(menuDownloads);
+			}
+			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == false
+					&& client.FAILED() == false) {
+				// Still retrieving, add image with "Pulling form server..."
+			}
+		}
+
+	}
+
 	void addMenuBriefStaticElements() {
-		accept = new Button(2080, 100, assetsManager.checked);
-		decline = new Button(2180, 100, assetsManager.cross);
+		accept = new Button(1095, 25, assetsManager.checked);
+		decline = new Button(1195, 25, assetsManager.cross);
 		decline.setMultiplier(4);
 		accept.setMultiplier(4);
-		menuBrief.add(accept);
-		menuBrief.add(decline);
+		gui.add(accept);
+		gui.add(decline);
 	}
 }

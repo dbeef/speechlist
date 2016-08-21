@@ -83,6 +83,28 @@ public class Screen {
 		}
 	}
 
+	public void removeAllTextures() {
+		textures.clear();
+		texturesPositions.clear();
+	}
+
+	public boolean textureArrayEmpty() {
+		if (textures.size == 0)
+			return true;
+		else
+			return false;
+	}
+
+	public void removeTextureWithPosition(Vector2 vec) {
+		for (int a = 0; a < textures.size; a++) {
+			if (vec.x == texturesPositions.get(a).x
+					&& vec.y == texturesPositions.get(a).y) {
+				textures.removeIndex(a);
+				texturesPositions.removeIndex(a);
+			}
+		}
+	}
+
 	public void renderTextures(Batch batch) {
 		for (int a = 0; a < textures.size; a++) {
 			batch.draw(textures.get(a), texturesPositions.get(a).x,
@@ -188,6 +210,19 @@ public class Screen {
 		stringsPositions.clear();
 		stringsFontAndAlpha.clear();
 		stringsColors.clear();
+	}
+
+	public void removeStringsWithPosition(Vector2 position) {
+
+		for (int a = 0; a < strings.size; a++) {
+			if (stringsPositions.get(a).x == position.x
+					&& stringsPositions.get(a).y == position.y) {
+				strings.removeIndex(a);
+				stringsPositions.removeIndex(a);
+				stringsFontAndAlpha.removeIndex(a);
+				stringsColors.removeIndex(a);
+			}
+		}
 	}
 
 	public void startRendering() {
