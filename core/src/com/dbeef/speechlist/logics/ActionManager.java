@@ -150,19 +150,22 @@ public class ActionManager {
 			guiCamera.move(variables.getHomeScreenPosition());
 			initialCameraMovementsDone = true;
 		}
-
+		
 		if (camera.position.x > variables.getDownloadsScreenPosition()) {
-			if (camera.position.x < variables.getBriefScreenPosition())
+			if (camera.position.x < variables.getBriefScreenPosition()){
 				guiCamera.changePosition(variables.getGuiCameraPosition()
 						+ (camera.position.x - variables
 								.getDownloadsScreenPosition()));
-			else
+				guiCamera.resetAccumulated();
+			}
+			else {
 				guiCamera.changePosition(variables.getGuiCameraPosition()
 						+ (variables.getBriefScreenPosition() - variables
 								.getDownloadsScreenPosition()));
-
+				guiCamera.resetAccumulated();
+				
+			}
 		}
-
 	}
 
 	void updateButtonsGravity(double delta) {
@@ -223,7 +226,7 @@ public class ActionManager {
 		gui.add(tests);
 		gui.add(downloads);
 		gui.add(assetsManager.logoLittle, new Vector2(705, 680));
-		gui.add(assetsManager.logoLittle, new Vector2(1165, 750));
+		gui.add(assetsManager.logoLittle, new Vector2(1180, 750));
 	}
 
 	void initiateGuiButtons() {
@@ -298,8 +301,8 @@ public class ActionManager {
 	}
 
 	void addMenuBriefStaticElements() {
-		accept = new Button(1095, 25, assetsManager.checked);
-		decline = new Button(1195, 25, assetsManager.cross);
+		accept = new Button(1115, 25, assetsManager.checked);
+		decline = new Button(1215, 25, assetsManager.cross);
 		decline.setMultiplier(4);
 		accept.setMultiplier(4);
 		gui.add(accept);

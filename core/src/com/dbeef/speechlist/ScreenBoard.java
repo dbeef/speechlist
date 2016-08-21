@@ -51,8 +51,6 @@ public class ScreenBoard implements Screen {
 	public void render(float delta) {
 
 		delta = manageLowFpsOnLaunch(delta);
-		if (delta > 0.3f)
-			delta = 0;
 
 		try {
 			actionManager.updateLogics(delta);
@@ -123,15 +121,20 @@ public class ScreenBoard implements Screen {
 	}
 
 	float manageLowFpsOnLaunch(float delta) {
-		if (delta < 0.3f)
+
+		if (delta < 0.1f)
 			start = true;
 
 		if (start == true)
 			span -= delta;
 
+		if (Gdx.graphics.getRawDeltaTime() > 0.05f
+				&& Gdx.graphics.getDeltaTime() > 0.05f)
+			delta = 0;
+
 		if (span >= 0)
 			return 0;
-		else
-			return delta;
+
+		return delta;
 	}
 }

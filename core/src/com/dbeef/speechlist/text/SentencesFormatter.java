@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 public class SentencesFormatter {
 
 	static final int maxCharPerLine = 32;
+	static final int maxLinesPerScreen = 11;
 	Array<String> formatted;
 
 	public SentencesFormatter(String sentences) {
@@ -18,6 +19,27 @@ public class SentencesFormatter {
 			counter++;
 
 			position = maxCharPerLine;
+
+			if (counter % 11 == 0 && sentences.length() > 0) {
+				if (position < sentences.length()) {
+					position = 0;
+					while (sentences.charAt(position) != '.') {
+						position++;
+					}
+					formatted.add(new String(sentences.substring(0,
+							position + 1)));
+
+					if (formatted.get(counter - 1).startsWith(" "))
+						formatted.set(
+								counter - 1,
+								formatted.get(counter - 1).substring(1,
+										formatted.get(counter - 1).length()));
+
+					sentences = sentences.substring(position,
+							sentences.length());
+					break;
+				}
+			}
 
 			if (position < sentences.length()
 					&& isLetter(sentences.charAt(position)) == false) {
@@ -70,7 +92,7 @@ public class SentencesFormatter {
 				formatted.set(counter - 1, formatted.get(counter - 1)
 						.substring(1, formatted.get(counter - 1).length()));
 			}
-			
+
 		}
 	}
 

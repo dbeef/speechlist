@@ -39,9 +39,9 @@ public class DefaultStringsSetter {
 	}
 
 	public Screen setMenuBriefStrings(Screen menuBrief) {
-		menuBrief.add("Briefing", new Vector2(2110, 700), new Vector2(3, 1),
+		menuBrief.add("Briefing", new Vector2(2105, 700), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
-		menuBrief.add("Vocabulary", new Vector2(2080, 570), new Vector2(3, 1),
+		menuBrief.add("Vocabulary", new Vector2(2075, 570), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
 		menuBrief.add("Last result", new Vector2(2085, 310), new Vector2(3, 1),
 				new Vector3(1, 1, 1));

@@ -2,6 +2,7 @@ package com.dbeef.speechlist.utils;
 
 public class Variables {
 
+	static final int guiCameraBriefPosition = 1175;
 	static final int guiCameraPosition = 720;
 	static final int initialScreenPosition = 240;
 	static final int homeScreenPosition = 720;
@@ -15,6 +16,10 @@ public class Variables {
 
 	static final boolean debugMode = true;
 	static final boolean debugInput = false;
+
+	public int getGuiCameraBriefPosition() {
+		return guiCameraBriefPosition;
+	}
 
 	public int getGuiCameraPosition() {
 		return guiCameraPosition;
