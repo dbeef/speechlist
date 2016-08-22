@@ -1,6 +1,8 @@
 package com.dbeef.speechlist.input;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +20,8 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
 
+	int currentSolvingScreen;
+
 	Variables variables = new Variables();
 
 	VocabularyFormatter vocabularyFormatter;
@@ -25,7 +29,6 @@ public class InputInterpreter implements GestureListener {
 	boolean wasPannedBefore;
 	boolean assetsLoaded;
 	boolean initialCameraMovements;
-
 	double initialPanX;
 	double initialPanY;
 
@@ -36,11 +39,13 @@ public class InputInterpreter implements GestureListener {
 	Button downloads;
 	Button accept;
 	Button decline;
+	Button left;
+	Button right;
 	Array<TestButton> testsButtons;
-
+	Array<BitmapFont> fonts;
+	Texture mainBackground;
 	Screen menuBrief;
-	Screen menuSphinx;
-
+	Array<Screen> solvingScreens;
 	Camera camera;
 	Camera guiCamera;
 
@@ -295,10 +300,19 @@ public class InputInterpreter implements GestureListener {
 
 	}
 
+	public void loadFonts(Array<BitmapFont> fonts) {
+		this.fonts = fonts;
+	}
+
+	public void loadMainBackground(Texture mainBackground) {
+		this.mainBackground = mainBackground;
+	}
+
 	public void loadGesturesReceivers(Camera camera, Camera guiCamera,
 			Button home, Button tests, Button downloads, Button accept,
-			Button decline, Array<TestButton> testsButtons, Screen menuBrief,
-			Screen menuSphinx, TestsManager testsManager) {
+			Button decline, Button left, Button right,
+			Array<TestButton> testsButtons, Screen menuBrief,
+			Array<Screen> solvingScreens, TestsManager testsManager) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.home = home;
@@ -306,9 +320,11 @@ public class InputInterpreter implements GestureListener {
 		this.downloads = downloads;
 		this.accept = accept;
 		this.decline = decline;
+		this.right = right;
+		this.left = left;
 		this.testsButtons = testsButtons;
 		this.testsManager = testsManager;
-		this.menuSphinx = menuSphinx;
+		this.solvingScreens = solvingScreens;
 		this.menuBrief = menuBrief;
 		assetsLoaded = true;
 	}
@@ -329,7 +345,31 @@ public class InputInterpreter implements GestureListener {
 
 			if (accept.checkCollision((int) x, (int) y) == true) {
 				accept.blink();
+				currentSolvingScreen = 1;
 				camera.move(variables.getSphinxScreenPosition());
+			}
+			if (left.checkCollision((int) x, (int) y) == true) {
+				if (camera.position.x > variables.getSolvingScreenPosition()) {
+					left.blink();
+					if (solvingScreens.size - 1 > 1)
+						currentSolvingScreen--;
+
+					if (currentSolvingScreen > 1)
+						camera.move(variables.getSphinxScreenPosition()
+								+ (currentSolvingScreen - 1)
+								* variables.getScreenWidth()
+								- variables.getScreenWidth());
+				}
+			}
+			if (right.checkCollision((int) x, (int) y) == true) {
+				if (camera.position.x > variables.getSolvingScreenPosition()) {
+					right.blink();
+					if (currentSolvingScreen + 1 <= solvingScreens.size)
+						currentSolvingScreen++;
+					camera.move(variables.getSphinxScreenPosition()
+							+ (currentSolvingScreen - 1)
+							* variables.getScreenWidth());
+				}
 			}
 		}
 	}
@@ -401,19 +441,93 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	void addMenuSphinxStrings(int a) {
-		menuSphinx.removeAllStrings();
+		for (Screen screen : solvingScreens) {
+			screen.removeAllStrings();
+		}
+
 		String sentences = testsManager.getTest(testsButtons.get(a).getName())
 				.getSentences();
 		SentencesFormatter sentencesFormatter = new SentencesFormatter(
 				sentences);
 
-		for (int b = 0; b < sentencesFormatter.getFormatted().size; b++) {
-			if (b < 11)
-				menuSphinx.add(sentencesFormatter.getFormatted().get(b),
-						new Vector2(2410, 735 - b * 60), new Vector2(4, 1),
-						new Vector3(1, 1, 1));
-		}
+		Screen solvingScreen = new Screen(fonts);
 
+		int solvingScreensCounter = 1;
+
+		for (int b = 0; b + (11 * (solvingScreensCounter - 1)) < sentencesFormatter
+				.getFormatted().size; b++) {
+
+			System.out.println("Starting loop, b =" + b);
+
+			if (b + (11 * (solvingScreensCounter - 1)) == 10) {
+
+				System.out
+						.println("Reached max lines, adding sentence, screen, breaking 2, adding:"
+								+ sentencesFormatter.getFormatted().get(
+										b + (11 * (solvingScreensCounter - 1))));
+
+				solvingScreen.add(
+						sentencesFormatter.getFormatted().get(
+								b + (11 * (solvingScreensCounter - 1))),
+						new Vector2(variables
+								.getSolvingScreenVocabularyPosition()
+								+ (solvingScreensCounter - 1)
+								* variables.getScreenWidth(), 735 - b * 60),
+						new Vector2(4, 1), new Vector3(1, 1, 1));
+
+				solvingScreen.add(
+						mainBackground,
+						new Vector2(variables.getSolvingScreenPosition()
+								+ (solvingScreensCounter - 1)
+								* variables.getScreenWidth(), 0));
+
+				solvingScreens.add(solvingScreen);
+				solvingScreen = new Screen(fonts);
+				solvingScreensCounter++;
+				b = -1;
+			} else if (b < 11
+					&& b + (11 * (solvingScreensCounter - 1)) + 1 != sentencesFormatter
+							.getFormatted().size) {
+				System.out.println("b < 11, adding sentence:"
+						+ sentencesFormatter.getFormatted().get( solvingScreensCounter -1 + 
+								b + (10 * (solvingScreensCounter - 1))));
+
+				solvingScreen.add(
+						sentencesFormatter.getFormatted().get(solvingScreensCounter -1 + 
+								b + (10 * (solvingScreensCounter - 1))),
+						new Vector2(variables
+								.getSolvingScreenVocabularyPosition()
+								+ (solvingScreensCounter - 1)
+								* variables.getScreenWidth(), 735 - b * 60),
+						new Vector2(4, 1), new Vector3(1, 1, 1));
+			} else {
+				System.out
+						.println("b:" + b + "Reached max lines, adding sentence, screen, breaking 1");
+				System.out.println("Adding: "
+						+ sentencesFormatter.getFormatted().get(
+								b + (11 * (solvingScreensCounter - 1))));
+				solvingScreen.add(
+						sentencesFormatter.getFormatted().get(
+								b + (11 * (solvingScreensCounter - 1))),
+						new Vector2(variables
+								.getSolvingScreenVocabularyPosition()
+								+ (solvingScreensCounter - 1)
+								* variables.getScreenWidth(), 735 - b * 60),
+						new Vector2(4, 1), new Vector3(1, 1, 1));
+
+				solvingScreen.add(
+						mainBackground,
+						new Vector2(variables.getSolvingScreenPosition()
+								+ (solvingScreensCounter - 1)
+								* variables.getScreenWidth(), 0));
+
+				solvingScreens.add(solvingScreen);
+				solvingScreen = new Screen(fonts);
+				solvingScreensCounter++;
+				b = -1;
+			}
+		}
+		System.out.println(solvingScreens.size);
 	}
 
 	void manageSheetSliding() {

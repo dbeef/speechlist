@@ -6,6 +6,8 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class AssetsManager extends Thread{
 
+	public Texture left;
+	public Texture right;
 	public Texture home;
 	public Texture pencil;
 	public Texture cloud;
@@ -36,6 +38,8 @@ public void run(){
 	checked = new Texture("icons/checked.png");
 	sadPhone = new Texture("icons/sadphone.png");
 	cross = new Texture("icons/cross.png");
+	left = new Texture("icons/left.png");
+	right = new Texture("icons/right.png");
 
 	glareButtonVignette.setFilter(TextureFilter.Linear,
 			TextureFilter.Linear);
@@ -49,6 +53,8 @@ public void run(){
 	checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	left.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	right.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 	loaded = true;
 

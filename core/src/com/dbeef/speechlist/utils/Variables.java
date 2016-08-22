@@ -10,12 +10,27 @@ public class Variables {
 	static final int downloadsScreenPosition = 1680;
 	static final int briefScreenPosition = 2160;
 	static final int sphinxScreenPosition = 2640;
+	static final int solvingScreenPosition = 2400;
+	static final int solvingScreenVocabularyPosition = solvingScreenPosition + 10;
+	static final int screenWidth = 480;
 
 	static final String retrieveTest = "retrieveTest";
 	static final String retrieveTestName = "retrieveTestName";
 
 	static final boolean debugMode = true;
 	static final boolean debugInput = false;
+
+	public int getSolvingScreenPosition() {
+		return solvingScreenPosition;
+	}
+	
+	public int getSolvingScreenVocabularyPosition() {
+		return solvingScreenVocabularyPosition;
+	}
+	
+	public int getScreenWidth() {
+		return screenWidth;
+	}
 
 	public int getGuiCameraBriefPosition() {
 		return guiCameraBriefPosition;

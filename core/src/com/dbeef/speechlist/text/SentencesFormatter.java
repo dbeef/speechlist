@@ -6,6 +6,7 @@ public class SentencesFormatter {
 
 	static final int maxCharPerLine = 32;
 	static final int maxLinesPerScreen = 11;
+
 	Array<String> formatted;
 
 	public SentencesFormatter(String sentences) {
@@ -16,11 +17,15 @@ public class SentencesFormatter {
 
 		while (position != sentences.length()) {
 
+			System.out.println("loop");
+
 			counter++;
 
 			position = maxCharPerLine;
 
-			if (counter % 11 == 0 && sentences.length() > 0) {
+			if (counter % maxLinesPerScreen == 0 && sentences.length() > 0) {
+				System.out.println("1");
+
 				if (position < sentences.length()) {
 					position = 0;
 					while (sentences.charAt(position) != '.') {
@@ -35,28 +40,39 @@ public class SentencesFormatter {
 								formatted.get(counter - 1).substring(1,
 										formatted.get(counter - 1).length()));
 
-					sentences = sentences.substring(position,
+					sentences = sentences.substring(position + 1,
 							sentences.length());
-					break;
+
+					position = maxCharPerLine;
 				}
 			}
 
 			if (position < sentences.length()
 					&& isLetter(sentences.charAt(position)) == false) {
 				formatted.add(new String(sentences.substring(0, position)));
+				System.out.println("Sentence added:"
+						+ new String(sentences.substring(0, position)));
+				System.out.println("sentences begfore:" + sentences);
 				sentences = sentences.substring(position);
+				System.out.println("sentences after:" + sentences);
+				System.out.println("2");
 			} else if (isLetter(sentences.charAt(position)) == true) {
 				formatted.add(new String(sentences.substring(0, position - 1)
 						+ "-"));
+				System.out.println("counter: " + counter + "Before: "
+						+ sentences);
 				sentences = sentences.substring(position - 1);
+				System.out.println("After: " + sentences);
 			} else {
 				formatted.add(new String(sentences.substring(0, position)));
 				sentences = sentences.substring(position);
 			}
 
-			if (sentences.length() < maxCharPerLine) {
-				formatted.add(new String(sentences));
-				break;
+			if (sentences.length() <= maxCharPerLine) {
+				counter++;
+				position = maxCharPerLine;
+				System.out.println("breaking! Sentences: " + sentences);
+				formatted.add(sentences);
 			}
 
 			if (formatted.size > 1) {
@@ -94,6 +110,11 @@ public class SentencesFormatter {
 			}
 
 		}
+
+		System.out.println("formatted strings");
+		for (String s : formatted) {
+			System.out.println(s);
+		}
 	}
 
 	public Array<String> getFormatted() {
@@ -101,10 +122,9 @@ public class SentencesFormatter {
 	}
 
 	boolean isLetter(char letter) {
-		if (letter == '.' || letter == ',' || letter == ' ' || letter == ':'
-				|| letter == ';' || letter == ' ' || letter == '\t'
-				|| letter == '\r' || letter == '\n'
-				|| Character.isWhitespace(letter))
+		if (letter == '.' || letter == ',' || letter == ':' || letter == ';'
+				|| letter == ' ' || letter == '\t' || letter == '\r'
+				|| letter == '\n' || Character.isWhitespace(letter))
 			return false;
 		else
 			return true;

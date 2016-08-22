@@ -1,5 +1,7 @@
 package com.dbeef.speechlist.logics;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -28,6 +30,8 @@ public class ActionManager {
 	Button downloads;
 	Button accept;
 	Button decline;
+	Button left;
+	Button right;
 	AssetsManager assetsManager;
 	Camera camera;
 	Camera guiCamera;
@@ -36,12 +40,14 @@ public class ActionManager {
 	Screen menuTests;
 	Screen menuDownloads;
 	Screen menuBrief;
-	Screen menuSphinx;
 	Screen gui;
 	Array<TestButton> testsButtons;
 	Array<TestButton> downloadableTestsButtons;
+	Array<Screen> solvingScreens;
+	Array<BitmapFont> fonts;
+	Texture mainBackground;
 
-	float timer = 0;
+	float timerLoading = 0;
 
 	boolean addedDownloadables = false;
 	boolean wasPannedBefore = false;
@@ -55,7 +61,9 @@ public class ActionManager {
 
 	public ActionManager(Camera camera, Camera guiCamera, Screen initial,
 			Screen gui, Screen menuHome, Screen menuTests,
-			Screen menuDownloads, Screen menuBrief, Screen menuSphinx) {
+			Screen menuDownloads, Screen menuBrief,
+			Array<Screen> solvingScreens, Array<BitmapFont> fonts,
+			Texture mainBackground) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
@@ -64,8 +72,9 @@ public class ActionManager {
 		this.menuTests = menuTests;
 		this.menuDownloads = menuDownloads;
 		this.menuBrief = menuBrief;
-		this.menuSphinx = menuSphinx;
-
+		this.solvingScreens = solvingScreens;
+		this.fonts = fonts;
+		this.mainBackground = mainBackground;
 		client = new RESTClient();
 		client.start();
 	}
@@ -94,9 +103,9 @@ public class ActionManager {
 			loadingTextAdded = true;
 		}
 		if (loadingTextAdded == true) {
-			timer += delta;
-			if (timer > 0.01) {
-				timer = 0;
+			timerLoading += delta;
+			if (timerLoading > 0.01) {
+				timerLoading = 0;
 
 				if (initial.changeStringAlpha("loading...", 0) < 1)
 					initial.changeStringAlpha("loading...", 0.005f);
@@ -137,9 +146,11 @@ public class ActionManager {
 				.getHomeScreenPosition()) / 2 && initiatedInput == false) {
 			inputInterpreter = new InputInterpreter();
 			inputInterpreter.loadGesturesReceivers(camera, guiCamera, home,
-					tests, downloads, accept, decline, testsButtons, menuBrief,
-					menuSphinx, testsManager);
+					tests, downloads, accept, decline, left, right,
+					testsButtons, menuBrief, solvingScreens, testsManager);
 			inputInterpreter.setInitialCameraMovementsDone();
+			inputInterpreter.loadFonts(fonts);
+			inputInterpreter.loadMainBackground(mainBackground);
 			initiatedInput = true;
 		}
 
@@ -150,20 +161,19 @@ public class ActionManager {
 			guiCamera.move(variables.getHomeScreenPosition());
 			initialCameraMovementsDone = true;
 		}
-		
+
 		if (camera.position.x > variables.getDownloadsScreenPosition()) {
-			if (camera.position.x < variables.getBriefScreenPosition()){
+			if (camera.position.x < variables.getBriefScreenPosition()) {
 				guiCamera.changePosition(variables.getGuiCameraPosition()
 						+ (camera.position.x - variables
 								.getDownloadsScreenPosition()));
 				guiCamera.resetAccumulated();
-			}
-			else {
+			} else {
 				guiCamera.changePosition(variables.getGuiCameraPosition()
 						+ (variables.getBriefScreenPosition() - variables
 								.getDownloadsScreenPosition()));
 				guiCamera.resetAccumulated();
-				
+
 			}
 		}
 	}
@@ -196,16 +206,18 @@ public class ActionManager {
 			if (gui.allButtonsDeselected() == true) {
 				menuHome.stopRendering();
 				menuBrief.startRendering();
-				menuSphinx.startRendering();
+				for (Screen screen : solvingScreens)
+					screen.startRendering();
+				// menuSphinx.startRendering();
 				if (camera.position.x > variables.getDownloadsScreenPosition() + 100)
 					menuTests.stopRendering();
 
 			} else {
 				if (camera.position.x < variables.getBriefScreenPosition() - 490)
 					menuBrief.stopRendering();
-				if (camera.position.x < variables.getSphinxScreenPosition() - 490)
-					menuSphinx.stopRendering();
-
+				if (camera.position.x < variables.getSphinxScreenPosition() - 490) {
+					solvingScreens.clear();
+				}
 				menuHome.startRendering();
 				menuTests.startRendering();
 			}
@@ -248,7 +260,8 @@ public class ActionManager {
 
 	void manageMenuDownloadsElements() throws InterruptedException {
 
-		if (client != null && client.getUNIQUE_IDS_RETRIEVED() == true
+		if (loadingTextAdded == true && client != null
+				&& client.getUNIQUE_IDS_RETRIEVED() == true
 				&& downloadableTestsManager == null && testsManager != null) {
 
 			downloadableTestsManager = new DownloadableTestsManager();
@@ -256,7 +269,7 @@ public class ActionManager {
 					testsManager.getTests());
 		}
 
-		if (downloadableTestsManager != null
+		if (loadingTextAdded == true && downloadableTestsManager != null
 				&& downloadableTestsManager.RETRIEVED_DOWNLOADABLES()
 				&& addedDownloadables == false) {
 
@@ -303,9 +316,15 @@ public class ActionManager {
 	void addMenuBriefStaticElements() {
 		accept = new Button(1115, 25, assetsManager.checked);
 		decline = new Button(1215, 25, assetsManager.cross);
+		left = new Button(970, 25, assetsManager.left);
+		right = new Button(1360, 25, assetsManager.right);
 		decline.setMultiplier(4);
 		accept.setMultiplier(4);
+		left.setMultiplier(4);
+		right.setMultiplier(4);
 		gui.add(accept);
 		gui.add(decline);
+		gui.add(left);
+		gui.add(right);
 	}
 }

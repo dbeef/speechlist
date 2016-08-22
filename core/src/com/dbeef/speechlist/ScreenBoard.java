@@ -1,15 +1,24 @@
 package com.dbeef.speechlist;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.logics.ActionManager;
+import com.dbeef.speechlist.screen.Screen;
 
-public class ScreenBoard implements Screen {
+public class ScreenBoard implements com.badlogic.gdx.Screen {
+
+	Screen gui;
+	Screen initial;
+	Screen menuHome;
+	Screen menuTests;
+	Screen menuDownloads;
+	Screen menuBrief;
+	Array<Screen> solvingScreens;
 
 	SpriteBatch batch;
 	Viewport viewport;
@@ -26,6 +35,14 @@ public class ScreenBoard implements Screen {
 
 		this.game = gam;
 
+		gui = game.getGuiScreen();
+		initial = game.getInitialScreen();
+		menuHome = game.getMenuHome();
+		menuTests = game.getMenuTests();
+		menuDownloads = game.getMenuDownloads();
+		menuBrief = game.getMenuBrief();
+		solvingScreens = game.getSolvingScreens();
+
 		camera = new Camera(480, 800);
 		camera.position.x = -240;
 		camera.position.y = 400;
@@ -41,9 +58,9 @@ public class ScreenBoard implements Screen {
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
-		actionManager = new ActionManager(camera, guiCamera, game.initial,
-				game.gui, game.menuHome, game.menuTests, game.menuDownloads,
-				game.menuBrief, game.menuSphinx);
+		actionManager = new ActionManager(camera, guiCamera, initial, gui,
+				menuHome, menuTests, menuDownloads, menuBrief, solvingScreens,
+				game.getFonts(), game.getMainBackground());
 
 	}
 
@@ -69,17 +86,16 @@ public class ScreenBoard implements Screen {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		game.initial.render(batch, delta);
-		game.menuHome.render(batch, delta);
-		game.menuTests.render(batch, delta);
-		game.menuDownloads.render(batch, delta);
-		game.menuBrief.render(batch, delta);
-		game.menuSphinx.render(batch, delta);
+
+		drawScreens(delta);
+
 		batch.end();
 
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
-		game.gui.render(batch, delta);
+
+		drawGui(delta);
+
 		batch.end();
 
 	}
@@ -137,4 +153,19 @@ public class ScreenBoard implements Screen {
 
 		return delta;
 	}
+
+	void drawScreens(float delta) {
+		initial.render(batch, delta);
+		menuHome.render(batch, delta);
+		menuTests.render(batch, delta);
+		menuDownloads.render(batch, delta);
+		menuBrief.render(batch, delta);
+		for (Screen screen : solvingScreens)
+			screen.render(batch, delta);
+	}
+
+	void drawGui(float delta) {
+		gui.render(batch, delta);
+	}
+
 }

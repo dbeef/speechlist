@@ -29,9 +29,7 @@ public class Screen {
 
 	boolean render = true;
 
-	public Screen(BitmapFont ralewayBlack42, BitmapFont ralewayThinItalic16,
-			BitmapFont ralewayThinItalic32, BitmapFont ralewayThinItalic12,
-			BitmapFont ralewayRegular32, BitmapFont ralewayMedium38) {
+	public Screen(Array<BitmapFont> fonts) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
 		strings = new Array<String>();
@@ -40,12 +38,13 @@ public class Screen {
 		buttons = new Array<Button>();
 		stringsColors = new Array<Vector3>();
 		stringsFontAndAlpha = new Array<Vector2>();
-		this.ralewayBlack42 = ralewayBlack42;
-		this.ralewayThinItalic12 = ralewayThinItalic12;
-		this.ralewayThinItalic16 = ralewayThinItalic16;
-		this.ralewayThinItalic32 = ralewayThinItalic32;
-		this.ralewayRegular32 = ralewayRegular32;
-		this.ralewayMedium38 = ralewayMedium38;
+
+		this.ralewayThinItalic12 = fonts.get(0);
+		this.ralewayThinItalic16 = fonts.get(1);
+		this.ralewayThinItalic32 = fonts.get(2);
+		this.ralewayRegular32 = fonts.get(3);
+		this.ralewayMedium38 = fonts.get(4);
+		this.ralewayBlack42 = fonts.get(5);
 	}
 
 	public void add(Sprite sprite) {
