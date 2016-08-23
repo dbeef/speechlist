@@ -19,6 +19,8 @@ public class AssetsManager extends Thread{
 	public Texture tick;
 	public Texture sadPhone;
 	public Texture cross;
+	public Texture wordSet;
+	public Texture wordNotSet;
 
 	public boolean loaded;
 	
@@ -40,6 +42,8 @@ public void run(){
 	cross = new Texture("icons/cross.png");
 	left = new Texture("icons/left.png");
 	right = new Texture("icons/right.png");
+	wordSet = new Texture("icons/wordSet.png");
+	wordNotSet = new Texture("icons/wordNotSet.png");
 
 	glareButtonVignette.setFilter(TextureFilter.Linear,
 			TextureFilter.Linear);
@@ -55,6 +59,8 @@ public void run(){
 	cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	left.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	right.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	wordSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+	wordNotSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 	loaded = true;
 

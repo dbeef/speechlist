@@ -9,17 +9,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
+import com.dbeef.speechlist.files.AssetsManager;
 import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.text.DefaultStringsSetter;
-import com.dbeef.speechlist.text.SentencesFormatter;
+import com.dbeef.speechlist.text.GeneratedTestStringsSetter;
 import com.dbeef.speechlist.text.VocabularyFormatter;
 import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
 
+	AssetsManager assetsManager;
+	
 	int currentSolvingScreen;
 
 	Variables variables = new Variables();
@@ -111,7 +114,7 @@ public class InputInterpreter implements GestureListener {
 		touchDownY = y;
 
 		if (variables.getDebugInput() == true)
-			System.out.println("touchDown");
+			System.out.println("touchDown" + x + " " + y);
 		return false;
 	}
 
@@ -440,94 +443,20 @@ public class InputInterpreter implements GestureListener {
 
 	}
 
-	void addMenuSphinxStrings(int a) {
-		for (Screen screen : solvingScreens) {
-			screen.removeAllStrings();
-		}
+	public void setAssetsManager(AssetsManager assetsManager){
+		this.assetsManager = assetsManager;
+	}
+	
+	void addMenuSphinxStrings(int clickedButtonIndex) {
 
-		String sentences = testsManager.getTest(testsButtons.get(a).getName())
-				.getSentences();
-		SentencesFormatter sentencesFormatter = new SentencesFormatter(
-				sentences);
+		String sentences = testsManager.getTest(
+				testsButtons.get(clickedButtonIndex).getName()).getSentences();
 
-		Screen solvingScreen = new Screen(fonts);
+		GeneratedTestStringsSetter generatedTestStringsSetter = new GeneratedTestStringsSetter(
+				sentences, fonts, mainBackground, assetsManager.wordSet, assetsManager.wordNotSet);
+		solvingScreens.clear();
+		solvingScreens.addAll(generatedTestStringsSetter.getSolvingScreens());
 
-		int solvingScreensCounter = 1;
-
-		for (int b = 0; b + (11 * (solvingScreensCounter - 1)) < sentencesFormatter
-				.getFormatted().size; b++) {
-
-			System.out.println("Starting loop, b =" + b);
-
-			if (b + (11 * (solvingScreensCounter - 1)) == 10) {
-
-				System.out
-						.println("Reached max lines, adding sentence, screen, breaking 2, adding:"
-								+ sentencesFormatter.getFormatted().get(
-										b + (11 * (solvingScreensCounter - 1))));
-
-				solvingScreen.add(
-						sentencesFormatter.getFormatted().get(
-								b + (11 * (solvingScreensCounter - 1))),
-						new Vector2(variables
-								.getSolvingScreenVocabularyPosition()
-								+ (solvingScreensCounter - 1)
-								* variables.getScreenWidth(), 735 - b * 60),
-						new Vector2(4, 1), new Vector3(1, 1, 1));
-
-				solvingScreen.add(
-						mainBackground,
-						new Vector2(variables.getSolvingScreenPosition()
-								+ (solvingScreensCounter - 1)
-								* variables.getScreenWidth(), 0));
-
-				solvingScreens.add(solvingScreen);
-				solvingScreen = new Screen(fonts);
-				solvingScreensCounter++;
-				b = -1;
-			} else if (b < 11
-					&& b + (11 * (solvingScreensCounter - 1)) + 1 != sentencesFormatter
-							.getFormatted().size) {
-				System.out.println("b < 11, adding sentence:"
-						+ sentencesFormatter.getFormatted().get( solvingScreensCounter -1 + 
-								b + (10 * (solvingScreensCounter - 1))));
-
-				solvingScreen.add(
-						sentencesFormatter.getFormatted().get(solvingScreensCounter -1 + 
-								b + (10 * (solvingScreensCounter - 1))),
-						new Vector2(variables
-								.getSolvingScreenVocabularyPosition()
-								+ (solvingScreensCounter - 1)
-								* variables.getScreenWidth(), 735 - b * 60),
-						new Vector2(4, 1), new Vector3(1, 1, 1));
-			} else {
-				System.out
-						.println("b:" + b + "Reached max lines, adding sentence, screen, breaking 1");
-				System.out.println("Adding: "
-						+ sentencesFormatter.getFormatted().get(
-								b + (11 * (solvingScreensCounter - 1))));
-				solvingScreen.add(
-						sentencesFormatter.getFormatted().get(
-								b + (11 * (solvingScreensCounter - 1))),
-						new Vector2(variables
-								.getSolvingScreenVocabularyPosition()
-								+ (solvingScreensCounter - 1)
-								* variables.getScreenWidth(), 735 - b * 60),
-						new Vector2(4, 1), new Vector3(1, 1, 1));
-
-				solvingScreen.add(
-						mainBackground,
-						new Vector2(variables.getSolvingScreenPosition()
-								+ (solvingScreensCounter - 1)
-								* variables.getScreenWidth(), 0));
-
-				solvingScreens.add(solvingScreen);
-				solvingScreen = new Screen(fonts);
-				solvingScreensCounter++;
-				b = -1;
-			}
-		}
-		System.out.println(solvingScreens.size);
 	}
 
 	void manageSheetSliding() {

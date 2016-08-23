@@ -2,6 +2,9 @@ package com.dbeef.speechlist.utils;
 
 public class Variables {
 
+	static final int characterWidth = 19;
+	static final int maxCharPerTestLine = 32;
+	static final int maxLinesPerTestScreen = 11;
 	static final int guiCameraBriefPosition = 1175;
 	static final int guiCameraPosition = 720;
 	static final int initialScreenPosition = 240;
@@ -11,7 +14,9 @@ public class Variables {
 	static final int briefScreenPosition = 2160;
 	static final int sphinxScreenPosition = 2640;
 	static final int solvingScreenPosition = 2400;
-	static final int solvingScreenVocabularyPosition = solvingScreenPosition + 10;
+	static final int solvingScreenVocabularyPositionX = solvingScreenPosition + 10;
+	static final int solvingScreenVocabularyPositionY = 735;
+	static final int solvingScreenVocabularySpanY = 60;
 	static final int screenWidth = 480;
 
 	static final String retrieveTest = "retrieveTest";
@@ -20,14 +25,34 @@ public class Variables {
 	static final boolean debugMode = true;
 	static final boolean debugInput = false;
 
+	public int getCharacterWidth() {
+		return characterWidth;
+	}
+
+	public int getSolvingScreenVocabularySpanY() {
+		return solvingScreenVocabularySpanY;
+	}
+
+	public int getMaxCharPerTestLine() {
+		return maxCharPerTestLine;
+	}
+
+	public int getMaxLinesPerTestScreen() {
+		return maxLinesPerTestScreen;
+	}
+
 	public int getSolvingScreenPosition() {
 		return solvingScreenPosition;
 	}
-	
-	public int getSolvingScreenVocabularyPosition() {
-		return solvingScreenVocabularyPosition;
+
+	public int getSolvingScreenVocabularyPositionX() {
+		return solvingScreenVocabularyPositionX;
 	}
-	
+
+	public int getSolvingScreenVocabularyPositionY() {
+		return solvingScreenVocabularyPositionY;
+	}
+
 	public int getScreenWidth() {
 		return screenWidth;
 	}

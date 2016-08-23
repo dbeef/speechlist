@@ -151,6 +151,7 @@ public class ActionManager {
 			inputInterpreter.setInitialCameraMovementsDone();
 			inputInterpreter.loadFonts(fonts);
 			inputInterpreter.loadMainBackground(mainBackground);
+			inputInterpreter.setAssetsManager(assetsManager);
 			initiatedInput = true;
 		}
 
@@ -327,4 +328,5 @@ public class ActionManager {
 		gui.add(left);
 		gui.add(right);
 	}
+
 }

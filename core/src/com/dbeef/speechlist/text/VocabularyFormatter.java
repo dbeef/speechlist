@@ -3,7 +3,7 @@ package com.dbeef.speechlist.text;
 import com.badlogic.gdx.utils.Array;
 
 public class VocabularyFormatter {
-	static final int maxCharactersPerLine = 17;
+	static final int maxCharactersPerLine = 15;
 
 	Array<String> vocabulary = new Array<String>();
 

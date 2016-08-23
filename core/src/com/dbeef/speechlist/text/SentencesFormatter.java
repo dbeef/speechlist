@@ -1,130 +1,209 @@
 package com.dbeef.speechlist.text;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.dbeef.speechlist.utils.Variables;
 
 public class SentencesFormatter {
 
-	static final int maxCharPerLine = 32;
-	static final int maxLinesPerScreen = 11;
-
 	Array<String> formatted;
+	Array<Vector2> vocabularyPositions;
+
+	Variables variables;
 
 	public SentencesFormatter(String sentences) {
+
 		formatted = new Array<String>();
+		vocabularyPositions = new Array<Vector2>();
+		variables = new Variables();
 
-		int position = 0;
-		int counter = 0;
+		int charPosition = 0;
+		int linesCounter = 0;
 
-		while (position != sentences.length()) {
+		final int maxLinesPerTestScreen = variables.getMaxLinesPerTestScreen();
+		final int maxCharPerTestLine = variables.getMaxCharPerTestLine();
+		final int characterWidth = variables.getCharacterWidth();
+		final int solvingScreenVocabularySpanY = variables
+				.getSolvingScreenVocabularySpanY();
+
+		while (charPosition != sentences.length()) {
 
 			System.out.println("loop");
 
-			counter++;
+			linesCounter++;
 
-			position = maxCharPerLine;
+			charPosition = maxCharPerTestLine;
 
-			if (counter % maxLinesPerScreen == 0 && sentences.length() > 0) {
+			if (linesCounter % maxLinesPerTestScreen == 0
+					&& sentences.length() > 0) {
 				System.out.println("1");
 
-				if (position < sentences.length()) {
-					position = 0;
-					while (sentences.charAt(position) != '.') {
-						position++;
+				if (charPosition < sentences.length()) {
+					charPosition = 0;
+					while (sentences.charAt(charPosition) != '.') {
+						charPosition++;
 					}
 					formatted.add(new String(sentences.substring(0,
-							position + 1)));
+							charPosition + 1)));
 
-					if (formatted.get(counter - 1).startsWith(" "))
+					if (formatted.get(linesCounter - 1).startsWith(" "))
 						formatted.set(
-								counter - 1,
-								formatted.get(counter - 1).substring(1,
-										formatted.get(counter - 1).length()));
+								linesCounter - 1,
+								formatted.get(linesCounter - 1).substring(
+										1,
+										formatted.get(linesCounter - 1)
+												.length()));
 
-					sentences = sentences.substring(position + 1,
+					sentences = sentences.substring(charPosition + 1,
 							sentences.length());
 
-					position = maxCharPerLine;
+					charPosition = maxCharPerTestLine;
 				}
 			}
 
-			if (position < sentences.length()
-					&& isLetter(sentences.charAt(position)) == false) {
-				formatted.add(new String(sentences.substring(0, position)));
+			if (charPosition < sentences.length()
+					&& isLetter(sentences.charAt(charPosition)) == false) {
+				formatted.add(new String(sentences.substring(0, charPosition)));
 				System.out.println("Sentence added:"
-						+ new String(sentences.substring(0, position)));
+						+ new String(sentences.substring(0, charPosition)));
 				System.out.println("sentences begfore:" + sentences);
-				sentences = sentences.substring(position);
+				sentences = sentences.substring(charPosition);
 				System.out.println("sentences after:" + sentences);
 				System.out.println("2");
-			} else if (isLetter(sentences.charAt(position)) == true) {
-				formatted.add(new String(sentences.substring(0, position - 1)
-						+ "-"));
-				System.out.println("counter: " + counter + "Before: "
+			} else if (charPosition < sentences.length()
+					&& isLetter(sentences.charAt(charPosition)) == true) {
+				formatted.add(new String(sentences.substring(0,
+						charPosition - 1) + "-"));
+				System.out.println("counter: " + linesCounter + "Before: "
 						+ sentences);
-				sentences = sentences.substring(position - 1);
+				sentences = sentences.substring(charPosition - 1);
 				System.out.println("After: " + sentences);
 			} else {
-				formatted.add(new String(sentences.substring(0, position)));
-				sentences = sentences.substring(position);
+				charPosition = sentences.length();
+				if (sentences != "") {
+					formatted.add(new String(sentences.substring(0,
+							charPosition)));
+					sentences = sentences.substring(charPosition);
+				}
 			}
 
-			if (sentences.length() <= maxCharPerLine) {
-				counter++;
-				position = maxCharPerLine;
+			if (sentences.length() <= maxCharPerTestLine) {
+				linesCounter++;
+				charPosition = sentences.length();
 				System.out.println("breaking! Sentences: " + sentences);
-				formatted.add(sentences);
+				if (sentences != "" && sentences != " ")
+					formatted.add(sentences);
 			}
 
 			if (formatted.size > 1) {
-				if (formatted.get(counter - 2).endsWith("-")
-						&& isLetter(formatted.get(counter - 1).charAt(0)) == false) {
+				if (formatted.get(linesCounter - 2).endsWith("-")
+						&& isLetter(formatted.get(linesCounter - 1).charAt(0)) == false) {
 					formatted.set(
-							counter - 2,
-							formatted.get(counter - 2).substring(0,
-									formatted.get(counter - 2).length() - 1));
+							linesCounter - 2,
+							formatted.get(linesCounter - 2)
+									.substring(
+											0,
+											formatted.get(linesCounter - 2)
+													.length() - 1));
 				}
-				if (formatted.get(counter - 1).startsWith(".")
-						&& isLetter(sentences.charAt(formatted.get(counter - 2)
-								.length()))) {
-					formatted
-							.set(counter - 2, formatted.get(counter - 2) + ".");
-					formatted.set(counter - 1, formatted.get(counter - 1)
-							.substring(1, formatted.get(counter - 1).length()));
+
+				if (formatted.get(linesCounter - 1).startsWith(".")
+						&& isLetter(formatted.get(linesCounter - 2).charAt(
+								formatted.get(linesCounter - 2).length() - 1))) {
+					formatted.set(linesCounter - 2,
+							formatted.get(linesCounter - 2) + ".");
+					formatted.set(
+							linesCounter - 1,
+							formatted.get(linesCounter - 1).substring(1,
+									formatted.get(linesCounter - 1).length()));
 				}
 			}
 
-			if (formatted.get(counter - 1).endsWith("- ")
-					|| formatted.get(counter - 1).endsWith(" -")) {
-				formatted.set(counter - 1, formatted.get(counter - 1)
-						.substring(0, formatted.get(counter - 1).length() - 2));
+			if (formatted.get(linesCounter - 1).endsWith("- ")
+					|| formatted.get(linesCounter - 1).endsWith(" -")) {
+				formatted.set(
+						linesCounter - 1,
+						formatted.get(linesCounter - 1).substring(0,
+								formatted.get(linesCounter - 1).length() - 2));
 			}
-			if (formatted.get(counter - 1).endsWith(".-")) {
-				formatted.set(counter - 1, formatted.get(counter - 1)
-						.substring(0, formatted.get(counter - 1).length() - 1));
+			if (formatted.get(linesCounter - 1).endsWith(".-")) {
+				formatted.set(
+						linesCounter - 1,
+						formatted.get(linesCounter - 1).substring(0,
+								formatted.get(linesCounter - 1).length() - 1));
 			}
 
-			if (formatted.get(counter - 1).startsWith(" ")
-					|| formatted.get(counter - 1).startsWith("-")) {
-				formatted.set(counter - 1, formatted.get(counter - 1)
-						.substring(1, formatted.get(counter - 1).length()));
+			if (formatted.get(linesCounter - 1).startsWith(" ")
+					|| formatted.get(linesCounter - 1).startsWith("-")) {
+				formatted
+						.set(linesCounter - 1,
+								formatted.get(linesCounter - 1).substring(
+										1,
+										formatted.get(linesCounter - 1)
+												.length()));
 			}
 
 		}
 
-		System.out.println("formatted strings");
-		for (String s : formatted) {
-			System.out.println(s);
+		for (int a = 0; a < formatted.size; a++) {
+
+			int b = a;
+			int screen = 1;
+
+			while (b > maxLinesPerTestScreen - 1) {
+				b -= (maxLinesPerTestScreen);
+				screen++;
+			}
+
+			String s = formatted.get(a);
+			if (s.contains("<<||>>")) {
+
+				float x = variables.getSolvingScreenVocabularyPositionX()
+						+ (screen - 1) * variables.getScreenWidth();
+				float y = variables.getSolvingScreenVocabularyPositionY() - b
+						* solvingScreenVocabularySpanY - 45;
+
+				int iterator = 0;
+
+				while (iterator != s.indexOf("<<||>>")) {
+					if (s.charAt(iterator) == 'i' || s.charAt(iterator) == '.')
+						x += characterWidth * 0.1f;
+					else if (s.charAt(iterator) == 'r')
+						x += characterWidth * 0.25f;
+
+					else if (s.charAt(iterator) == ' '
+							|| s.charAt(iterator) == 't'
+							|| s.charAt(iterator) == 'l')
+						x += characterWidth * 0.465f;
+					else
+						x += characterWidth * 1.05f;
+
+					iterator++;
+				}
+
+				vocabularyPositions.add(new Vector2(x, y));
+			}
 		}
 	}
 
 	public Array<String> getFormatted() {
+
+		for (int a = 0; a < formatted.size; a++) {
+			if (formatted.get(a).contains("<<||>>"))
+				formatted.set(a, formatted.get(a).replace("<<||>>", "        "));
+		}
 		return formatted;
+	}
+
+	public Array<Vector2> getVocabularyPositions() {
+		return vocabularyPositions;
 	}
 
 	boolean isLetter(char letter) {
 		if (letter == '.' || letter == ',' || letter == ':' || letter == ';'
 				|| letter == ' ' || letter == '\t' || letter == '\r'
-				|| letter == '\n' || Character.isWhitespace(letter))
+				|| letter == '\n' || Character.isWhitespace(letter)
+				|| letter == '|')
 			return false;
 		else
 			return true;
