@@ -7,10 +7,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dbeef.speechlist.camera.Camera;
+import com.dbeef.speechlist.gui.SolutionInput;
 import com.dbeef.speechlist.logics.ActionManager;
 import com.dbeef.speechlist.screen.Screen;
 
 public class ScreenBoard implements com.badlogic.gdx.Screen {
+
+	SolutionInput solutionInput;
 
 	Screen gui;
 	Screen initial;
@@ -58,10 +61,11 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		viewport = new FillViewport(800, 480, camera);
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
+		solutionInput = new SolutionInput(game.getMainBackground(), 959);
+		
 		actionManager = new ActionManager(camera, guiCamera, initial, gui,
 				menuHome, menuTests, menuDownloads, menuBrief, solvingScreens,
-				game.getFonts(), game.getMainBackground());
-
+				game.getFonts(), game.getMainBackground(),solutionInput);
 	}
 
 	@Override
@@ -88,14 +92,15 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		batch.begin();
 
 		drawScreens(delta);
-
+		
 		batch.end();
 
 		batch.setProjectionMatrix(guiCamera.combined);
 		batch.begin();
 
 		drawGui(delta);
-
+		drawSolutionInput(delta);
+		
 		batch.end();
 
 	}
@@ -162,6 +167,10 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		menuBrief.render(batch, delta);
 		for (Screen screen : solvingScreens)
 			screen.render(batch, delta);
+	}
+	
+	void drawSolutionInput(float delta){
+		solutionInput.render(batch, delta);
 	}
 
 	void drawGui(float delta) {

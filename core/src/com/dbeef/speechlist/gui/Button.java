@@ -7,18 +7,37 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Button {
 
-	boolean showing = false;
+	boolean showing;
 	boolean selected = false;
 	boolean blinking = false;
 	float blinkTimer = 0;
 	float alphaMinimum = 0.5f;
 	float multiplier = 1;
-	float alpha = 1;
+	float alpha = 0;
 	Sprite image;
 	Rectangle mouse;
 	Rectangle bounds;
+	float x;
+	float y;
+
+	public void setTexture(Texture texture) {
+		image = new Sprite(texture);
+		image.setPosition(x, y);
+
+		mouse = new Rectangle();
+		mouse.setSize(1, 1);
+
+		bounds = new Rectangle();
+		bounds.setSize(image.getWidth(), image.getHeight());
+		bounds.setPosition(x, y);
+
+		showing = true;
+	}
 
 	public Button(int x, int y, Texture texture) {
+
+		this.x = x;
+		this.y = y;
 
 		image = new Sprite(texture);
 		image.setPosition(x, y);
@@ -34,6 +53,10 @@ public class Button {
 	}
 
 	public Button(float x, float y, Texture texture) {
+
+		this.x = x;
+		this.y = y;
+
 		image = new Sprite(texture);
 		image.setPosition(x, y);
 

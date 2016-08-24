@@ -1,12 +1,12 @@
 {
-  "sentences": "This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text. This is sample text.",
+  "sentences": "In the 30s, BMW <<||>> a new car, the Wartburg DA3, which was also incredibly successful. The 60s were an incredibly <<||>> time in BMW’s History. In fact, the company had become so <<||>> that the Munic Plant couldn’t handle the production and consumer demands. In 1941, Peugeot introduced the VLV, a small <<||>> car, as a solution to fuel restrictions. However, due to the Second World War, the company was forced to <<||>> production of cars. Regular production began again in mid 1946 with the introduction of the Peugeot 203, which set new sales records and remained in <<||>> till the 60s.",
   "vocabulary": [
-    "Germany",
-    "Spain",
-    "Asia",
-    "continent",
-    "Moscow",
-    "France"
+    "introduced",
+    "successfull",
+    "popular",
+    "electric",
+    "cease",
+    "production"
   ],
   "name": "Cars test",
   "id": 1}

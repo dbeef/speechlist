@@ -3,7 +3,7 @@ package com.dbeef.speechlist.utils;
 public class Variables {
 
 	static final int characterWidth = 19;
-	static final int maxCharPerTestLine = 32;
+	static final int maxCharPerTestLine = 30;
 	static final int maxLinesPerTestScreen = 11;
 	static final int guiCameraBriefPosition = 1175;
 	static final int guiCameraPosition = 720;

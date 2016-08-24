@@ -40,7 +40,7 @@ public class SentencesFormatter {
 
 				if (charPosition < sentences.length()) {
 					charPosition = 0;
-					while (sentences.charAt(charPosition) != '.') {
+					while (sentences.charAt(charPosition) != '.' && charPosition <= maxCharPerTestLine) {
 						charPosition++;
 					}
 					formatted.add(new String(sentences.substring(0,
@@ -62,7 +62,8 @@ public class SentencesFormatter {
 			}
 
 			if (charPosition < sentences.length()
-					&& isLetter(sentences.charAt(charPosition)) == false) {
+					&& isLetter(sentences.charAt(charPosition)) == false
+					&& isSpecialCharacter(sentences.charAt(charPosition)) == false) {
 				formatted.add(new String(sentences.substring(0, charPosition)));
 				System.out.println("Sentence added:"
 						+ new String(sentences.substring(0, charPosition)));
@@ -70,6 +71,14 @@ public class SentencesFormatter {
 				sentences = sentences.substring(charPosition);
 				System.out.println("sentences after:" + sentences);
 				System.out.println("2");
+			} else if (charPosition < sentences.length()
+					&& isLetter(sentences.charAt(charPosition)) == false
+					&& isSpecialCharacter(sentences.charAt(charPosition)) == true) {
+				while (isSpecialCharacter(sentences.charAt(charPosition)) == true) {
+					charPosition--;
+				}
+				formatted.add(new String(sentences.substring(0, charPosition)));
+				sentences = sentences.substring(charPosition);
 			} else if (charPosition < sentences.length()
 					&& isLetter(sentences.charAt(charPosition)) == true) {
 				formatted.add(new String(sentences.substring(0,
@@ -96,6 +105,7 @@ public class SentencesFormatter {
 			}
 
 			if (formatted.size > 1) {
+
 				if (formatted.get(linesCounter - 2).endsWith("-")
 						&& isLetter(formatted.get(linesCounter - 1).charAt(0)) == false) {
 					formatted.set(
@@ -117,6 +127,16 @@ public class SentencesFormatter {
 							formatted.get(linesCounter - 1).substring(1,
 									formatted.get(linesCounter - 1).length()));
 				}
+
+				if (formatted.get(linesCounter - 2).startsWith(", ")) {
+					System.out.println("warning:"
+							+ formatted.get(linesCounter - 2));
+					formatted.set(
+							linesCounter - 2,
+							formatted.get(linesCounter - 2).substring(2,
+									formatted.get(linesCounter - 2).length()));
+				}
+
 			}
 
 			if (formatted.get(linesCounter - 1).endsWith("- ")
@@ -134,7 +154,8 @@ public class SentencesFormatter {
 			}
 
 			if (formatted.get(linesCounter - 1).startsWith(" ")
-					|| formatted.get(linesCounter - 1).startsWith("-")) {
+					|| formatted.get(linesCounter - 1).startsWith("-")
+					|| formatted.get(linesCounter - 1).startsWith(",")) {
 				formatted
 						.set(linesCounter - 1,
 								formatted.get(linesCounter - 1).substring(
@@ -190,7 +211,8 @@ public class SentencesFormatter {
 
 		for (int a = 0; a < formatted.size; a++) {
 			if (formatted.get(a).contains("<<||>>"))
-				formatted.set(a, formatted.get(a).replace("<<||>>", "        "));
+				formatted
+						.set(a, formatted.get(a).replace("<<||>>", "        "));
 		}
 		return formatted;
 	}
@@ -199,11 +221,20 @@ public class SentencesFormatter {
 		return vocabularyPositions;
 	}
 
+	boolean isSpecialCharacter(char letter) {
+		if (letter == '|' || letter == '>' || letter == '<')
+			return true;
+		else
+			return false;
+	}
+
 	boolean isLetter(char letter) {
 		if (letter == '.' || letter == ',' || letter == ':' || letter == ';'
 				|| letter == ' ' || letter == '\t' || letter == '\r'
 				|| letter == '\n' || Character.isWhitespace(letter)
-				|| letter == '|')
+				|| letter == '|' || letter == '>' || letter == '<'
+				|| letter == '(' || letter == ')' || letter == '-'
+				|| letter == (char) (39))
 			return false;
 		else
 			return true;

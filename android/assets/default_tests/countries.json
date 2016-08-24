@@ -1,0 +1,13 @@
+{
+  "sentences": "Berlin is the capital of <<||>>. Country next to France, on the south, is <<||>>. The biggest continent is <<||>>. Africa is also a <<||>>. The capital of Russia is <<||>>. Very famous landmark, known as Eiffel Tower, places in <<||>>.",
+  "vocabulary": [
+    "Germany",
+    "Spain",
+    "Asia",
+    "continent",
+    "Moscow",
+    "France"
+  ],
+  "name": "Countries test",
+  "id": 5
+}

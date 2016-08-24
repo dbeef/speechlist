@@ -15,7 +15,8 @@ public class TestButton extends Button {
 	public BitmapFont font;
 	Button tick;
 	boolean highlightButton = false;
-
+	float fontAlpha = 1;
+	
 	public TestButton(int x, int y, Texture texture, String name) {
 		super(x, y, texture);
 		this.name = name;
@@ -34,6 +35,7 @@ public class TestButton extends Button {
 		image.setAlpha(alpha);
 		image.draw(batch);
 
+		font.setColor(font.getColor().r,font.getColor().g,font.getColor().b, fontAlpha);
 		font.draw(batch, name, (float) this.image.getX() + 15,
 				(float) this.image.getY() + 55);
 
@@ -146,5 +148,8 @@ public class TestButton extends Button {
 
 	public boolean isHighlighted() {
 		return highlightButton;
+	}
+	public void setFontAlpha(float fontAlpha){
+		this.fontAlpha = fontAlpha;
 	}
 }

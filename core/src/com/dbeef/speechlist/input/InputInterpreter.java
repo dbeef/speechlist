@@ -12,6 +12,8 @@ import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
 import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
+import com.dbeef.speechlist.gui.SolutionInput;
+import com.dbeef.speechlist.gui.SolutionInputButton;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.text.DefaultStringsSetter;
@@ -21,8 +23,10 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
 
+	SolutionInput solutionInput;
+	Array<TestButton> vocabularyButtons;
 	AssetsManager assetsManager;
-	
+
 	int currentSolvingScreen;
 
 	Variables variables = new Variables();
@@ -45,6 +49,7 @@ public class InputInterpreter implements GestureListener {
 	Button left;
 	Button right;
 	Array<TestButton> testsButtons;
+	Array<SolutionInputButton> solvingButtons;
 	Array<BitmapFont> fonts;
 	Texture mainBackground;
 	Screen menuBrief;
@@ -152,6 +157,7 @@ public class InputInterpreter implements GestureListener {
 				camera.move(variables.getDownloadsScreenPosition());
 			}
 
+			manageVocabularyButtonsCollisions((int) vec.x, (int) vec.y);
 			manageBriefButtonsCollisions((int) vec.x, (int) vec.y);
 
 			Vector3 vecNonGui = new Vector3();
@@ -160,6 +166,7 @@ public class InputInterpreter implements GestureListener {
 			camera.unproject(vecNonGui);
 
 			manageTestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+			manageSolvingButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
 
 			tapX = x;
 			tapY = y;
@@ -181,6 +188,20 @@ public class InputInterpreter implements GestureListener {
 		if (Math.abs(velocityX) > Math.abs(velocityY) && assetsLoaded == true) {
 			if (velocityX > 0) {
 
+				if (camera.position.x > variables.getSolvingScreenPosition()) {
+					left.blink();
+
+					if (currentSolvingScreen > 1)
+						camera.move(variables.getSphinxScreenPosition()
+								+ (currentSolvingScreen - 1)
+								* variables.getScreenWidth()
+								- variables.getScreenWidth());
+
+					if (solvingScreens.size - 1 > 1 && currentSolvingScreen > 1)
+						currentSolvingScreen--;
+
+				}
+
 				if (tests.getSelection() == true) {
 					home.select();
 					tests.deselect();
@@ -195,6 +216,17 @@ public class InputInterpreter implements GestureListener {
 				}
 
 			} else if (velocityX < 0) {
+
+				if (camera.position.x > variables.getSolvingScreenPosition()) {
+					right.blink();
+					if (currentSolvingScreen + 1 <= solvingScreens.size)
+						currentSolvingScreen++;
+					camera.move(variables.getSphinxScreenPosition()
+							+ (currentSolvingScreen - 1)
+							* variables.getScreenWidth());
+
+				}
+
 				if (tests.getSelection() == true) {
 					home.deselect();
 					tests.deselect();
@@ -333,6 +365,9 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	void manageBriefButtonsCollisions(float x, float y) {
+		
+		System.out.println(currentSolvingScreen);
+		
 		if (home.getSelection() == false && tests.getSelection() == false
 				&& downloads.getSelection() == false) {
 			if (decline.checkCollision((int) x, (int) y) == true) {
@@ -347,31 +382,56 @@ public class InputInterpreter implements GestureListener {
 			}
 
 			if (accept.checkCollision((int) x, (int) y) == true) {
-				accept.blink();
-				currentSolvingScreen = 1;
-				camera.move(variables.getSphinxScreenPosition());
+				if (camera.position.x < variables.getSolvingScreenPosition()) {
+					accept.blink();
+					currentSolvingScreen = 1;
+					camera.move(variables.getSphinxScreenPosition());
+
+					for (SolutionInputButton solutionInputButton : solvingButtons) {
+						solutionInputButton.setClicked(false);
+						solutionInputButton
+								.setTexture(assetsManager.wordNotSet);
+					}
+				} else {
+					int counter = 0;
+					for (SolutionInputButton solutionInputButton : solvingButtons)
+						if (solutionInputButton.getClicked() == true)
+							counter++;
+					if (counter == solvingButtons.size) {
+						camera.move(variables.getBriefScreenPosition());
+						menuBrief
+								.add(Float.toString(solutionInput.getSummary() * 100)
+										+ "%", new Vector2(2085, 210),
+										new Vector2(1, 1), new Vector3(1, 1, 1));
+
+					}
+				}
+
 			}
 			if (left.checkCollision((int) x, (int) y) == true) {
 				if (camera.position.x > variables.getSolvingScreenPosition()) {
 					left.blink();
-					if (solvingScreens.size - 1 > 1)
-						currentSolvingScreen--;
 
 					if (currentSolvingScreen > 1)
 						camera.move(variables.getSphinxScreenPosition()
 								+ (currentSolvingScreen - 1)
 								* variables.getScreenWidth()
 								- variables.getScreenWidth());
-				}
+							}
+				if (solvingScreens.size > 1 && currentSolvingScreen > 1)
+					currentSolvingScreen--;
+
 			}
 			if (right.checkCollision((int) x, (int) y) == true) {
 				if (camera.position.x > variables.getSolvingScreenPosition()) {
+
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
 						currentSolvingScreen++;
 					camera.move(variables.getSphinxScreenPosition()
 							+ (currentSolvingScreen - 1)
 							* variables.getScreenWidth());
+
 				}
 			}
 		}
@@ -429,7 +489,7 @@ public class InputInterpreter implements GestureListener {
 		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
 				.getVocabulary().length; c++) {
 
-			int span = (17 - formatted[c].length()) * 11;
+			int span = Math.abs(480 - (formatted[c].length()) * 11) - 300;
 
 			menuBrief.add(formatted[c], new Vector2(1975 + span, 500 - c * 60),
 					new Vector2(1, 1), new Vector3(1, 1, 1));
@@ -443,20 +503,28 @@ public class InputInterpreter implements GestureListener {
 
 	}
 
-	public void setAssetsManager(AssetsManager assetsManager){
+	public void setAssetsManager(AssetsManager assetsManager) {
 		this.assetsManager = assetsManager;
 	}
-	
+
 	void addMenuSphinxStrings(int clickedButtonIndex) {
 
 		String sentences = testsManager.getTest(
 				testsButtons.get(clickedButtonIndex).getName()).getSentences();
 
 		GeneratedTestStringsSetter generatedTestStringsSetter = new GeneratedTestStringsSetter(
-				sentences, fonts, mainBackground, assetsManager.wordSet, assetsManager.wordNotSet);
+				sentences, fonts, mainBackground, assetsManager.wordSet,
+				assetsManager.wordNotSet);
+
 		solvingScreens.clear();
 		solvingScreens.addAll(generatedTestStringsSetter.getSolvingScreens());
+		solvingButtons = generatedTestStringsSetter.getSolvingButtons();
 
+		solutionInput
+				.createButtons(testsManager.getTest(
+						testsButtons.get(clickedButtonIndex).getName())
+						.getVocabulary());
+		vocabularyButtons = solutionInput.getVocabularyButtons();
 	}
 
 	void manageSheetSliding() {
@@ -483,6 +551,36 @@ public class InputInterpreter implements GestureListener {
 
 	public void setInitialCameraMovementsDone() {
 		initialCameraMovements = true;
+	}
+
+	void manageSolvingButtonsCollisions(int x, int y) {
+		if (solvingButtons != null && solutionInput.getVisibility() == false
+				&& solutionInput.isAlphaZero() == true) {
+			for (int a = 0; a < solvingButtons.size; a++)
+				if (solvingButtons.get(a).checkCollision(x, y) == true) {
+					solvingButtons.get(a).setTexture(assetsManager.wordSet);
+					solvingButtons.get(a).blink();
+					System.out.println("showing");
+					solutionInput.show(a);
+				}
+		}
+	}
+
+	void manageVocabularyButtonsCollisions(int x, int y) {
+		if (vocabularyButtons != null && solutionInput.getVisibility() == true) {
+			for (int a = 0; a < vocabularyButtons.size; a++) {
+				if (vocabularyButtons.get(a).checkCollision(x, y) == true) {
+
+					vocabularyButtons.get(a).blink();
+					solutionInput.addAnswer(vocabularyButtons.get(a).getName());
+					solutionInput.hide();
+				}
+			}
+		}
+	}
+
+	public void setSolutionInput(SolutionInput solutionInput) {
+		this.solutionInput = solutionInput;
 	}
 }
 /*

@@ -9,6 +9,7 @@ import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
 import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
+import com.dbeef.speechlist.gui.SolutionInput;
 import com.dbeef.speechlist.gui.TestButton;
 import com.dbeef.speechlist.input.InputInterpreter;
 import com.dbeef.speechlist.internet.DownloadableTestsManager;
@@ -46,7 +47,7 @@ public class ActionManager {
 	Array<Screen> solvingScreens;
 	Array<BitmapFont> fonts;
 	Texture mainBackground;
-
+	SolutionInput solutionInput;
 	float timerLoading = 0;
 
 	boolean addedDownloadables = false;
@@ -63,7 +64,7 @@ public class ActionManager {
 			Screen gui, Screen menuHome, Screen menuTests,
 			Screen menuDownloads, Screen menuBrief,
 			Array<Screen> solvingScreens, Array<BitmapFont> fonts,
-			Texture mainBackground) {
+			Texture mainBackground, SolutionInput solutionInput) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
@@ -75,6 +76,7 @@ public class ActionManager {
 		this.solvingScreens = solvingScreens;
 		this.fonts = fonts;
 		this.mainBackground = mainBackground;
+		this.solutionInput = solutionInput;
 		client = new RESTClient();
 		client.start();
 	}
@@ -129,6 +131,9 @@ public class ActionManager {
 
 	void addAssetsToScreens() {
 		if (assetsLoaded == true && readyToGoMenu == false) {
+			solutionInput.setButtonTick(assetsManager.tick);
+			solutionInput.setButtonTexture(assetsManager.glareButtonVignette);
+			solutionInput.setButtonFont(fonts.get(3));
 			initiateGuiButtons();
 			initiateTestsButtons();
 			addMenuHomeStaticElements();
@@ -152,6 +157,7 @@ public class ActionManager {
 			inputInterpreter.loadFonts(fonts);
 			inputInterpreter.loadMainBackground(mainBackground);
 			inputInterpreter.setAssetsManager(assetsManager);
+			inputInterpreter.setSolutionInput(solutionInput);
 			initiatedInput = true;
 		}
 
@@ -328,5 +334,4 @@ public class ActionManager {
 		gui.add(left);
 		gui.add(right);
 	}
-
 }
