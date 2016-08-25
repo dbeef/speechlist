@@ -21,6 +21,8 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 	Screen menuTests;
 	Screen menuDownloads;
 	Screen menuBrief;
+	Screen[] tests_local;
+	Screen[] tests_server;
 	Array<Screen> solvingScreens;
 
 	SpriteBatch batch;
@@ -46,6 +48,17 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		menuBrief = game.getMenuBrief();
 		solvingScreens = game.getSolvingScreens();
 
+		tests_local = new Screen[4];
+		for (int a = 0; a < tests_local.length; a++) {
+			tests_local[a] = new Screen(game.getFonts());
+			tests_local[a].hide();
+		}
+		tests_server = new Screen[4];
+		for (int a = 0; a < tests_server.length; a++) {
+			tests_server[a] = new Screen(game.getFonts());
+			tests_server[a].hide();
+		}
+
 		camera = new Camera(480, 800);
 		camera.position.x = -240;
 		camera.position.y = 400;
@@ -62,10 +75,11 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		guiViewport = new FillViewport(800, 480, guiCamera);
 
 		solutionInput = new SolutionInput(game.getMainBackground(), 959);
-		
+
 		actionManager = new ActionManager(camera, guiCamera, initial, gui,
 				menuHome, menuTests, menuDownloads, menuBrief, solvingScreens,
-				game.getFonts(), game.getMainBackground(),solutionInput);
+				game.getFonts(), game.getMainBackground(), solutionInput,
+				tests_local, tests_server);
 	}
 
 	@Override
@@ -92,7 +106,7 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		batch.begin();
 
 		drawScreens(delta);
-		
+
 		batch.end();
 
 		batch.setProjectionMatrix(guiCamera.combined);
@@ -100,7 +114,7 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 
 		drawGui(delta);
 		drawSolutionInput(delta);
-		
+
 		batch.end();
 
 	}
@@ -165,11 +179,16 @@ public class ScreenBoard implements com.badlogic.gdx.Screen {
 		menuTests.render(batch, delta);
 		menuDownloads.render(batch, delta);
 		menuBrief.render(batch, delta);
+
+		for (int a = 0; a < tests_local.length; a++)
+			tests_local[a].render(batch, delta);
+		for (int a = 0; a < tests_server.length; a++)
+			tests_server[a].render(batch, delta);
 		for (Screen screen : solvingScreens)
 			screen.render(batch, delta);
 	}
-	
-	void drawSolutionInput(float delta){
+
+	void drawSolutionInput(float delta) {
 		solutionInput.render(batch, delta);
 	}
 

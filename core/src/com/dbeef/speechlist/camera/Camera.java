@@ -98,4 +98,10 @@ public class Camera extends OrthographicCamera {
 		else
 			return true;
 	}
+	public void setAccumulatedPlus(float accumulatedPlus){
+		this.accumulatedPlus = accumulatedPlus;
+	}
+	public void setAccumulatedMinus(float accumulatedMinus){
+		this.accumulatedMinus = accumulatedMinus;
+	}
 }

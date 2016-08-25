@@ -11,12 +11,13 @@ public class TestButton extends Button {
 	double gravityTimer = 0;
 	double originPositionX;
 	double originPositionY;
-	private String name;
-	public BitmapFont font;
-	Button tick;
-	boolean highlightButton = false;
+	boolean highlightButton;
 	float fontAlpha = 1;
-	
+	String name;
+	String category;
+	BitmapFont font;
+	Button tick;
+
 	public TestButton(int x, int y, Texture texture, String name) {
 		super(x, y, texture);
 		this.name = name;
@@ -35,7 +36,8 @@ public class TestButton extends Button {
 		image.setAlpha(alpha);
 		image.draw(batch);
 
-		font.setColor(font.getColor().r,font.getColor().g,font.getColor().b, fontAlpha);
+		font.setColor(font.getColor().r, font.getColor().g, font.getColor().b,
+				fontAlpha);
 		font.draw(batch, name, (float) this.image.getX() + 15,
 				(float) this.image.getY() + 55);
 
@@ -139,17 +141,33 @@ public class TestButton extends Button {
 		return name;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public void highlight() {
 		highlightButton = true;
 	}
-	public void lowlight(){
+
+	public void lowlight() {
 		highlightButton = false;
 	}
 
 	public boolean isHighlighted() {
 		return highlightButton;
 	}
-	public void setFontAlpha(float fontAlpha){
+
+	public void setFontAlpha(float fontAlpha) {
 		this.fontAlpha = fontAlpha;
 	}
+
+	public float getFontAlpha(){
+	return fontAlpha;
+	}		
+	
+	
 }

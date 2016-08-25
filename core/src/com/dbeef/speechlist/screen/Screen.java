@@ -20,14 +20,16 @@ public class Screen {
 	Array<Vector3> stringsColors;
 	Array<Sprite> sprites;
 	Array<Button> buttons;
+	Array<TestButton> testButtons;
 	BitmapFont ralewayBlack42;
 	BitmapFont ralewayThinItalic12;
 	BitmapFont ralewayThinItalic16;
 	BitmapFont ralewayThinItalic32;
 	BitmapFont ralewayRegular32;
 	BitmapFont ralewayMedium38;
-
+	boolean isVisible = true;
 	boolean render = true;
+	float screenAlpha = 1;
 
 	public Screen(Array<BitmapFont> fonts) {
 		textures = new Array<Texture>();
@@ -36,6 +38,7 @@ public class Screen {
 		stringsPositions = new Array<Vector2>();
 		sprites = new Array<Sprite>();
 		buttons = new Array<Button>();
+		testButtons = new Array<TestButton>();
 		stringsColors = new Array<Vector3>();
 		stringsFontAndAlpha = new Array<Vector2>();
 
@@ -70,16 +73,26 @@ public class Screen {
 
 	public void add(TestButton button) {
 		button.loadFont(ralewayMedium38);
-		buttons.add(button);
+		testButtons.add(button);
 	}
 
 	public void render(Batch batch, float delta) {
 		if (render == true) {
 			updateTimers(delta);
-			renderTextures(batch);
-			renderStrings(batch);
-			renderButtons(batch, delta);
+			if (screenAlpha > 0) {
+				renderTextures(batch);
+				renderStrings(batch);
+				renderButtons(batch, delta);
+			}
 		}
+	}
+
+	public void hide() {
+		isVisible = false;
+	}
+
+	public void show() {
+		isVisible = true;
 	}
 
 	public void removeAllTextures() {
@@ -106,13 +119,16 @@ public class Screen {
 
 	public void renderTextures(Batch batch) {
 		for (int a = 0; a < textures.size; a++) {
+			batch.setColor(1, 1, 1, screenAlpha);
 			batch.draw(textures.get(a), texturesPositions.get(a).x,
 					texturesPositions.get(a).y);
+			batch.setColor(1, 1, 1, 1);
 		}
 	}
 
 	public void renderSprites(Batch batch) {
 		for (int a = 0; a < sprites.size; a++) {
+			sprites.get(a).setAlpha(screenAlpha);
 			sprites.get(a).draw(batch);
 		}
 	}
@@ -122,9 +138,11 @@ public class Screen {
 
 			switch ((int) stringsFontAndAlpha.get(a).x) {
 			case 1: {
-				ralewayBlack42.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayBlack42.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayBlack42.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
@@ -132,45 +150,55 @@ public class Screen {
 			}
 
 			case 2: {
-				ralewayThinItalic16.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayThinItalic16.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayThinItalic16.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}
 			case 3: {
-				ralewayThinItalic32.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayThinItalic32.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayThinItalic32.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}
 			case 4: {
-				ralewayRegular32.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayRegular32.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayRegular32.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}
 			case 5: {
-				ralewayMedium38.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayMedium38.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayMedium38.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
 				break;
 			}
 			case 6: {
-				ralewayThinItalic12.setColor(stringsColors.get(a).x,
-						stringsColors.get(a).y, stringsColors.get(a).z,
-						stringsFontAndAlpha.get(a).y);
+				if (stringsColors.get(a).z - (1 - screenAlpha) > 0)
+					ralewayThinItalic12.setColor(stringsColors.get(a).x,
+							stringsColors.get(a).y, stringsColors.get(a).z
+									- (1 - screenAlpha),
+							stringsFontAndAlpha.get(a).y);
 
 				ralewayThinItalic12.draw(batch, strings.get(a),
 						stringsPositions.get(a).x, stringsPositions.get(a).y);
@@ -185,7 +213,26 @@ public class Screen {
 
 	public void renderButtons(Batch batch, float delta) {
 		for (int a = 0; a < buttons.size; a++) {
-			buttons.get(a).render(batch, delta);
+			if (screenAlpha > 0 && screenAlpha < 1) {
+				if (screenAlpha <= buttons.get(a).getAlphaMinimum())
+					buttons.get(a).setAlpha(screenAlpha);
+				else
+					buttons.get(a).setAlpha(buttons.get(a).getAlphaMinimum());
+			}
+			if (screenAlpha > 0)
+				buttons.get(a).render(batch, delta);
+
+		}
+		for (int a = 0; a < testButtons.size; a++) {
+			if (screenAlpha > 0) {
+
+				testButtons.get(a).setAlphaMinimum(
+						testButtons.get(a).getAlphaMinimum()
+								- (1 - screenAlpha));
+				testButtons.get(a).setFontAlpha(screenAlpha);
+				testButtons.get(a).render(batch, delta);
+
+			}
 		}
 	}
 
@@ -198,6 +245,22 @@ public class Screen {
 	}
 
 	public void updateTimers(float delta) {
+
+		if (isVisible == true) {
+			if (screenAlpha < 1f)
+				screenAlpha += 3f * delta;
+			if (screenAlpha > 1f)
+				screenAlpha = 1f;
+		} else {
+			if (screenAlpha > 0f)
+				screenAlpha -= 3f * delta;
+			if (screenAlpha < 0f)
+				screenAlpha = 0f;
+		}
+
+		if (screenAlpha == 0)
+			hide();
+
 	}
 
 	public void dispose() {
@@ -238,5 +301,9 @@ public class Screen {
 				return false;
 		}
 		return true;
+	}
+
+	public boolean getVisibility() {
+		return isVisible;
 	}
 }

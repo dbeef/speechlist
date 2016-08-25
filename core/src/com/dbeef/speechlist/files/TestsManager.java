@@ -105,6 +105,7 @@ public class TestsManager {
 				if (new Variables().getDebugMode() == true) {
 					System.out.println("Model name:" + model.getName());
 					System.out.println("Model id:" + model.getId());
+					System.out.println("Test category: " + model.getCategory());
 
 					System.out.println(model.getSentences());
 

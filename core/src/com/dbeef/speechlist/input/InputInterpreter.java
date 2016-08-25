@@ -23,6 +23,11 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
 
+	Button testsBackButton;
+	Screen[] tests_local;
+	Screen[] tests_server;
+	Button[] testCategories_local;
+	Button[] testCategories_server;
 	SolutionInput solutionInput;
 	Array<TestButton> vocabularyButtons;
 	AssetsManager assetsManager;
@@ -167,6 +172,8 @@ public class InputInterpreter implements GestureListener {
 
 			manageTestsButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
 			manageSolvingButtonsCollisions((int) vecNonGui.x, (int) vecNonGui.y);
+			manageCategoriesButtonsCollisions((int) vecNonGui.x,
+					(int) vecNonGui.y);
 
 			tapX = x;
 			tapY = y;
@@ -188,7 +195,8 @@ public class InputInterpreter implements GestureListener {
 		if (Math.abs(velocityX) > Math.abs(velocityY) && assetsLoaded == true) {
 			if (velocityX > 0) {
 
-				if (camera.position.x > variables.getSolvingScreenPosition()) {
+				if (camera.position.x > variables.getSolvingScreenPosition()
+						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
 					if (currentSolvingScreen > 1)
@@ -217,7 +225,8 @@ public class InputInterpreter implements GestureListener {
 
 			} else if (velocityX < 0) {
 
-				if (camera.position.x > variables.getSolvingScreenPosition()) {
+				if (camera.position.x > variables.getSolvingScreenPosition()
+						&& solutionInput.getVisibility() == false) {
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
 						currentSolvingScreen++;
@@ -365,12 +374,13 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	void manageBriefButtonsCollisions(float x, float y) {
-		
+
 		System.out.println(currentSolvingScreen);
-		
+
 		if (home.getSelection() == false && tests.getSelection() == false
 				&& downloads.getSelection() == false) {
-			if (decline.checkCollision((int) x, (int) y) == true) {
+			if (decline.checkCollision((int) x, (int) y) == true
+					&& solutionInput.getVisibility() == false) {
 				camera.move(variables.getTestsScreenPosition());
 				decline.blink();
 				tests.select();
@@ -392,16 +402,22 @@ public class InputInterpreter implements GestureListener {
 						solutionInputButton
 								.setTexture(assetsManager.wordNotSet);
 					}
-				} else {
+				} else if (solutionInput.getVisibility() == false) {
 					int counter = 0;
 					for (SolutionInputButton solutionInputButton : solvingButtons)
 						if (solutionInputButton.getClicked() == true)
 							counter++;
 					if (counter == solvingButtons.size) {
+						String percentage = Float.toString(solutionInput.getSummary() * 100);
+						percentage = percentage.substring(0, percentage.indexOf(".")) + "%";
+						int position = 0;
+						if(percentage.length() == 3)
+							position = 2120;
+						if(percentage.length() == 2)
+							position = 2130;
 						camera.move(variables.getBriefScreenPosition());
 						menuBrief
-								.add(Float.toString(solutionInput.getSummary() * 100)
-										+ "%", new Vector2(2085, 210),
+								.add(percentage, new Vector2(position, 210),
 										new Vector2(1, 1), new Vector3(1, 1, 1));
 
 					}
@@ -409,7 +425,8 @@ public class InputInterpreter implements GestureListener {
 
 			}
 			if (left.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x > variables.getSolvingScreenPosition()) {
+				if (camera.position.x > variables.getSolvingScreenPosition()
+						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
 					if (currentSolvingScreen > 1)
@@ -417,13 +434,14 @@ public class InputInterpreter implements GestureListener {
 								+ (currentSolvingScreen - 1)
 								* variables.getScreenWidth()
 								- variables.getScreenWidth());
-							}
+				}
 				if (solvingScreens.size > 1 && currentSolvingScreen > 1)
 					currentSolvingScreen--;
 
 			}
 			if (right.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x > variables.getSolvingScreenPosition()) {
+				if (camera.position.x > variables.getSolvingScreenPosition()
+						&& solutionInput.getVisibility() == false) {
 
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
@@ -456,22 +474,27 @@ public class InputInterpreter implements GestureListener {
 
 	void manageTestButtonsHighlighting(float x, float y) {
 		boolean anyCollisions = false;
-		for (int a = 0; a < testsButtons.size; a++) {
-			if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
-				anyCollisions = true;
-				for (int b = 0; b < testsButtons.size; b++)
-					if (a != b)
-						testsButtons.get(b).deselect();
+		boolean anyCategorySelected = false;
+		for (int a = 0; a < tests_local.length; a++)
+			if (tests_local[a].getVisibility() == true)
+				anyCategorySelected = true;
+		if (anyCategorySelected == true) {
+			for (int a = 0; a < testsButtons.size; a++) {
+				if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
+					anyCollisions = true;
+					for (int b = 0; b < testsButtons.size; b++)
+						if (a != b)
+							testsButtons.get(b).deselect();
 
-				if (testsButtons.get(a).isHighlighted() == false)
-					testsButtons.get(a).reverseSelection();
+					if (testsButtons.get(a).isHighlighted() == false)
+						testsButtons.get(a).reverseSelection();
+				}
+			}
+			if (anyCollisions == false) {
+				for (int a = 0; a < testsButtons.size; a++)
+					testsButtons.get(a).deselect();
 			}
 		}
-		if (anyCollisions == false) {
-			for (int a = 0; a < testsButtons.size; a++)
-				testsButtons.get(a).deselect();
-		}
-
 	}
 
 	void addMenuBriefStrings(int a) {
@@ -566,11 +589,38 @@ public class InputInterpreter implements GestureListener {
 		}
 	}
 
+	void manageCategoriesButtonsCollisions(int x, int y) {
+		boolean stop = false;
+		for (int a = 0; a < tests_local.length; a++)
+			if (tests_local[a].getVisibility() == true)
+				stop = true;
+		for (int a = 0; a < testCategories_local.length; a++)
+			if (testCategories_local[a].checkCollision(x, y) == true
+					&& stop == false) {
+				testCategories_local[a].blink();
+
+				for (int b = 0; b < tests_local.length; b++)
+					tests_local[b].hide();
+
+				tests_local[a].show();
+			}
+		for (int a = 0; a < testCategories_server.length; a++)
+			if (testCategories_local[a].checkCollision(x, y) == true) {
+				testCategories_local[a].blink();
+			}
+
+		if (testsBackButton.checkCollision(x, y) == true && stop == true) {
+			testsBackButton.blink();
+			for (int b = 0; b < tests_local.length; b++)
+				tests_local[b].hide();
+		}
+
+	}
+
 	void manageVocabularyButtonsCollisions(int x, int y) {
 		if (vocabularyButtons != null && solutionInput.getVisibility() == true) {
 			for (int a = 0; a < vocabularyButtons.size; a++) {
 				if (vocabularyButtons.get(a).checkCollision(x, y) == true) {
-
 					vocabularyButtons.get(a).blink();
 					solutionInput.addAnswer(vocabularyButtons.get(a).getName());
 					solutionInput.hide();
@@ -581,6 +631,19 @@ public class InputInterpreter implements GestureListener {
 
 	public void setSolutionInput(SolutionInput solutionInput) {
 		this.solutionInput = solutionInput;
+	}
+
+	public void setTestCategories(Button[] testCategories_local,
+			Button[] testCategories_server) {
+		this.testCategories_local = testCategories_local;
+		this.testCategories_server = testCategories_server;
+	}
+
+	public void setTestScreens(Screen[] tests_local, Screen[] tests_server,
+			Button testsBackButton) {
+		this.tests_local = tests_local;
+		this.tests_server = tests_server;
+		this.testsBackButton = testsBackButton;
 	}
 }
 /*

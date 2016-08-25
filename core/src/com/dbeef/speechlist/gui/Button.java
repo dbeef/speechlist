@@ -159,4 +159,14 @@ public class Button {
 	public void blink() {
 		blinking = true;
 	}
+
+	public float getAlphaMinimum() {
+		return alphaMinimum;
+	}
+	public void setAlpha(float alpha){
+		this.alpha = alpha;
+	}
+	public float getAlpha(){
+		return alpha;
+	}
 }

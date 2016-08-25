@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.dbeef.speechlist.utils.Variables;
 
-public class AssetsManager extends Thread{
+public class AssetsManager extends Thread {
 
 	public Texture left;
 	public Texture right;
@@ -21,51 +21,66 @@ public class AssetsManager extends Thread{
 	public Texture cross;
 	public Texture wordSet;
 	public Texture wordNotSet;
+	public Texture various;
+	public Texture tenses;
+	public Texture idioms;
+	public Texture vocabulary;
+	public Texture mainBackground_cut;
 
 	public boolean loaded;
-	
-public void run(){
-	
-	if (new Variables().getDebugMode() == true)
-		System.out.println("Started loading assets.");
 
-	glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
-	home = new Texture("icons/home.png");
-	tick = new Texture("icons/tick.png");
-	pencil = new Texture("icons/pencil.png");
-	cloud = new Texture("icons/cloud.png");
-	logoLittle = new Texture("icons/speechlistlogolittle.png");
-	clock = new Texture("icons/clock.png");
-	chart = new Texture("icons/chart.png");
-	checked = new Texture("icons/checked.png");
-	sadPhone = new Texture("icons/sadphone.png");
-	cross = new Texture("icons/cross.png");
-	left = new Texture("icons/left.png");
-	right = new Texture("icons/right.png");
-	wordSet = new Texture("icons/wordSet.png");
-	wordNotSet = new Texture("icons/wordNotSet.png");
+	public void run() {
 
-	glareButtonVignette.setFilter(TextureFilter.Linear,
-			TextureFilter.Linear);
-	home.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	tick.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	pencil.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	cloud.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	logoLittle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	clock.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	left.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	right.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	wordSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	wordNotSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		if (new Variables().getDebugMode() == true)
+			System.out.println("Started loading assets.");
 
-	loaded = true;
+		glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
+		home = new Texture("icons/home.png");
+		tick = new Texture("icons/tick.png");
+		pencil = new Texture("icons/pencil.png");
+		cloud = new Texture("icons/cloud.png");
+		logoLittle = new Texture("icons/speechlistlogolittle.png");
+		clock = new Texture("icons/clock.png");
+		chart = new Texture("icons/chart.png");
+		checked = new Texture("icons/checked.png");
+		sadPhone = new Texture("icons/sadphone.png");
+		cross = new Texture("icons/cross.png");
+		left = new Texture("icons/left.png");
+		right = new Texture("icons/right.png");
+		wordSet = new Texture("icons/wordSet.png");
+		wordNotSet = new Texture("icons/wordNotSet.png");
+		various = new Texture("icons/various.png");
+		idioms = new Texture("icons/idioms.png");
+		tenses = new Texture("icons/tenses.png");
+		vocabulary = new Texture("icons/vocabulary.png");
+		mainBackground_cut = new Texture("backgrounds/mainBackground_cut.png");
 
-	if (new Variables().getDebugMode() == true)
-		System.out.println("Done loading assets.");
-}
-	
+		glareButtonVignette.setFilter(TextureFilter.Linear,
+				TextureFilter.Linear);
+		home.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		tick.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		pencil.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		cloud.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		logoLittle.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		clock.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		left.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		right.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		wordSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		wordNotSet.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		various.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		idioms.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		tenses.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		vocabulary.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		mainBackground_cut.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
+		loaded = true;
+
+		if (new Variables().getDebugMode() == true)
+			System.out.println("Done loading assets.");
+	}
+
 }

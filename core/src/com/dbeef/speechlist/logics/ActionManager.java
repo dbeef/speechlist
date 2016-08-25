@@ -2,8 +2,6 @@ package com.dbeef.speechlist.logics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType.GlyphSlot;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -35,15 +33,26 @@ public class ActionManager {
 	Button decline;
 	Button left;
 	Button right;
+
+	Screen[] tests_local;
+	Screen[] tests_server;
+
+	Button[] testCategories_local;
+	Button[] testCategories_server;
+
 	AssetsManager assetsManager;
 	Camera camera;
 	Camera guiCamera;
+
 	Screen initial;
 	Screen menuHome;
 	Screen menuTests;
 	Screen menuDownloads;
 	Screen menuBrief;
 	Screen gui;
+
+	Button testsBackButton;
+
 	Array<TestButton> testsButtons;
 	Array<TestButton> downloadableTestsButtons;
 	Array<Screen> solvingScreens;
@@ -61,12 +70,14 @@ public class ActionManager {
 	boolean readyToGoMenu = false;
 	boolean startedLoadingAssets = false;
 	boolean initiatedInput = false;
+	boolean testScreensCreated = false;
 
 	public ActionManager(Camera camera, Camera guiCamera, Screen initial,
 			Screen gui, Screen menuHome, Screen menuTests,
 			Screen menuDownloads, Screen menuBrief,
 			Array<Screen> solvingScreens, Array<BitmapFont> fonts,
-			Texture mainBackground, SolutionInput solutionInput) {
+			Texture mainBackground, SolutionInput solutionInput,
+			Screen[] tests_local, Screen[] tests_server) {
 		this.camera = camera;
 		this.guiCamera = guiCamera;
 		this.initial = initial;
@@ -79,8 +90,12 @@ public class ActionManager {
 		this.fonts = fonts;
 		this.mainBackground = mainBackground;
 		this.solutionInput = solutionInput;
+		this.tests_local = tests_local;
+		this.tests_server = tests_server;
 		client = new RESTClient();
 		client.start();
+		testCategories_local = new Button[4];
+		testCategories_server = new Button[4];
 	}
 
 	public void updateLogics(float delta) throws InterruptedException {
@@ -92,13 +107,14 @@ public class ActionManager {
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
 		addAssetsToScreens();
+		createTestScreens();
 		updateCamerasLogics();
 		updateButtonsGravity(delta);
 		manageMenuDownloadsElements();
 	}
 
 	void updateInitialScreenLogics(float delta) {
-		if (Math.abs(camera.position.x - 240) < 10) {
+		if (Math.abs(camera.position.x - 240) < 1) {
 			logoCameOnScreen = true;
 		}
 		if (logoCameOnScreen == true && loadingTextAdded == false) {
@@ -149,6 +165,38 @@ public class ActionManager {
 
 	void updateCamerasLogics() {
 
+	
+	if(camera.position.x > variables.getTestsScreenPosition() + 100){
+		menuHome.stopRendering();
+	}
+	else
+		menuHome.startRendering();
+	
+	if(camera.position.x < variables.getTestsScreenPosition() - 100){
+		menuDownloads.stopRendering();
+	}
+	else
+		menuDownloads.startRendering();
+	
+		if (camera.position.x > variables.getBriefScreenPosition() + 50) {
+		menuDownloads.stopRendering();
+		}
+		else
+			menuDownloads.startRendering();
+		
+		if (camera.position.x > variables.getBriefScreenPosition() - 50) {
+			for (Screen s : solvingScreens)
+				s.startRendering();
+			for (int a = 0; a < tests_local.length; a++)
+				tests_local[a].stopRendering();
+		} else {
+			for (Screen s : solvingScreens)
+				s.stopRendering();
+			for (int a = 0; a < tests_local.length; a++)
+				tests_local[a].startRendering();
+			menuDownloads.startRendering();
+		}
+		
 		if (camera.position.x > (variables.getInitialScreenPosition() + variables
 				.getHomeScreenPosition()) / 2 && initiatedInput == false) {
 			inputInterpreter = new InputInterpreter();
@@ -160,6 +208,10 @@ public class ActionManager {
 			inputInterpreter.loadMainBackground(mainBackground);
 			inputInterpreter.setAssetsManager(assetsManager);
 			inputInterpreter.setSolutionInput(solutionInput);
+			inputInterpreter.setTestCategories(testCategories_local,
+					testCategories_server);
+			inputInterpreter.setTestScreens(tests_local, tests_server,
+					testsBackButton);
 			initiatedInput = true;
 		}
 
@@ -203,10 +255,26 @@ public class ActionManager {
 			testsButtons.add(new TestButton(960, 500 - 80 * a,
 					assetsManager.glareButtonVignette, tests.get(a).getName()));
 			testsButtons.get(a).loadTick(assetsManager.checked);
+			testsButtons.get(a).setCategory(tests.get(a).getCategory());
 		}
+
 		for (int a = 0; a < testsButtons.size; a++) {
-			menuTests.add(testsButtons.get(a));
+
+			if (testsButtons.get(a).getCategory()
+					.equals(variables.getVOCABULARY()))
+				tests_local[0].add(testsButtons.get(a));
+			else if (testsButtons.get(a).getCategory()
+					.equals(variables.getIDIOMS()))
+				tests_local[1].add(testsButtons.get(a));
+			else if (testsButtons.get(a).getCategory()
+					.equals(variables.getTENSES()))
+				tests_local[2].add(testsButtons.get(a));
+			else if (testsButtons.get(a).getCategory()
+					.equals(variables.getVARIOUS()))
+				tests_local[3].add(testsButtons.get(a));
+
 		}
+
 	}
 
 	void optimizeRendering() {
@@ -259,12 +327,48 @@ public class ActionManager {
 
 	void addMenuTestsStaticElements() {
 		menuTests = new DefaultStringsSetter().setMenuTestsStrings(menuTests);
+
+		testCategories_local[0] = new Button(
+				variables.getTestsScreenPosition() - 205, 390,
+				assetsManager.vocabulary);
+		testCategories_local[1] = new Button(variables.getTestsScreenPosition()
+				+ assetsManager.idioms.getWidth() - 175, 390,
+				assetsManager.idioms);
+		testCategories_local[2] = new Button(
+				variables.getTestsScreenPosition() - 205, 115,
+				assetsManager.tenses);
+		testCategories_local[3] = new Button(variables.getTestsScreenPosition()
+				+ assetsManager.idioms.getWidth() - 175, 115,
+				assetsManager.various);
+
+		menuTests.add(testCategories_local[0]);
+		menuTests.add(testCategories_local[1]);
+		menuTests.add(testCategories_local[2]);
+		menuTests.add(testCategories_local[3]);
 	}
 
 	void addMenuDownloadsStaticElements() {
 		menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
 		menuDownloads = new DefaultStringsSetter()
 				.setMenuDownloadsStrings(menuDownloads);
+		/*
+		 * testCategories_server = new Button[4]; testCategories_server[0] = new
+		 * Button( variables.getDownloadsScreenPosition() - 230, 350,
+		 * assetsManager.vocabulary); testCategories_server[1] = new Button(
+		 * variables.getDownloadsScreenPosition() +
+		 * assetsManager.idioms.getWidth() - 220, 350, assetsManager.idioms);
+		 * testCategories_server[2] = new Button(
+		 * variables.getDownloadsScreenPosition() - 220, 50,
+		 * assetsManager.tenses); testCategories_server[3] = new Button(
+		 * variables.getDownloadsScreenPosition() +
+		 * assetsManager.idioms.getWidth() - 220, 50, assetsManager.various);
+		 * 
+		 * menuDownloads.add(testCategories_server[0]);
+		 * menuDownloads.add(testCategories_server[1]);
+		 * menuDownloads.add(testCategories_server[2]);
+		 * menuDownloads.add(testCategories_server[3]);
+		 */
+
 	}
 
 	void manageMenuDownloadsElements() throws InterruptedException {
@@ -335,5 +439,29 @@ public class ActionManager {
 		gui.add(decline);
 		gui.add(left);
 		gui.add(right);
+	}
+
+	void createTestScreens() {
+		if (testScreensCreated == false && assetsLoaded == true) {
+			testsBackButton = new Button(
+					variables.getTestsScreenPosition() - 50, 30,
+					assetsManager.cross);
+
+			for (int a = 0; a < tests_local.length; a++) {
+				tests_local[a]
+						.add(assetsManager.mainBackground_cut, new Vector2(
+								variables.getTestsScreenPosition() - 240, 0));
+				tests_local[a].hide();
+				tests_local[a].add(testsBackButton);
+			}
+			for (int a = 0; a < tests_server.length; a++) {
+				tests_server[a]
+						.add(assetsManager.mainBackground_cut,
+								new Vector2(variables
+										.getDownloadsScreenPosition() - 240, 0));
+				tests_server[a].hide();
+			}
+			testScreensCreated = true;
+		}
 	}
 }

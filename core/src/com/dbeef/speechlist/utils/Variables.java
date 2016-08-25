@@ -21,9 +21,29 @@ public class Variables {
 
 	static final String retrieveTest = "retrieveTest";
 	static final String retrieveTestName = "retrieveTestName";
+	static final String category_VOCABULARY = "vocabulary";
+	static final String category_IDIOMS = "idioms";
+	static final String category_TENSES = "tenses";
+	static final String category_VARIOUS = "various";
 
 	static final boolean debugMode = true;
 	static final boolean debugInput = false;
+
+	public String getVOCABULARY() {
+		return category_VOCABULARY;
+	}
+
+	public String getIDIOMS() {
+		return category_IDIOMS;
+	}
+
+	public String getTENSES() {
+		return category_TENSES;
+	}
+
+	public String getVARIOUS() {
+		return category_VARIOUS;
+	}
 
 	public int getCharacterWidth() {
 		return characterWidth;
