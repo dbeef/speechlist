@@ -32,7 +32,7 @@ public class GeneratedTestStringsSetter {
 		solvingButtons = new Array<SolutionInputButton>();
 
 		SentencesFormatter sentencesFormatter = new SentencesFormatter(
-				sentences);
+				sentences, fonts.get(4));
 		Screen solvingScreen = new Screen(fonts);
 		Array<Vector2> buttonPositions = sentencesFormatter
 				.getVocabularyPositions();

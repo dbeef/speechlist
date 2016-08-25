@@ -1,5 +1,7 @@
 package com.dbeef.speechlist.text;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.utils.Variables;
@@ -11,7 +13,7 @@ public class SentencesFormatter {
 
 	Variables variables;
 
-	public SentencesFormatter(String sentences) {
+	public SentencesFormatter(String sentences, BitmapFont font) {
 
 		formatted = new Array<String>();
 		vocabularyPositions = new Array<Vector2>();
@@ -22,7 +24,6 @@ public class SentencesFormatter {
 
 		final int maxLinesPerTestScreen = variables.getMaxLinesPerTestScreen();
 		final int maxCharPerTestLine = variables.getMaxCharPerTestLine();
-		final int characterWidth = variables.getCharacterWidth();
 		final int solvingScreenVocabularySpanY = variables
 				.getSolvingScreenVocabularySpanY();
 
@@ -40,7 +41,8 @@ public class SentencesFormatter {
 
 				if (charPosition < sentences.length()) {
 					charPosition = 0;
-					while (sentences.charAt(charPosition) != '.' && charPosition <= maxCharPerTestLine) {
+					while (sentences.charAt(charPosition) != '.'
+							&& charPosition <= maxCharPerTestLine) {
 						charPosition++;
 					}
 					formatted.add(new String(sentences.substring(0,
@@ -178,30 +180,16 @@ public class SentencesFormatter {
 
 			String s = formatted.get(a);
 			if (s.contains("<<||>>")) {
-
+System.out.println(s);
 				float x = variables.getSolvingScreenVocabularyPositionX()
 						+ (screen - 1) * variables.getScreenWidth();
 				float y = variables.getSolvingScreenVocabularyPositionY() - b
 						* solvingScreenVocabularySpanY - 45;
 
-				int iterator = 0;
-
-				while (iterator != s.indexOf("<<||>>")) {
-					if (s.charAt(iterator) == 'i' || s.charAt(iterator) == '.')
-						x += characterWidth * 0.1f;
-					else if (s.charAt(iterator) == 'r')
-						x += characterWidth * 0.25f;
-
-					else if (s.charAt(iterator) == ' '
-							|| s.charAt(iterator) == 't'
-							|| s.charAt(iterator) == 'l')
-						x += characterWidth * 0.465f;
-					else
-						x += characterWidth * 1.05f;
-
-					iterator++;
-				}
-
+				TextBounds bounds = new TextBounds();
+				bounds.set(font.getBounds(s.substring(0, s.indexOf("<"))));
+				x = 0.83f*bounds.width + variables.getSolvingScreenVocabularyPositionX() + (screen-1)*variables.getScreenWidth();
+				
 				vocabularyPositions.add(new Vector2(x, y));
 			}
 		}
