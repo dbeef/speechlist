@@ -408,17 +408,19 @@ public class InputInterpreter implements GestureListener {
 						if (solutionInputButton.getClicked() == true)
 							counter++;
 					if (counter == solvingButtons.size) {
-						String percentage = Float.toString(solutionInput.getSummary() * 100);
-						percentage = percentage.substring(0, percentage.indexOf(".")) + "%";
+						String percentage = Float.toString(solutionInput
+								.getSummary() * 100);
+						percentage = percentage.substring(0,
+								percentage.indexOf("."))
+								+ "%";
 						int position = 0;
-						if(percentage.length() == 3)
+						if (percentage.length() == 3)
 							position = 2120;
-						if(percentage.length() == 2)
+						if (percentage.length() == 2)
 							position = 2130;
 						camera.move(variables.getBriefScreenPosition());
-						menuBrief
-								.add(percentage, new Vector2(position, 210),
-										new Vector2(1, 1), new Vector3(1, 1, 1));
+						menuBrief.add(percentage, new Vector2(position, 210),
+								new Vector2(1, 1), new Vector3(1, 1, 1));
 
 					}
 				}
@@ -512,9 +514,9 @@ public class InputInterpreter implements GestureListener {
 		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
 				.getVocabulary().length; c++) {
 
-			int span = Math.abs(480 - (formatted[c].length()) * 11) - 300;
+			int span = (480 -(int)fonts.get(5).getBounds(formatted[c]).width)/2;
 
-			menuBrief.add(formatted[c], new Vector2(1975 + span, 500 - c * 60),
+			menuBrief.add(formatted[c], new Vector2(1920 + span, 500 - c * 60),
 					new Vector2(1, 1), new Vector3(1, 1, 1));
 
 		}

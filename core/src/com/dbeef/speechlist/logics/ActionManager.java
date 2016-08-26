@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
+import com.dbeef.speechlist.files.ResultsManager;
 import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.SolutionInput;
@@ -17,10 +18,13 @@ import com.dbeef.speechlist.internet.RESTClient;
 import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.text.DefaultStringsSetter;
+import com.dbeef.speechlist.utils.TimeSpentObserver;
 import com.dbeef.speechlist.utils.Variables;
 
 public class ActionManager {
 
+	ResultsManager resultsManager;
+	TimeSpentObserver timeSpentObserver;
 	DownloadableTestsManager downloadableTestsManager;
 	RESTClient client;
 	Variables variables = new Variables();
@@ -96,6 +100,8 @@ public class ActionManager {
 		client.start();
 		testCategories_local = new Button[4];
 		testCategories_server = new Button[4];
+		resultsManager = new ResultsManager();
+		timeSpentObserver = new TimeSpentObserver(resultsManager.getTimeSpent());
 	}
 
 	public void updateLogics(float delta) throws InterruptedException {
@@ -111,6 +117,8 @@ public class ActionManager {
 		updateCamerasLogics();
 		updateButtonsGravity(delta);
 		manageMenuDownloadsElements();
+		updateMenuHomeCounters(delta);
+
 	}
 
 	void updateInitialScreenLogics(float delta) {
@@ -140,6 +148,7 @@ public class ActionManager {
 				testsManager = new TestsManager();
 				startedLoadingAssets = true;
 				assetsManager.run();
+				resultsManager.loadData();
 			}
 		}
 		if (startedLoadingAssets == true && assetsManager.loaded == true)
@@ -165,25 +174,21 @@ public class ActionManager {
 
 	void updateCamerasLogics() {
 
-	
-	if(camera.position.x > variables.getTestsScreenPosition() + 100){
-		menuHome.stopRendering();
-	}
-	else
-		menuHome.startRendering();
-	
-	if(camera.position.x < variables.getTestsScreenPosition() - 100){
-		menuDownloads.stopRendering();
-	}
-	else
-		menuDownloads.startRendering();
-	
-		if (camera.position.x > variables.getBriefScreenPosition() + 50) {
-		menuDownloads.stopRendering();
-		}
-		else
+		if (camera.position.x > variables.getTestsScreenPosition() + 100) {
+			menuHome.stopRendering();
+		} else
+			menuHome.startRendering();
+
+		if (camera.position.x < variables.getTestsScreenPosition() - 100) {
+			menuDownloads.stopRendering();
+		} else
 			menuDownloads.startRendering();
-		
+
+		if (camera.position.x > variables.getBriefScreenPosition() + 50) {
+			menuDownloads.stopRendering();
+		} else
+			menuDownloads.startRendering();
+
 		if (camera.position.x > variables.getBriefScreenPosition() - 50) {
 			for (Screen s : solvingScreens)
 				s.startRendering();
@@ -196,7 +201,7 @@ public class ActionManager {
 				tests_local[a].startRendering();
 			menuDownloads.startRendering();
 		}
-		
+
 		if (camera.position.x > (variables.getInitialScreenPosition() + variables
 				.getHomeScreenPosition()) / 2 && initiatedInput == false) {
 			inputInterpreter = new InputInterpreter();
@@ -463,5 +468,21 @@ public class ActionManager {
 			}
 			testScreensCreated = true;
 		}
+	}
+
+	void updateMenuHomeCounters(float delta) {
+
+		if (assetsLoaded == true && home.getSelection() == true
+				&& timeSpentObserver.getRefreshed() == true) {
+			menuHome.removeAllStrings();
+			menuHome = new DefaultStringsSetter().setMenuHomeStrings(menuHome);
+			if (timeSpentObserver.getTimeSpent().length() == 3)
+				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(550,
+						485), new Vector2(1, 1), new Vector3(1, 1, 1));
+			if (timeSpentObserver.getTimeSpent().length() == 2)
+				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(555,
+						485), new Vector2(1, 1), new Vector3(1, 1, 1));
+		}
+		timeSpentObserver.updateTimers(delta);
 	}
 }

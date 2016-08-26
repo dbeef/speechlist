@@ -20,23 +20,38 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuHome.add("Speechlist", new Vector2(610, 370), new Vector2(1, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(650, 310),
+		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(650, 395),
 				new Vector2(6, 1), new Vector3(1, 1, 1));
-		menuHome.add("Version 0.1", new Vector2(695, 285), new Vector2(6, 1),
+		menuHome.add("Version 0.4", new Vector2(695, 415), new Vector2(6, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("This app is 100% free.", new Vector2(650, 245),
+		menuHome.add("This app is 100% free.", new Vector2(650, 305),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add(
 				"If you like it, please support me on patreon: <danielzalega>",
-				new Vector2(520, 210), new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add("to help maintaining servers.", new Vector2(630, 175),
+				new Vector2(520, 270), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("to help maintaining servers.", new Vector2(630, 235),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("You can also observe me on Facebook", new Vector2(580,
-				140), new Vector2(2, 1), new Vector3(1, 1, 1));
+				200), new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("to be up-to-date with my projects.",
-				new Vector2(605, 105), new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add("Enjoy, Daniel.", new Vector2(675, 70), new Vector2(2, 1),
+				new Vector2(605, 165), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("Enjoy, Daniel.", new Vector2(675, 130), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
+		
+		menuHome.add("designed by from Flaticon,", new Vector2(630, 70), new Vector2(2, 1),
+				new Vector3(1, 1, 1));
+		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(580, 35), new Vector2(2, 1),
+				new Vector3(1, 1, 1));
+		
+		
+		//835 for 3 digits
+		//825 for 4 digits
+		//815 for 2 digits
+		//855 for 1 digit
+		
+		menuHome.add("1", new Vector2(855,
+				485), new Vector2(1, 1), new Vector3(1, 1, 1));
+		
 
 		return menuHome;
 	}
