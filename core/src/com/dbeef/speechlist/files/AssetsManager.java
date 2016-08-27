@@ -25,7 +25,7 @@ public class AssetsManager extends Thread {
 	public Texture tenses;
 	public Texture idioms;
 	public Texture vocabulary;
-	public Texture mainBackground_cut;
+	public Texture mainBackground_middle;
 
 	public boolean loaded;
 
@@ -53,7 +53,7 @@ public class AssetsManager extends Thread {
 		idioms = new Texture("icons/idioms.png");
 		tenses = new Texture("icons/tenses.png");
 		vocabulary = new Texture("icons/vocabulary.png");
-		mainBackground_cut = new Texture("backgrounds/mainBackground_cut.png");
+		mainBackground_middle = new Texture("backgrounds/mainBackground_middle.png");
 
 		glareButtonVignette.setFilter(TextureFilter.Linear,
 				TextureFilter.Linear);
@@ -75,7 +75,7 @@ public class AssetsManager extends Thread {
 		idioms.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tenses.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		vocabulary.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		mainBackground_cut.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		mainBackground_middle.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
 		loaded = true;
 

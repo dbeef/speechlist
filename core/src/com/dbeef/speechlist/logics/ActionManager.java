@@ -149,6 +149,8 @@ public class ActionManager {
 				startedLoadingAssets = true;
 				assetsManager.run();
 				resultsManager.loadData();
+				timeSpentObserver = new TimeSpentObserver(
+						resultsManager.getTimeSpent());
 			}
 		}
 		if (startedLoadingAssets == true && assetsManager.loaded == true)
@@ -217,6 +219,7 @@ public class ActionManager {
 					testCategories_server);
 			inputInterpreter.setTestScreens(tests_local, tests_server,
 					testsBackButton);
+			inputInterpreter.setResultsManager(resultsManager);
 			initiatedInput = true;
 		}
 
@@ -264,22 +267,48 @@ public class ActionManager {
 		}
 
 		for (int a = 0; a < testsButtons.size; a++) {
-
 			if (testsButtons.get(a).getCategory()
-					.equals(variables.getVOCABULARY()))
+					.equals(variables.getVOCABULARY())) {
+				testsButtons.get(a).setPosition(960,
+						500 - 80 * tests_local[0].getTestsButtons().size);
 				tests_local[0].add(testsButtons.get(a));
-			else if (testsButtons.get(a).getCategory()
-					.equals(variables.getIDIOMS()))
+			} else if (testsButtons.get(a).getCategory()
+					.equals(variables.getIDIOMS())) {
+				testsButtons.get(a).setPosition(960,
+						500 - 80 * tests_local[1].getTestsButtons().size);
 				tests_local[1].add(testsButtons.get(a));
-			else if (testsButtons.get(a).getCategory()
-					.equals(variables.getTENSES()))
+			} else if (testsButtons.get(a).getCategory()
+					.equals(variables.getTENSES())) {
+				testsButtons.get(a).setPosition(960,
+						500 - 80 * tests_local[2].getTestsButtons().size);
 				tests_local[2].add(testsButtons.get(a));
-			else if (testsButtons.get(a).getCategory()
-					.equals(variables.getVARIOUS()))
+			} else if (testsButtons.get(a).getCategory()
+					.equals(variables.getVARIOUS())) {
+				testsButtons.get(a).setPosition(960,
+						500 - 80 * tests_local[3].getTestsButtons().size);
 				tests_local[3].add(testsButtons.get(a));
-
+			}
 		}
 
+		for (int b = 0; b < tests_local.length; b++) {
+			int buttons_with_Y_below_120 = 0;
+			Array<TestButton> testButtons = tests_local[b].getTestsButtons();
+
+			for (int a = 0; a < testButtons.size; a++) {
+				if (testButtons.get(a).getY() < 120)
+					buttons_with_Y_below_120++;
+
+				testButtons.get(a).setMaxDrawingY(530);
+				testButtons.get(a).setMinDrawingY(85);
+			}
+			for (int a = 0; a < testButtons.size; a++) {
+				testButtons.get(a).setMaxMovingY(
+						(int) testButtons.get(a).getY()
+								+ (buttons_with_Y_below_120-1) * 80);
+				testButtons.get(a).setMovingMinY(
+						(int) testButtons.get(a).getY());
+			}
+		}
 	}
 
 	void optimizeRendering() {
@@ -432,8 +461,8 @@ public class ActionManager {
 	}
 
 	void addMenuBriefStaticElements() {
-		accept = new Button(1115, 25, assetsManager.checked);
-		decline = new Button(1215, 25, assetsManager.cross);
+		accept = new Button(1115, 20, assetsManager.checked);
+		decline = new Button(1215, 20, assetsManager.cross);
 		left = new Button(970, 25, assetsManager.left);
 		right = new Button(1360, 25, assetsManager.right);
 		decline.setMultiplier(4);
@@ -449,19 +478,19 @@ public class ActionManager {
 	void createTestScreens() {
 		if (testScreensCreated == false && assetsLoaded == true) {
 			testsBackButton = new Button(
-					variables.getTestsScreenPosition() - 50, 30,
+					variables.getTestsScreenPosition() - 25, 30,
 					assetsManager.cross);
 
 			for (int a = 0; a < tests_local.length; a++) {
 				tests_local[a]
-						.add(assetsManager.mainBackground_cut, new Vector2(
+						.add(assetsManager.mainBackground_middle, new Vector2(
 								variables.getTestsScreenPosition() - 240, 0));
 				tests_local[a].hide();
 				tests_local[a].add(testsBackButton);
 			}
 			for (int a = 0; a < tests_server.length; a++) {
 				tests_server[a]
-						.add(assetsManager.mainBackground_cut,
+						.add(assetsManager.mainBackground_middle,
 								new Vector2(variables
 										.getDownloadsScreenPosition() - 240, 0));
 				tests_server[a].hide();
@@ -480,9 +509,33 @@ public class ActionManager {
 				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(550,
 						485), new Vector2(1, 1), new Vector3(1, 1, 1));
 			if (timeSpentObserver.getTimeSpent().length() == 2)
-				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(555,
+				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(560,
 						485), new Vector2(1, 1), new Vector3(1, 1, 1));
 		}
+
+		if (assetsLoaded == true && resultsManager.getRefreshed() == true) {
+			menuHome.removeAllStrings();
+			menuHome = new DefaultStringsSetter().setMenuHomeStrings(menuHome);
+			if (timeSpentObserver.getTimeSpent().length() == 3)
+				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(550,
+						485), new Vector2(1, 1), new Vector3(1, 1, 1));
+			if (timeSpentObserver.getTimeSpent().length() == 2)
+				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(555,
+						485), new Vector2(1, 1), new Vector3(1, 1, 1));
+
+			String testsSolved = Integer.toString(resultsManager
+					.getTestsSolved());
+			menuHome.add(testsSolved, new Vector2(
+					865 - testsSolved.length() * 10, 485), new Vector2(1, 1),
+					new Vector3(1, 1, 1));
+			String accuracy = Integer.toString(resultsManager.getAccuracy())
+					+ "%";
+			menuHome.add(accuracy, new Vector2(720 - accuracy.length() * 10,
+					485), new Vector2(1, 1), new Vector3(1, 1, 1));
+		}
+
 		timeSpentObserver.updateTimers(delta);
 	}
+
+	
 }

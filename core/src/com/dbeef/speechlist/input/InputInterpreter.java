@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
+import com.dbeef.speechlist.files.ResultsManager;
 import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.SolutionInput;
@@ -22,6 +23,8 @@ import com.dbeef.speechlist.text.VocabularyFormatter;
 import com.dbeef.speechlist.utils.Variables;
 
 public class InputInterpreter implements GestureListener {
+
+	ResultsManager resultsManager;
 
 	Button testsBackButton;
 	Screen[] tests_local;
@@ -403,6 +406,10 @@ public class InputInterpreter implements GestureListener {
 								.setTexture(assetsManager.wordNotSet);
 					}
 				} else if (solutionInput.getVisibility() == false) {
+
+					menuBrief.removeStringContaining("%");
+					menuBrief.removeStringContaining("n/a");
+
 					int counter = 0;
 					for (SolutionInputButton solutionInputButton : solvingButtons)
 						if (solutionInputButton.getClicked() == true)
@@ -411,17 +418,25 @@ public class InputInterpreter implements GestureListener {
 						String percentage = Float.toString(solutionInput
 								.getSummary() * 100);
 						percentage = percentage.substring(0,
-								percentage.indexOf("."))
-								+ "%";
+								percentage.indexOf("."));
 						int position = 0;
 						if (percentage.length() == 3)
 							position = 2120;
 						if (percentage.length() == 2)
 							position = 2130;
-						camera.move(variables.getBriefScreenPosition());
-						menuBrief.add(percentage, new Vector2(position, 210),
-								new Vector2(1, 1), new Vector3(1, 1, 1));
+						if (percentage.length() == 1)
+							position = 2120;
 
+						camera.move(variables.getBriefScreenPosition());
+
+						menuBrief.add(percentage + "%", new Vector2(position,
+								180), new Vector2(1, 1), new Vector3(1, 1, 1));
+
+						resultsManager.addTestResult(new Vector2(solutionInput
+								.getCurrentTestUniqueID(), solutionInput
+								.getSummary() * 100));
+
+						resultsManager.saveData();
 					}
 				}
 
@@ -475,15 +490,33 @@ public class InputInterpreter implements GestureListener {
 	}
 
 	void manageTestButtonsHighlighting(float x, float y) {
+
 		boolean anyCollisions = false;
 		boolean anyCategorySelected = false;
-		for (int a = 0; a < tests_local.length; a++)
-			if (tests_local[a].getVisibility() == true)
+
+		String currentCategory = "";
+
+		for (int a = 0; a < tests_local.length; a++) {
+			if (tests_local[a].getVisibility() == true) {
 				anyCategorySelected = true;
+				if (a == 0)
+					currentCategory = variables.getVOCABULARY();
+				if (a == 1)
+					currentCategory = variables.getIDIOMS();
+				if (a == 2)
+					currentCategory = variables.getTENSES();
+				if (a == 3)
+					currentCategory = variables.getVARIOUS();
+			}
+		}
+
 		if (anyCategorySelected == true) {
 			for (int a = 0; a < testsButtons.size; a++) {
-				if (testsButtons.get(a).checkCollision((int) x, (int) y) == true) {
+				if (testsButtons.get(a).checkCollision((int) x, (int) y) == true
+						&& testsButtons.get(a).getCategory()
+								.equals(currentCategory)) {
 					anyCollisions = true;
+
 					for (int b = 0; b < testsButtons.size; b++)
 						if (a != b)
 							testsButtons.get(b).deselect();
@@ -514,10 +547,11 @@ public class InputInterpreter implements GestureListener {
 		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
 				.getVocabulary().length; c++) {
 
-			int span = (480 -(int)fonts.get(5).getBounds(formatted[c]).width)/2;
+			int spanX = (480 - (int) fonts.get(5).getBounds(formatted[c]).width) / 2;
+			int spanY = formatted.length * 5;
 
-			menuBrief.add(formatted[c], new Vector2(1920 + span, 500 - c * 60),
-					new Vector2(1, 1), new Vector3(1, 1, 1));
+			menuBrief.add(formatted[c], new Vector2(1920 + spanX, (500 - spanY)
+					- c * 60), new Vector2(1, 1), new Vector3(1, 1, 1));
 
 		}
 
@@ -525,6 +559,23 @@ public class InputInterpreter implements GestureListener {
 
 		menuBrief.add(testsButtons.get(a).getName(), new Vector2(2165 - span,
 				640), new Vector2(1, 1), new Vector3(1, 1, 1));
+
+		float lastResult = resultsManager
+				.getResultOfTestWithUniqueID(testsManager.getTest(
+						testsButtons.get(a).getName()).getUniqueId());
+
+		String lastResultString = Float.toString(lastResult);
+		lastResultString = lastResultString.substring(0,
+				lastResultString.indexOf("."))
+				+ "%";
+
+		if (lastResult == -1)
+			menuBrief.add("n/a", new Vector2(2115, 180), new Vector2(1, 1),
+					new Vector3(1, 1, 1));
+		else
+			menuBrief.add(lastResultString,
+					new Vector2(2145 - lastResultString.length() * 10, 180),
+					new Vector2(1, 1), new Vector3(1, 1, 1));
 
 	}
 
@@ -549,6 +600,14 @@ public class InputInterpreter implements GestureListener {
 				.createButtons(testsManager.getTest(
 						testsButtons.get(clickedButtonIndex).getName())
 						.getVocabulary());
+		solutionInput.setCurrentTestUniqueID(testsManager.getTest(
+				testsButtons.get(clickedButtonIndex).getName()).getUniqueId());
+
+		System.out.println("sending id to solution"
+				+ testsManager.getTest(
+						testsButtons.get(clickedButtonIndex).getName())
+						.getUniqueId());
+
 		vocabularyButtons = solutionInput.getVocabularyButtons();
 	}
 
@@ -566,10 +625,10 @@ public class InputInterpreter implements GestureListener {
 			if (this.getPanned() == true) {
 				panX = this.getPanX();
 				panY = this.getPanY();
-				for (int a = 0; a < testsButtons.size; a++)
-					testsButtons.get(a).move(0, initialPanY - panY);
+				for (int a = 0; a < testsButtons.size; a++) {
+					testsButtons.get(a).move(0, 0.5f*(initialPanY - panY));
+				}
 			}
-
 		}
 		wasPannedBefore = this.getPanned();
 	}
@@ -639,6 +698,10 @@ public class InputInterpreter implements GestureListener {
 			Button[] testCategories_server) {
 		this.testCategories_local = testCategories_local;
 		this.testCategories_server = testCategories_server;
+	}
+
+	public void setResultsManager(ResultsManager resultsManager) {
+		this.resultsManager = resultsManager;
 	}
 
 	public void setTestScreens(Screen[] tests_local, Screen[] tests_server,

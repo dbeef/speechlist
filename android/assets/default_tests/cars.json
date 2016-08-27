@@ -10,5 +10,6 @@
   ],
   "name": "Cars test",
   "id": 1,
+  "uniqueId": 1,
   "category": "vocabulary"
 }

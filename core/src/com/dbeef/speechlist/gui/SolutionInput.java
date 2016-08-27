@@ -19,6 +19,14 @@ public class SolutionInput {
 	Texture buttonTexture;
 	Texture tick;
 	BitmapFont font;
+	int uniqueID;
+
+	public void setCurrentTestUniqueID(int uniqueID) {
+		this.uniqueID = uniqueID;
+	}
+	public int getCurrentTestUniqueID(){
+		return uniqueID;
+	}
 
 	public SolutionInput(Texture texture, int x) {
 		background = new Sprite(texture);
@@ -123,11 +131,11 @@ public class SolutionInput {
 			if (answers.get(a).equals(correctAnswers.get(a)))
 				correct++;
 		}
-		
+
 		if (correct == 0)
 			return 0;
 		else
-			return ((float)correct / correctAnswers.size);
+			return ((float) correct / correctAnswers.size);
 	}
 
 	public boolean isAlphaZero() {

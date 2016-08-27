@@ -169,4 +169,10 @@ public class Button {
 	public float getAlpha(){
 		return alpha;
 	}
+	public float getX(){
+		return x;
+	}
+	public float getY(){
+		return y;
+	}
 }

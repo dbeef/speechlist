@@ -20,9 +20,9 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuHome.add("Speechlist", new Vector2(610, 370), new Vector2(1, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(650, 395),
+		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(647, 395),
 				new Vector2(6, 1), new Vector3(1, 1, 1));
-		menuHome.add("Version 0.4", new Vector2(695, 415), new Vector2(6, 1),
+		menuHome.add("Version 0.4", new Vector2(692, 415), new Vector2(6, 1),
 				new Vector3(1, 1, 1));
 		menuHome.add("This app is 100% free.", new Vector2(650, 305),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
@@ -38,20 +38,10 @@ public class DefaultStringsSetter {
 		menuHome.add("Enjoy, Daniel.", new Vector2(675, 130), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
 		
-		menuHome.add("designed by from Flaticon,", new Vector2(630, 70), new Vector2(2, 1),
+		menuHome.add("icons designed by from Flaticon,", new Vector2(610, 70), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(580, 35), new Vector2(2, 1),
-				new Vector3(1, 1, 1));
-		
-		
-		//835 for 3 digits
-		//825 for 4 digits
-		//815 for 2 digits
-		//855 for 1 digit
-		
-		menuHome.add("1", new Vector2(855,
-				485), new Vector2(1, 1), new Vector3(1, 1, 1));
-		
+		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585, 35), new Vector2(2, 1),
+				new Vector3(1, 1, 1));		
 
 		return menuHome;
 	}
@@ -61,13 +51,13 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuBrief.add("Vocabulary", new Vector2(2075, 570), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
-		menuBrief.add("Last result", new Vector2(2085, 310), new Vector2(3, 1),
+		menuBrief.add("Last result", new Vector2(2085, 250), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
 		return menuBrief;
 	}
 
 	public Screen setMenuDownloadsStrings(Screen menuDownloads) {
-		menuDownloads.add("Downloads", new Vector2(1610, 660),
+		menuDownloads.add("Downloads", new Vector2(1600, 660),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
 
 		menuDownloads.add("We're sorry", new Vector2(1575, 550), new Vector2(5,

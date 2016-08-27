@@ -7,12 +7,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 public class TestButton extends Button {
 
 	static final double gravity = 1.10f;
-	double maximumYPosition;
 	double gravityTimer = 0;
 	double originPositionX;
 	double originPositionY;
 	boolean highlightButton;
 	float fontAlpha = 1;
+
+	int maxMovingY = -1;
+	int minMovingY = -1;
+
+	int maxDrawingY = -1;
+	int minDrawingY = -1;
+
+	boolean disabled;
+
 	String name;
 	String category;
 	BitmapFont font;
@@ -24,7 +32,6 @@ public class TestButton extends Button {
 		this.deselect();
 		originPositionX = x;
 		originPositionY = y;
-		maximumYPosition = y;
 	}
 
 	public void render(Batch batch, float delta) {
@@ -52,11 +59,11 @@ public class TestButton extends Button {
 		image.setPosition((float) originPositionX + (float) deltaX,
 				(float) originPositionY + (float) deltaY);
 
+		// originPositionX = image.getX();
+		// originPositionY = image.getY();
+		x = image.getX();
+		y = image.getY();
 		gravityTimer = 1;
-
-		if (image.getY() > maximumYPosition)
-			image.setPosition(image.getX(), (float) maximumYPosition);
-
 	}
 
 	public void savePositionAsOriginPosition() {
@@ -65,14 +72,16 @@ public class TestButton extends Button {
 	}
 
 	public boolean checkCollision(int x, int y) {
+		if (disabled == false) {
+			this.bounds.setPosition(image.getX(), image.getY());
 
-		this.bounds.setPosition(image.getX(), image.getY());
+			mouse.setPosition(x, y);
 
-		mouse.setPosition(x, y);
-
-		if (mouse.overlaps(bounds))
-			return true;
-		else
+			if (mouse.overlaps(bounds))
+				return true;
+			else
+				return false;
+		} else
 			return false;
 	}
 
@@ -81,18 +90,14 @@ public class TestButton extends Button {
 	}
 
 	public void applyGravity(double delta) {
-		gravityTimer += delta;
-		gravityTimer *= gravity;
+		// gravityTimer += delta;
+		// gravityTimer *= gravity;
 
-		double temp = gravityTimer;
-		move(0, gravityTimer);
-		gravityTimer = temp;
+		// double temp = gravityTimer;
+		// move(0, gravityTimer);
+		// gravityTimer = temp;
 
-		if (originPositionY >= maximumYPosition) {
-			originPositionY = maximumYPosition;
-			gravityTimer = 0;
-		}
-		savePositionAsOriginPosition();
+		// savePositionAsOriginPosition();
 	}
 
 	public void loadFont(BitmapFont font) {
@@ -109,7 +114,71 @@ public class TestButton extends Button {
 
 	void updateTimers(float delta) {
 
-		if (selected == true) {
+		if (maxMovingY != -1 && minMovingY != -1) {
+			if (y > maxMovingY) {
+				y = (int) maxMovingY - 1;
+				image.setPosition(image.getX(), maxMovingY - 1);
+				savePositionAsOriginPosition();
+			}
+			if (y < minMovingY) {
+				y = (int) minMovingY + 1;
+				image.setPosition(image.getX(), minMovingY + 1);
+				savePositionAsOriginPosition();
+			}
+		}
+
+		if (maxDrawingY != -1 && minDrawingY != -1) {
+
+			if (y > maxDrawingY) {
+			
+				disabled = true;
+				this.deselect();
+				tick.deselect();
+				
+				alpha -= delta*8;
+				fontAlpha -= delta*8;
+
+				if (alpha < 0)
+					alpha = 0;
+				if (fontAlpha < 0)
+					fontAlpha = 0;
+
+			}
+			
+			if(y > maxDrawingY + 150){
+				alpha = 0;
+				fontAlpha = 0;
+			}
+			if (y < minDrawingY) {
+				disabled = true;
+				this.deselect();
+				tick.deselect();
+				alpha -= delta*6;
+				fontAlpha -= delta*6;
+
+				if (alpha < 0f)
+					alpha = 0f;
+				if (fontAlpha < 0)
+					fontAlpha = 0;
+			}
+			if (y > minDrawingY && y < maxDrawingY) {
+
+				if(disabled == true)
+				alpha += delta;
+			
+				fontAlpha += delta*3;
+
+				if (alpha > 0.1f){
+					alpha = 0.1f;
+				}
+				if (fontAlpha > 1){
+					fontAlpha = 1;
+					disabled = false;
+				}
+			}
+		}
+
+		if (selected == true && disabled == false) {
 			tick.select();
 
 			if (highlightButton == false) {
@@ -165,9 +234,35 @@ public class TestButton extends Button {
 		this.fontAlpha = fontAlpha;
 	}
 
-	public float getFontAlpha(){
-	return fontAlpha;
-	}		
-	
-	
+	public float getFontAlpha() {
+		return fontAlpha;
+	}
+
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+		originPositionX = x;
+		originPositionY = y;
+		image.setPosition(x, y);
+		savePositionAsOriginPosition();
+	}
+
+	public void setMaxDrawingY(int maxDrawingY) {
+		this.maxDrawingY = maxDrawingY;
+	}
+
+	public void setMinDrawingY(int minDrawingY) {
+		this.minDrawingY = minDrawingY;
+	}
+
+	public void setMaxMovingY(int maxMovingY) {
+		this.maxMovingY = maxMovingY;
+	}
+
+	public void setMovingMinY(int minMovingY) {
+		this.minMovingY = minMovingY;
+	}
+	public boolean getDisabled() {
+		return disabled;
+	}
 }

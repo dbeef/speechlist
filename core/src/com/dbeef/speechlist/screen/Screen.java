@@ -31,6 +31,10 @@ public class Screen {
 	boolean render = true;
 	float screenAlpha = 1;
 
+	public Array<TestButton> getTestsButtons(){
+		return testButtons;
+	}
+	
 	public Screen(Array<BitmapFont> fonts) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
@@ -229,6 +233,7 @@ public class Screen {
 				testButtons.get(a).setAlphaMinimum(
 						testButtons.get(a).getAlphaMinimum()
 								- (1 - screenAlpha));
+				if(testButtons.get(a).getDisabled() == false)
 				testButtons.get(a).setFontAlpha(screenAlpha);
 				testButtons.get(a).render(batch, delta);
 
@@ -285,6 +290,12 @@ public class Screen {
 				stringsColors.removeIndex(a);
 			}
 		}
+	}
+	public void removeStringContaining(String containing){
+			for(String s : strings){
+				if(s.contains(containing))
+					strings.removeValue(s, true);
+			}
 	}
 
 	public void startRendering() {
