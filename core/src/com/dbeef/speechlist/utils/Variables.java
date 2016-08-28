@@ -2,126 +2,31 @@ package com.dbeef.speechlist.utils;
 
 public class Variables {
 
-	static final int characterWidth = 19;
-	static final int maxCharPerTestLine = 30;
-	static final int maxLinesPerTestScreen = 11;
-	static final int guiCameraBriefPosition = 1175;
-	static final int guiCameraPosition = 720;
-	static final int initialScreenPosition = 240;
-	static final int homeScreenPosition = 720;
-	static final int testsScreenPosition = 1200;
-	static final int downloadsScreenPosition = 1680;
-	static final int briefScreenPosition = 2160;
-	static final int sphinxScreenPosition = 2640;
-	static final int solvingScreenPosition = 2400;
-	static final int solvingScreenVocabularyPositionX = solvingScreenPosition + 10;
-	static final int solvingScreenVocabularyPositionY = 735;
-	static final int solvingScreenVocabularySpanY = 60;
-	static final int screenWidth = 480;
+	public static final int CHARACTER_WIDTH = 19;
+	public static final int MAX_CHAR_PER_TEST_LINE = 30;
+	public static final int MAX_LINES_PER_TEST_SCREEN = 11;
+	public static final int GUI_CAMERA_BRIEF_POSITION = 1175;
+	public static final int GUI_CAMERA_POSITION = 720;
+	public static final int INITIAL_SCREEN_POSITION = 240;
+	public static final int HOME_SCREEN_POSITION = 720;
+	public static final int TESTS_SCREEN_POSITION = 1200;
+	public static final int DOWNLOADS_SCREEN_POSITION = 1680;
+	public static final int BRIEF_SCREEN_POSITION = 2160;
+	public static final int SPHINX_SCREEN_POSITION = 2640;
+	public static final int SOLVING_SCREEN_POSITION = 2400;
+	public static final int SOLVING_SCREEN_VOCABULARY_POSITION_X = SOLVING_SCREEN_POSITION + 10;
+	public static final int SOLVING_SCREEN_VOCABULARY_POSITION_Y = 735;
+	public static final int SOLVING_SCREEN_VOCABULARY_SPAN_Y = 60;
+	public static final int SCREEN_WIDTH = 480;
 
-	static final String retrieveTest = "retrieveTest";
-	static final String retrieveTestName = "retrieveTestName";
-	static final String category_VOCABULARY = "vocabulary";
-	static final String category_IDIOMS = "idioms";
-	static final String category_TENSES = "tenses";
-	static final String category_VARIOUS = "various";
+	public static final String TASK_RETRIEVE_TEST = "retrieveTest";
+	public static final String TASK_RETRIEVE_TEST_NAME = "retrieveTestName";
+	public static final String CATEGORY_VOCABULARY = "vocabulary";
+	public static final String CATEGORY_IDIOMS = "idioms";
+	public static final String CATEGORY_TENSES = "tenses";
+	public static final String CATEGORY_VARIOUS = "various";
 
-	static final boolean debugMode = true;
-	static final boolean debugInput = false;
+	public static final boolean DEBUG_MODE = true;
+	public static final boolean DEBUG_INPUT = false;
 
-	public String getVOCABULARY() {
-		return category_VOCABULARY;
-	}
-
-	public String getIDIOMS() {
-		return category_IDIOMS;
-	}
-
-	public String getTENSES() {
-		return category_TENSES;
-	}
-
-	public String getVARIOUS() {
-		return category_VARIOUS;
-	}
-
-	public int getCharacterWidth() {
-		return characterWidth;
-	}
-
-	public int getSolvingScreenVocabularySpanY() {
-		return solvingScreenVocabularySpanY;
-	}
-
-	public int getMaxCharPerTestLine() {
-		return maxCharPerTestLine;
-	}
-
-	public int getMaxLinesPerTestScreen() {
-		return maxLinesPerTestScreen;
-	}
-
-	public int getSolvingScreenPosition() {
-		return solvingScreenPosition;
-	}
-
-	public int getSolvingScreenVocabularyPositionX() {
-		return solvingScreenVocabularyPositionX;
-	}
-
-	public int getSolvingScreenVocabularyPositionY() {
-		return solvingScreenVocabularyPositionY;
-	}
-
-	public int getScreenWidth() {
-		return screenWidth;
-	}
-
-	public int getGuiCameraBriefPosition() {
-		return guiCameraBriefPosition;
-	}
-
-	public int getGuiCameraPosition() {
-		return guiCameraPosition;
-	}
-
-	public String RetrieveTestName() {
-		return retrieveTestName;
-	}
-
-	public String retrieveTest() {
-		return retrieveTest;
-	}
-
-	public int getInitialScreenPosition() {
-		return initialScreenPosition;
-	}
-
-	public int getHomeScreenPosition() {
-		return homeScreenPosition;
-	}
-
-	public int getTestsScreenPosition() {
-		return testsScreenPosition;
-	}
-
-	public int getDownloadsScreenPosition() {
-		return downloadsScreenPosition;
-	}
-
-	public int getBriefScreenPosition() {
-		return briefScreenPosition;
-	}
-
-	public int getSphinxScreenPosition() {
-		return sphinxScreenPosition;
-	}
-
-	public boolean getDebugMode() {
-		return debugMode;
-	}
-
-	public boolean getDebugInput() {
-		return debugInput;
-	}
 }

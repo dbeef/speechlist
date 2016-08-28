@@ -11,13 +11,8 @@ public class DownloadableTestsManager extends Thread {
 
 	boolean RETRIEVED_DOWNLOADABLES;
 
-	Variables variables;
 	ArrayList<RESTClient> clients;
 	ArrayList<String> names;
-
-	public DownloadableTestsManager() {
-		variables = new Variables();
-	}
 
 	public boolean RETRIEVED_DOWNLOADABLES() {
 		return RETRIEVED_DOWNLOADABLES;
@@ -30,7 +25,7 @@ public class DownloadableTestsManager extends Thread {
 	public void run(UniqueIdContainer uniqueIdContainer, Array<Test> localTests)
 			throws InterruptedException {
 
-		if (variables.getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Started retrieving downloadable tests' names.");
 
 		clients = new ArrayList<RESTClient>();
@@ -47,7 +42,7 @@ public class DownloadableTestsManager extends Thread {
 		for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
 			if (uniqueIdContainer.getUniqueIds()[a] != -1) {
 				RESTClient client = new RESTClient();
-				client.run(new Variables().RetrieveTestName(), a);
+				client.run(Variables.TASK_RETRIEVE_TEST_NAME, a);
 				clients.add(client);
 			}
 		}
@@ -60,11 +55,11 @@ public class DownloadableTestsManager extends Thread {
 
 		this.setPriority(NORM_PRIORITY);
 
-		if (variables.getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Test names retrieved:");
 		for (int a = 0; a < clients.size(); a++) {
 			names.add(clients.get(a).getTestName());
-			if (variables.getDebugMode() == true)
+			if (Variables.DEBUG_MODE == true)
 				System.out
 						.println("Retrieved: " + clients.get(a).getTestName());
 		}

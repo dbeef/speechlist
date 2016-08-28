@@ -22,10 +22,9 @@ public class SentencesFormatter {
 		int charPosition = 0;
 		int linesCounter = 0;
 
-		final int maxLinesPerTestScreen = variables.getMaxLinesPerTestScreen();
-		final int maxCharPerTestLine = variables.getMaxCharPerTestLine();
-		final int solvingScreenVocabularySpanY = variables
-				.getSolvingScreenVocabularySpanY();
+		final int maxLinesPerTestScreen = Variables.MAX_LINES_PER_TEST_SCREEN;
+		final int maxCharPerTestLine = Variables.MAX_CHAR_PER_TEST_LINE;
+		final int solvingScreenVocabularySpanY = Variables.SOLVING_SCREEN_VOCABULARY_SPAN_Y;
 
 		while (charPosition != sentences.length()) {
 
@@ -180,16 +179,18 @@ public class SentencesFormatter {
 
 			String s = formatted.get(a);
 			if (s.contains("<<||>>")) {
-System.out.println(s);
-				float x = variables.getSolvingScreenVocabularyPositionX()
-						+ (screen - 1) * variables.getScreenWidth();
-				float y = variables.getSolvingScreenVocabularyPositionY() - b
+				System.out.println(s);
+				float x = Variables.SOLVING_SCREEN_VOCABULARY_POSITION_X
+						+ (screen - 1) * Variables.SCREEN_WIDTH;
+				float y = Variables.SOLVING_SCREEN_VOCABULARY_POSITION_Y - b
 						* solvingScreenVocabularySpanY - 45;
 
 				TextBounds bounds = new TextBounds();
 				bounds.set(font.getBounds(s.substring(0, s.indexOf("<"))));
-				x = 0.83f*bounds.width + variables.getSolvingScreenVocabularyPositionX() + (screen-1)*variables.getScreenWidth();
-				
+				x = 0.83f * bounds.width
+						+ Variables.SOLVING_SCREEN_VOCABULARY_POSITION_X
+						+ (screen - 1) * Variables.SCREEN_WIDTH;
+
 				vocabularyPositions.add(new Vector2(x, y));
 			}
 		}

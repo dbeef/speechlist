@@ -6,8 +6,6 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class Camera extends OrthographicCamera {
 
-	Variables variables = new Variables();
-
 	static final float accumulateMax = 25;
 	static final float accumulateDecreaseSpeed = 5f;
 	static final float accumulateIncreaseSpeed = 6.5f;
@@ -89,11 +87,11 @@ public class Camera extends OrthographicCamera {
 
 	public boolean isCameraChangingPosition() {
 
-		if (this.position.x == variables.getHomeScreenPosition()
-				|| this.position.x == variables.getTestsScreenPosition()
-				|| this.position.x == variables.getDownloadsScreenPosition()
-				|| this.position.x == variables.getBriefScreenPosition()
-				|| this.position.x == variables.getGuiCameraBriefPosition())
+		if (this.position.x == Variables.HOME_SCREEN_POSITION
+				|| this.position.x == Variables.TESTS_SCREEN_POSITION
+				|| this.position.x == Variables.DOWNLOADS_SCREEN_POSITION
+				|| this.position.x == Variables.BRIEF_SCREEN_POSITION
+				|| this.position.x == Variables.GUI_CAMERA_BRIEF_POSITION)
 			return false;
 		else
 			return true;

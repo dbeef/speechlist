@@ -12,10 +12,8 @@ public class TestsManager {
 
 	String[] defaultTests;
 	Array<Test> tests = new Array<Test>();
-	Variables variables;
 
 	public TestsManager() {
-		variables = new Variables();
 		loadExternalStorageTests();
 		loadInternalStorageTests();
 		loadHardcodedTests();
@@ -28,10 +26,10 @@ public class TestsManager {
 	void loadExternalStorageTests() {
 		int tests_loaded_counter = 0;
 
-		if (variables.getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Started loading external storage tests.");
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("External storage path: "
 					+ Gdx.files.getExternalStoragePath() + "\n"
 					+ "Loading .json files.");
@@ -41,7 +39,7 @@ public class TestsManager {
 		for (FileHandle externalFile : files) {
 			if (externalFile.name().contains(".json")) {
 
-				if (new Variables().getDebugMode() == true)
+				if (Variables.DEBUG_MODE == true)
 					System.out.println("Loading: " + externalFile.name());
 
 				FileHandle file = Gdx.files.external(externalFile.name());
@@ -51,7 +49,7 @@ public class TestsManager {
 				tests.add(model);
 				tests_loaded_counter++;
 
-				if (new Variables().getDebugMode() == true) {
+				if (Variables.DEBUG_MODE == true) {
 					System.out.println("Model name:" + model.getName());
 					System.out.println("Model id:" + model.getId());
 
@@ -62,7 +60,7 @@ public class TestsManager {
 			}
 		}
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out
 					.println("Total number of tests loaded from external storage:"
 							+ tests_loaded_counter);
@@ -71,7 +69,7 @@ public class TestsManager {
 
 	void loadInternalStorageTests() {
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Loading internal app storage tests.");
 
 		int tests_loaded_counter = 0;
@@ -90,7 +88,7 @@ public class TestsManager {
 		for (FileHandle entry : dirHandle.list()) {
 			if (entry.name().contains(".json")) {
 
-				if (new Variables().getDebugMode() == true)
+				if (Variables.DEBUG_MODE == true)
 					System.out.println("Loading: " + entry.name());
 
 				FileHandle file = Gdx.files.internal(dirHandle.path() + "/"
@@ -102,7 +100,7 @@ public class TestsManager {
 				tests.add(model);
 				tests_loaded_counter++;
 
-				if (new Variables().getDebugMode() == true) {
+				if (Variables.DEBUG_MODE == true) {
 					System.out.println("Model name:" + model.getName());
 					System.out.println("Model id:" + model.getId());
 					System.out.println("Test category: " + model.getCategory());
@@ -114,7 +112,7 @@ public class TestsManager {
 			}
 		}
 
-		if (variables.getDebugMode() == true) {
+		if (Variables.DEBUG_MODE == true) {
 			System.out.println("Done loading internal app storage tests.");
 			System.out.println("Loaded: " + tests_loaded_counter);
 		}
@@ -124,7 +122,7 @@ public class TestsManager {
 
 		int tests_loaded_counter = 0;
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Loading hardcoded tests.");
 
 		defaultTests = new String[0];
@@ -145,7 +143,7 @@ public class TestsManager {
 			tests_loaded_counter++;
 		}
 
-		if (variables.getDebugMode() == true) {
+		if (Variables.DEBUG_MODE == true) {
 			System.out.println("Done loading hardcoded tests.");
 			System.out.println("Loaded: " + tests_loaded_counter);
 		}

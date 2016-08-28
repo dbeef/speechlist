@@ -31,7 +31,7 @@ public class AssetsManager extends Thread {
 
 	public void run() {
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Started loading assets.");
 
 		glareButtonVignette = new Texture("buttons/glareButtonVignette.png");
@@ -79,7 +79,7 @@ public class AssetsManager extends Thread {
 
 		loaded = true;
 
-		if (new Variables().getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Done loading assets.");
 	}
 

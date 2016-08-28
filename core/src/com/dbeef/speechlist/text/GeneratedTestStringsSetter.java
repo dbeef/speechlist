@@ -10,8 +10,7 @@ import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.utils.Variables;
 
 public class GeneratedTestStringsSetter {
-
-	Variables variables;
+	
 	Array<Screen> solvingScreens;
 	Array<SolutionInputButton> solvingButtons;
 	
@@ -27,7 +26,6 @@ public class GeneratedTestStringsSetter {
 			Array<BitmapFont> fonts, Texture mainBackground, Texture wordSet,
 			Texture wordNotSet) {
 
-		variables = new Variables();
 		solvingScreens = new Array<Screen>();
 		solvingButtons = new Array<SolutionInputButton>();
 
@@ -38,15 +36,15 @@ public class GeneratedTestStringsSetter {
 				.getVocabularyPositions();
 
 		int solvingScreensCounter = 1;
-		int screenWidth = variables.getScreenWidth();
-		int solvingScreenPosition = variables.getSolvingScreenPosition();
-		int solvingScreenVocabularyPositionY = variables
-				.getSolvingScreenVocabularyPositionY();
-		int solvingScreenVocabularyPositionX = variables
-				.getSolvingScreenVocabularyPositionX();
-		int maxLinesPerTestScreen = variables.getMaxLinesPerTestScreen();
-		int solvingScreenVocabularySpanY = variables
-				.getSolvingScreenVocabularySpanY();
+		int screenWidth = Variables.SCREEN_WIDTH;
+		int solvingScreenPosition = Variables.SOLVING_SCREEN_POSITION;
+		int solvingScreenVocabularyPositionY = Variables
+				.SOLVING_SCREEN_VOCABULARY_POSITION_Y;
+		int solvingScreenVocabularyPositionX = Variables
+				.SOLVING_SCREEN_VOCABULARY_POSITION_X;
+		int maxLinesPerTestScreen = Variables.MAX_LINES_PER_TEST_SCREEN;
+		int solvingScreenVocabularySpanY = Variables
+				.SOLVING_SCREEN_VOCABULARY_SPAN_Y;
 
 		for (int b = 0; b + (maxLinesPerTestScreen * (solvingScreensCounter - 1)) < sentencesFormatter
 				.getFormatted().size; b++) {
@@ -77,22 +75,13 @@ public class GeneratedTestStringsSetter {
 						solvingScreenPosition + (solvingScreensCounter - 1)
 								* screenWidth, 0));
 
-				System.out.println("max x value "
-						+ (variables.getSolvingScreenVocabularyPositionX()
-						+ variables.getScreenWidth()
-						* solvingScreensCounter));
-				System.out.println("min x value "
-						+ (variables.getSolvingScreenVocabularyPositionX()
-						+ variables.getScreenWidth()
-						* (solvingScreensCounter - 1)));
-				System.out.println("positions number " + buttonPositions.size);
 				for (Vector2 vec : buttonPositions) {
-					System.out.println("x value " + vec.x);
-					if (vec.x > variables.getSolvingScreenPosition()
-							+ variables.getScreenWidth()
+
+					if (vec.x > Variables.SOLVING_SCREEN_POSITION
+							+ Variables.SCREEN_WIDTH
 							* (solvingScreensCounter - 1)
-							&& vec.x < (variables.getSolvingScreenVocabularyPositionX()
-									+ variables.getScreenWidth()
+							&& vec.x < (Variables.SOLVING_SCREEN_VOCABULARY_POSITION_X
+									+ Variables.SCREEN_WIDTH
 									* solvingScreensCounter)) {
 
 						System.out.println("Adding to screen: " + solvingScreensCounter + " " + vec.x);
@@ -152,25 +141,14 @@ public class GeneratedTestStringsSetter {
 						solvingScreenPosition + (solvingScreensCounter - 1)
 								* screenWidth, 0));
 
-				System.out.println("max x value "
-						+ (variables.getSolvingScreenVocabularyPositionX()
-						+ variables.getScreenWidth()
-						* solvingScreensCounter));
-				System.out.println("min x value "
-						+ (variables.getSolvingScreenVocabularyPositionX()
-						+ variables.getScreenWidth()
-						* (solvingScreensCounter - 1)));
-
-				System.out.println("positions number " + buttonPositions.size);
+				
 				for (Vector2 vec : buttonPositions) {
 					
-					System.out.println("x value " + vec.x);
-				
-					if (vec.x > variables.getSolvingScreenPosition()
-							+ variables.getScreenWidth()
+					if (vec.x > Variables.SOLVING_SCREEN_POSITION
+							+ Variables.SCREEN_WIDTH
 							* (solvingScreensCounter - 1)
-							&& vec.x < (variables.getSolvingScreenVocabularyPositionX()
-									+ variables.getScreenWidth()
+							&& vec.x < (Variables.SOLVING_SCREEN_VOCABULARY_POSITION_X
+									+ Variables.SCREEN_WIDTH
 									* solvingScreensCounter)) {
 						System.out.println("Adding to screen: " + solvingScreensCounter + " " + vec.x);
 						SolutionInputButton wordFillButton = new SolutionInputButton(vec.x, vec.y,
@@ -186,9 +164,8 @@ public class GeneratedTestStringsSetter {
 				b = -1;
 			}	
 		}
-		
 
-		if (variables.getDebugMode() == true)
+		if (Variables.DEBUG_MODE == true)
 			System.out.println("Number of solving screens: "
 					+ solvingScreens.size);
 	}

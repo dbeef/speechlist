@@ -16,14 +16,9 @@ public class RESTClient extends Thread {
 	boolean TEST_RETRIEVED;
 	boolean TEST_NAME_RETRIEVED;
 
-	Variables variables;
 	UniqueIdContainer uniqueIdContainer;
 	Test test;
 	String testName;
-
-	public RESTClient() {
-		variables = new Variables();
-	}
 
 	public UniqueIdContainer getUniqueIdContainer() {
 		return uniqueIdContainer;
@@ -54,9 +49,9 @@ public class RESTClient extends Thread {
 	}
 
 	public void run(String task, int uniqueId) {
-		if (task.equals(new Variables().retrieveTest()))
+		if (task.equals(Variables.TASK_RETRIEVE_TEST))
 			getTest(uniqueId);
-		if (task.equals(new Variables().RetrieveTestName()))
+		if (task.equals(Variables.TASK_RETRIEVE_TEST_NAME))
 			getTestName(uniqueId);
 	}
 
@@ -76,7 +71,7 @@ public class RESTClient extends Thread {
 			}
 			uniqueIdContainer = response.getEntity(UniqueIdContainer.class);
 
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Unique IDs: \n");
 				for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
 					System.out.println(uniqueIdContainer.getUniqueIds()[a]);
@@ -86,7 +81,7 @@ public class RESTClient extends Thread {
 		} catch (Exception e) {
 			FAILED = true;
 			UNIQUE_IDS_RETRIEVED = false;
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Failed to retrieve unique ids.");
 				e.printStackTrace();
 			}
@@ -113,7 +108,7 @@ public class RESTClient extends Thread {
 						+ response.getStatus());
 			}
 			test = response.getEntity(Test.class);
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test: \n");
 				System.out.println(test.getName());
 			}
@@ -121,7 +116,7 @@ public class RESTClient extends Thread {
 		} catch (Exception e) {
 			FAILED = true;
 			TEST_RETRIEVED = false;
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Failed to retrive test.");
 				e.printStackTrace();
 			}
@@ -144,7 +139,7 @@ public class RESTClient extends Thread {
 						+ response.getStatus());
 			}
 			testName = response.getEntity(String.class);
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test name: \n");
 				System.out.println(testName);
 			}
@@ -152,7 +147,7 @@ public class RESTClient extends Thread {
 		} catch (Exception e) {
 			TEST_NAME_RETRIEVED = false;
 			FAILED = true;
-			if (variables.getDebugMode() == true) {
+			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Failed to retrieve test name.");
 				e.printStackTrace();
 			}

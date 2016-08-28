@@ -37,7 +37,6 @@ public class InputInterpreter implements GestureListener {
 
 	int currentSolvingScreen;
 
-	Variables variables = new Variables();
 
 	VocabularyFormatter vocabularyFormatter;
 
@@ -126,7 +125,7 @@ public class InputInterpreter implements GestureListener {
 		touchDownX = x;
 		touchDownY = y;
 
-		if (variables.getDebugInput() == true)
+		if (Variables.DEBUG_INPUT == true)
 			System.out.println("touchDown" + x + " " + y);
 		return false;
 	}
@@ -136,7 +135,7 @@ public class InputInterpreter implements GestureListener {
 		// TODO Auto-generated method stub
 		if (assetsLoaded == true) {
 
-			if (variables.getDebugInput() == true)
+			if (Variables.DEBUG_INPUT == true)
 				System.out.println("tap");
 			touched = true;
 
@@ -150,19 +149,19 @@ public class InputInterpreter implements GestureListener {
 				home.select();
 				tests.deselect();
 				downloads.deselect();
-				camera.move(variables.getHomeScreenPosition());
+				camera.move(Variables.HOME_SCREEN_POSITION);
 			}
 			if (tests.checkCollision((int) vec.x, (int) vec.y) == true) {
 				home.deselect();
 				tests.select();
 				downloads.deselect();
-				camera.move(variables.getTestsScreenPosition());
+				camera.move(Variables.TESTS_SCREEN_POSITION);
 			}
 			if (downloads.checkCollision((int) vec.x, (int) vec.y) == true) {
 				home.deselect();
 				tests.deselect();
 				downloads.select();
-				camera.move(variables.getDownloadsScreenPosition());
+				camera.move(Variables.DOWNLOADS_SCREEN_POSITION);
 			}
 
 			manageVocabularyButtonsCollisions((int) vec.x, (int) vec.y);
@@ -188,7 +187,7 @@ public class InputInterpreter implements GestureListener {
 	@Override
 	public boolean longPress(float x, float y) {
 		// TODO Auto-generated method stub
-		if (variables.getDebugInput() == true)
+		if (Variables.DEBUG_INPUT == true)
 			System.out.println("longPress");
 		return false;
 	}
@@ -198,15 +197,15 @@ public class InputInterpreter implements GestureListener {
 		if (Math.abs(velocityX) > Math.abs(velocityY) && assetsLoaded == true) {
 			if (velocityX > 0) {
 
-				if (camera.position.x > variables.getSolvingScreenPosition()
+				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
 					if (currentSolvingScreen > 1)
-						camera.move(variables.getSphinxScreenPosition()
+						camera.move(Variables.SPHINX_SCREEN_POSITION
 								+ (currentSolvingScreen - 1)
-								* variables.getScreenWidth()
-								- variables.getScreenWidth());
+								* Variables.SCREEN_WIDTH
+								- Variables.SCREEN_WIDTH);
 
 					if (solvingScreens.size - 1 > 1 && currentSolvingScreen > 1)
 						currentSolvingScreen--;
@@ -217,25 +216,25 @@ public class InputInterpreter implements GestureListener {
 					home.select();
 					tests.deselect();
 					downloads.deselect();
-					camera.move(variables.getHomeScreenPosition());
+					camera.move(Variables.HOME_SCREEN_POSITION);
 				}
 				if (downloads.getSelection() == true) {
 					home.deselect();
 					tests.select();
 					downloads.deselect();
-					camera.move(variables.getTestsScreenPosition());
+					camera.move(Variables.TESTS_SCREEN_POSITION);
 				}
 
 			} else if (velocityX < 0) {
 
-				if (camera.position.x > variables.getSolvingScreenPosition()
+				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
 						currentSolvingScreen++;
-					camera.move(variables.getSphinxScreenPosition()
+					camera.move(Variables.SPHINX_SCREEN_POSITION
 							+ (currentSolvingScreen - 1)
-							* variables.getScreenWidth());
+							* Variables.SCREEN_WIDTH);
 
 				}
 
@@ -243,13 +242,13 @@ public class InputInterpreter implements GestureListener {
 					home.deselect();
 					tests.deselect();
 					downloads.select();
-					camera.move(variables.getDownloadsScreenPosition());
+					camera.move(Variables.DOWNLOADS_SCREEN_POSITION);
 				}
 				if (home.getSelection() == true) {
 					home.deselect();
 					tests.select();
 					downloads.deselect();
-					camera.move(variables.getTestsScreenPosition());
+					camera.move(Variables.TESTS_SCREEN_POSITION);
 				}
 
 			} else {
@@ -269,7 +268,7 @@ public class InputInterpreter implements GestureListener {
 		panX = x;
 		panY = y;
 
-		if (variables.getDebugInput() == true)
+		if (Variables.DEBUG_INPUT == true)
 			System.out.println("pan");
 
 		if (camera.isCameraChangingPosition() == false
@@ -283,7 +282,7 @@ public class InputInterpreter implements GestureListener {
 	public boolean panStop(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
 
-		if (variables.getDebugInput() == true)
+		if (Variables.DEBUG_INPUT == true)
 			System.out.println("panStop");
 		panned = false;
 		justStoppedPanning = true;
@@ -298,7 +297,7 @@ public class InputInterpreter implements GestureListener {
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
 
-		if (variables.getDebugInput() == true) {
+		if (Variables.DEBUG_INPUT == true) {
 			System.out.println("zoom");
 			System.out.println("initialDistance: " + initialDistance
 					+ "distance: " + distance);
@@ -322,7 +321,7 @@ public class InputInterpreter implements GestureListener {
 			Vector2 pointer1, Vector2 pointer2) {
 		// TODO Auto-generated method stub
 
-		if (variables.getDebugInput() == true)
+		if (Variables.DEBUG_INPUT == true)
 			System.out.println("pinch");
 		return false;
 	}
@@ -384,7 +383,7 @@ public class InputInterpreter implements GestureListener {
 				&& downloads.getSelection() == false) {
 			if (decline.checkCollision((int) x, (int) y) == true
 					&& solutionInput.getVisibility() == false) {
-				camera.move(variables.getTestsScreenPosition());
+				camera.move(Variables.TESTS_SCREEN_POSITION);
 				decline.blink();
 				tests.select();
 				for (int a = 0; a < testsButtons.size; a++) {
@@ -395,10 +394,10 @@ public class InputInterpreter implements GestureListener {
 			}
 
 			if (accept.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x < variables.getSolvingScreenPosition()) {
+				if (camera.position.x <Variables.SOLVING_SCREEN_POSITION) {
 					accept.blink();
 					currentSolvingScreen = 1;
-					camera.move(variables.getSphinxScreenPosition());
+					camera.move(Variables.SPHINX_SCREEN_POSITION);
 
 					for (SolutionInputButton solutionInputButton : solvingButtons) {
 						solutionInputButton.setClicked(false);
@@ -427,7 +426,7 @@ public class InputInterpreter implements GestureListener {
 						if (percentage.length() == 1)
 							position = 2120;
 
-						camera.move(variables.getBriefScreenPosition());
+						camera.move(Variables.BRIEF_SCREEN_POSITION);
 
 						menuBrief.add(percentage + "%", new Vector2(position,
 								180), new Vector2(1, 1), new Vector3(1, 1, 1));
@@ -442,30 +441,30 @@ public class InputInterpreter implements GestureListener {
 
 			}
 			if (left.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x > variables.getSolvingScreenPosition()
+				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
 					if (currentSolvingScreen > 1)
-						camera.move(variables.getSphinxScreenPosition()
+						camera.move(Variables.SPHINX_SCREEN_POSITION
 								+ (currentSolvingScreen - 1)
-								* variables.getScreenWidth()
-								- variables.getScreenWidth());
+								* Variables.SCREEN_WIDTH
+								- Variables.SCREEN_WIDTH);
 				}
 				if (solvingScreens.size > 1 && currentSolvingScreen > 1)
 					currentSolvingScreen--;
 
 			}
 			if (right.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x > variables.getSolvingScreenPosition()
+				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
 						currentSolvingScreen++;
-					camera.move(variables.getSphinxScreenPosition()
+					camera.move(Variables.SPHINX_SCREEN_POSITION
 							+ (currentSolvingScreen - 1)
-							* variables.getScreenWidth());
+							* Variables.SCREEN_WIDTH);
 
 				}
 			}
@@ -479,7 +478,7 @@ public class InputInterpreter implements GestureListener {
 				if (testsButtons.get(a).checkCollisionTick((int) x, (int) y) == true) {
 					testsButtons.get(a).highlight();
 					tests.deselect();
-					camera.move(variables.getBriefScreenPosition());
+					camera.move(Variables.BRIEF_SCREEN_POSITION);
 					addMenuBriefStrings(a);
 					addMenuSphinxStrings(a);
 				}
@@ -500,13 +499,13 @@ public class InputInterpreter implements GestureListener {
 			if (tests_local[a].getVisibility() == true) {
 				anyCategorySelected = true;
 				if (a == 0)
-					currentCategory = variables.getVOCABULARY();
+					currentCategory = Variables.CATEGORY_VOCABULARY;
 				if (a == 1)
-					currentCategory = variables.getIDIOMS();
+					currentCategory = Variables.CATEGORY_IDIOMS;
 				if (a == 2)
-					currentCategory = variables.getTENSES();
+					currentCategory = Variables.CATEGORY_TENSES;
 				if (a == 3)
-					currentCategory = variables.getVARIOUS();
+					currentCategory = Variables.CATEGORY_VARIOUS;
 			}
 		}
 

@@ -84,16 +84,16 @@ public class DefaultStringsSetter {
 		menuTests.add("Your tests", new Vector2(1133, 660), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
 		menuTests.add("Vocabulary",
-				new Vector2(variables.getTestsScreenPosition() - 190, 360),
+				new Vector2(Variables.TESTS_SCREEN_POSITION - 190, 360),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
 		menuTests.add("Tenses", new Vector2(
-				variables.getTestsScreenPosition() - 160, 90),
+				Variables.TESTS_SCREEN_POSITION - 160, 90),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
 		menuTests.add("Various", new Vector2(
-				variables.getTestsScreenPosition() + 55, 90),
+				Variables.TESTS_SCREEN_POSITION + 55, 90),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
 		menuTests.add("Idioms", new Vector2(
-				variables.getTestsScreenPosition() + 65, 360),
+				Variables.TESTS_SCREEN_POSITION + 65, 360),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
 		return menuTests;
 	}
