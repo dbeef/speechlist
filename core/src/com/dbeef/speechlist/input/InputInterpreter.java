@@ -37,7 +37,6 @@ public class InputInterpreter implements GestureListener {
 
 	int currentSolvingScreen;
 
-
 	VocabularyFormatter vocabularyFormatter;
 
 	boolean wasPannedBefore;
@@ -197,7 +196,7 @@ public class InputInterpreter implements GestureListener {
 		if (Math.abs(velocityX) > Math.abs(velocityY) && assetsLoaded == true) {
 			if (velocityX > 0) {
 
-				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
+				if (camera.position.x > Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
@@ -227,7 +226,7 @@ public class InputInterpreter implements GestureListener {
 
 			} else if (velocityX < 0) {
 
-				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
+				if (camera.position.x > Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					right.blink();
 					if (currentSolvingScreen + 1 <= solvingScreens.size)
@@ -271,8 +270,8 @@ public class InputInterpreter implements GestureListener {
 		if (Variables.DEBUG_INPUT == true)
 			System.out.println("pan");
 
-		if (camera.isCameraChangingPosition() == false
-				&& initialCameraMovements == true)
+		if ((camera.isCameraChangingPosition() == false
+				&& initialCameraMovements == true) || solutionInput.getVisibility() == true)
 			manageSheetSliding();
 
 		return false;
@@ -287,8 +286,8 @@ public class InputInterpreter implements GestureListener {
 		panned = false;
 		justStoppedPanning = true;
 
-		if (camera.isCameraChangingPosition() == false
-				&& initialCameraMovements == true)
+		if ((camera.isCameraChangingPosition() == false
+				&& initialCameraMovements == true)|| solutionInput.getVisibility() == true)
 			manageSheetSliding();
 
 		return false;
@@ -382,7 +381,7 @@ public class InputInterpreter implements GestureListener {
 		if (home.getSelection() == false && tests.getSelection() == false
 				&& downloads.getSelection() == false) {
 			if (decline.checkCollision((int) x, (int) y) == true
-					&& solutionInput.getVisibility() == false) {
+					&& solutionInput.getVisibility() == false && solutionInput.isAlphaZero() == true) {
 				camera.move(Variables.TESTS_SCREEN_POSITION);
 				decline.blink();
 				tests.select();
@@ -394,7 +393,7 @@ public class InputInterpreter implements GestureListener {
 			}
 
 			if (accept.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x <Variables.SOLVING_SCREEN_POSITION) {
+				if (camera.position.x < Variables.SOLVING_SCREEN_POSITION) {
 					accept.blink();
 					currentSolvingScreen = 1;
 					camera.move(Variables.SPHINX_SCREEN_POSITION);
@@ -424,7 +423,7 @@ public class InputInterpreter implements GestureListener {
 						if (percentage.length() == 2)
 							position = 2130;
 						if (percentage.length() == 1)
-							position = 2120;
+							position = 2135;
 
 						camera.move(Variables.BRIEF_SCREEN_POSITION);
 
@@ -441,7 +440,7 @@ public class InputInterpreter implements GestureListener {
 
 			}
 			if (left.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
+				if (camera.position.x > Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 					left.blink();
 
@@ -456,7 +455,7 @@ public class InputInterpreter implements GestureListener {
 
 			}
 			if (right.checkCollision((int) x, (int) y) == true) {
-				if (camera.position.x >Variables.SOLVING_SCREEN_POSITION
+				if (camera.position.x > Variables.SOLVING_SCREEN_POSITION
 						&& solutionInput.getVisibility() == false) {
 
 					right.blink();
@@ -543,8 +542,7 @@ public class InputInterpreter implements GestureListener {
 				testsManager.getTest(testsButtons.get(a).getName())
 						.getVocabulary().length);
 
-		for (int c = 0; c < testsManager.getTest(testsButtons.get(a).getName())
-				.getVocabulary().length; c++) {
+		for (int c = 0; c < formatted.length; c++) {
 
 			int spanX = (480 - (int) fonts.get(5).getBounds(formatted[c]).width) / 2;
 			int spanY = formatted.length * 5;
@@ -573,7 +571,7 @@ public class InputInterpreter implements GestureListener {
 					new Vector3(1, 1, 1));
 		else
 			menuBrief.add(lastResultString,
-					new Vector2(2145 - lastResultString.length() * 10, 180),
+					new Vector2(2150 - lastResultString.length() * 10, 180),
 					new Vector2(1, 1), new Vector3(1, 1, 1));
 
 	}
@@ -614,9 +612,12 @@ public class InputInterpreter implements GestureListener {
 		if (wasPannedBefore == true && this.getPanned() == false) {
 			for (int a = 0; a < testsButtons.size; a++)
 				testsButtons.get(a).savePositionAsOriginPosition();
+			if(solutionInput != null )
+				for(int a =0;a<solutionInput.getVocabularyButtons().size;a++)
+				solutionInput.getVocabularyButtons().get(a).savePositionAsOriginPosition();
 		}
 
-		if (tests.getSelection() == true || downloads.getSelection() == true) {
+		if (tests.getSelection() == true || downloads.getSelection() == true || (solutionInput != null && solutionInput.getVisibility() == true)) {
 			if (this.getTouchDown() == true) {
 				initialPanX = this.getTouchDownX();
 				initialPanY = this.getTouchDownY();
@@ -625,7 +626,21 @@ public class InputInterpreter implements GestureListener {
 				panX = this.getPanX();
 				panY = this.getPanY();
 				for (int a = 0; a < testsButtons.size; a++) {
-					testsButtons.get(a).move(0, 0.5f*(initialPanY - panY));
+					testsButtons.get(a).move(0, 0.5f * (initialPanY - panY));
+				}
+				
+				System.out.println("soltionInput != null" + solutionInput != null);
+				System.out.println("solutionInput.getVisibility()" + solutionInput.getVisibility());
+				
+				if (solutionInput != null
+						&& solutionInput.getVisibility() == true) {
+					System.out.println("True, now for");
+					for (int a = 0; a < solutionInput.getVocabularyButtons().size; a++) {
+				System.out.println("Moving");
+				
+						solutionInput.getVocabularyButtons().get(a)
+								.move(0, 0.5f * (initialPanY - panY));
+					}
 				}
 			}
 		}

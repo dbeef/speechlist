@@ -508,13 +508,14 @@ public class ActionManager {
 		}
 
 		if (assetsLoaded == true && resultsManager.getRefreshed() == true) {
+			String timeSpent = timeSpentObserver.getTimeSpent();
 			menuHome.removeAllStrings();
 			menuHome = new DefaultStringsSetter().setMenuHomeStrings(menuHome);
 			if (timeSpentObserver.getTimeSpent().length() == 3)
-				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(550,
+				menuHome.add(timeSpent, new Vector2(550,
 						485), new Vector2(1, 1), new Vector3(1, 1, 1));
 			if (timeSpentObserver.getTimeSpent().length() == 2)
-				menuHome.add(timeSpentObserver.getTimeSpent(), new Vector2(555,
+				menuHome.add(timeSpent, new Vector2(555,
 						485), new Vector2(1, 1), new Vector3(1, 1, 1));
 
 			String testsSolved = Integer.toString(resultsManager

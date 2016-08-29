@@ -3,7 +3,7 @@ package com.dbeef.speechlist.utils;
 public class Variables {
 
 	public static final int CHARACTER_WIDTH = 19;
-	public static final int MAX_CHAR_PER_TEST_LINE = 30;
+	public static final int MAX_CHAR_PER_TEST_LINE = 29;
 	public static final int MAX_LINES_PER_TEST_SCREEN = 11;
 	public static final int GUI_CAMERA_BRIEF_POSITION = 1175;
 	public static final int GUI_CAMERA_POSITION = 720;
@@ -19,8 +19,8 @@ public class Variables {
 	public static final int SOLVING_SCREEN_VOCABULARY_SPAN_Y = 60;
 	public static final int SCREEN_WIDTH = 480;
 
-	public static final String TASK_RETRIEVE_TEST = "retrieveTest";
-	public static final String TASK_RETRIEVE_TEST_NAME = "retrieveTestName";
+	public static final String TASK_RETRIEVE_TEST = "RETRIEVE_TEST";
+	public static final String TASK_RETRIEVE_TEST_NAME = "RETRIEVE_TEST_NAME";
 	public static final String CATEGORY_VOCABULARY = "vocabulary";
 	public static final String CATEGORY_IDIOMS = "idioms";
 	public static final String CATEGORY_TENSES = "tenses";
@@ -28,5 +28,5 @@ public class Variables {
 
 	public static final boolean DEBUG_MODE = true;
 	public static final boolean DEBUG_INPUT = false;
-
+	
 }

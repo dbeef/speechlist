@@ -66,12 +66,7 @@ public class SentencesFormatter {
 					&& isLetter(sentences.charAt(charPosition)) == false
 					&& isSpecialCharacter(sentences.charAt(charPosition)) == false) {
 				formatted.add(new String(sentences.substring(0, charPosition)));
-				System.out.println("Sentence added:"
-						+ new String(sentences.substring(0, charPosition)));
-				System.out.println("sentences begfore:" + sentences);
 				sentences = sentences.substring(charPosition);
-				System.out.println("sentences after:" + sentences);
-				System.out.println("2");
 			} else if (charPosition < sentences.length()
 					&& isLetter(sentences.charAt(charPosition)) == false
 					&& isSpecialCharacter(sentences.charAt(charPosition)) == true) {
@@ -192,6 +187,9 @@ public class SentencesFormatter {
 						+ (screen - 1) * Variables.SCREEN_WIDTH;
 
 				vocabularyPositions.add(new Vector2(x, y));
+
+				// When there is more than one button mark in string, only first
+				// one is added!
 			}
 		}
 	}
@@ -199,6 +197,7 @@ public class SentencesFormatter {
 	public Array<String> getFormatted() {
 
 		for (int a = 0; a < formatted.size; a++) {
+
 			if (formatted.get(a).contains("<<||>>"))
 				formatted
 						.set(a, formatted.get(a).replace("<<||>>", "        "));

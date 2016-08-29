@@ -81,6 +81,29 @@ public class SolutionInput {
 			vocabularyButton.loadTick(tick);
 			vocabularyButtons.add(vocabularyButton);
 		}
+
+		for (int b = 0; b < vocabularyButtons.size; b++) {
+			int buttons_with_Y_below_0 = 0;
+		
+			for (int a = 0; a < vocabularyButtons.size; a++) {
+				if (vocabularyButtons.get(a).getY() < 0)
+					buttons_with_Y_below_0++;
+
+				vocabularyButtons.get(a).setMaxDrawingY(800);
+				vocabularyButtons.get(a).setMinDrawingY(0);
+			}
+			
+			for (int a = 0; a < vocabularyButtons.size; a++) {
+				
+				vocabularyButtons.get(a).setMaxMovingY(
+						(int) vocabularyButtons.get(a).getY()
+								+ (buttons_with_Y_below_0-1) * 80 + 50);
+				
+				vocabularyButtons.get(a).setMovingMinY(
+						(int) vocabularyButtons.get(a).getY());
+			}
+		}
+
 	}
 
 	public void render(Batch batch, float delta) {

@@ -20,13 +20,26 @@ public class VocabularyFormatter {
 			output[a] += getBiggestWord() + " " + getSmallestWord();
 			output[a] = output[a].trim();
 		}
-		return output;
+
+		int charactersInOutput = 0;
+		for (int a = 0; a < output.length; a++)
+			charactersInOutput += output[a].length();
+
+		if (charactersInOutput > 90){
+			String[] s = new String[3];
+			s[0] = "Over " + output.length;
+			s[1] = "lines of";
+			s[2] = "vocabulary";
+			return s;
+		}
+		else
+			return output;
 
 	}
 
 	String getSmallestWord() {
 		boolean changed = false;
-		String s = "QWERTYUIOPQWERTYUIPOQWT";
+		String s = "___________________________________________";
 		for (int a = 0; a < vocabulary.size; a++) {
 			if (vocabulary.get(a).length() < s.length()) {
 				s = vocabulary.get(a);
