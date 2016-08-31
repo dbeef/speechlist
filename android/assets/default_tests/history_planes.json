@@ -1,0 +1,23 @@
+{
+  "sentences": "An airplane or aeroplane (<<||>> plane) is a powered, fixed-wing aircraft that is propelled forward by thrust from a jet <<||>> or propeller. The broad <<||>> of uses for airplanes includes recreation, <<||>> of goods and people, military, and research. <<||>> aviation is a massive industry involving the flying of tens of thousands of passengers daily on airliners. Most airplanes are <<||>> by a pilot on board the aircraft, but some are designed to be remotely or computer-controlled. The Wright brothers invented and flew the first airplane in 1903, recognized as 'the first sustained and controlled <<||>> powered flight'. They built on the works of George Cayley dating from 1799, when he set forth the concept of the modern airplane (and later built and flew models and successful <<||>> gliders). Between 1867 and 1896, the German pioneer of human aviation Otto Lilienthal also studied heavier-than-air flight. <<||>> its limited use in World War I, aircraft technology continued to develop. Airplanes had a <<||>> in all the major battles of World War II. The first jet aircraft was the German Heinkel He 178 in 1939. The first jet airliner, the de Havilland Comet, was <<||>> in 1952. The Boeing 707, the first widely successful commercial jet, was in commercial service for more than 50 years, from 1958 to <<||>> 2013. When risk is measured by deaths per passenger kilometer, air travel is <<||>> 10 times safer than travel by bus or rail. Via wikipedia.org.
+  ",
+  "vocabulary": [
+    "informally",
+    "engine",
+    "spectrum",
+    "transportation",
+    "Commercial",
+    "flown",
+    "heavier-than-air",
+    "passenger-carrying",
+    "Following",
+    "presence",
+    "introduced",
+    "at least",
+    "approximately"
+  ],
+  "name": "History - Airplanes",
+  "id": 25,
+  "uniqueId": 25,
+  "category": "vocabulary"
+}

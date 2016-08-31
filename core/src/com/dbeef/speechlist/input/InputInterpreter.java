@@ -626,7 +626,7 @@ public class InputInterpreter implements GestureListener {
 				panX = this.getPanX();
 				panY = this.getPanY();
 				for (int a = 0; a < testsButtons.size; a++) {
-					testsButtons.get(a).move(0, 0.5f * (initialPanY - panY));
+					testsButtons.get(a).move(0, 0.4f * (initialPanY - panY));
 				}
 				
 				System.out.println("soltionInput != null" + solutionInput != null);

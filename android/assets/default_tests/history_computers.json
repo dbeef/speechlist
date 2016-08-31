@@ -1,0 +1,25 @@
+{
+  "sentences": "A computer is a device that can be <<||>> to carry out an arbitrary set of arithmetic or logical <<||>> automatically. Their ability of computers to follow a <<||>> of operations, called a program, make computers very <<||>> and useful. Such computers are used as control systems for a very wide <<||>> of industrial and consumer devices. This includes simple special purpose devices like microwave ovens and remote controls, factory devices such as <<||>> and computer assisted design, but also in general purpose devices like personal computers and <<||>> such as smartphones. The Internet is <<||>> on computers and it connects millions of other computers. Since <<||>>, simple manual devices like the abacus aided people in doing calculations. Early in the <<||>> Revolution, some mechanical devices were built to automate long <<||>> tasks, such as guiding patterns for looms. More <<||>> electrical machines did specialized <<||>> calculations in the early 20th century. The first <<||>> electronic calculating machines were developed during World War II.  The speed and versatility of computers increased <<||>> and dramatically since then, to the point that <<||>> may become possible in the future. Via wikipedia.org",
+  "vocabulary": [
+    "instructed",
+    "operations",
+    "sequence",
+    "flexible",
+    "variety",
+    "industrial robots",
+    "mobile devices",
+    "run",
+    "ancient times",
+    "Industrial",
+    "tedious",
+    "sophisticated",
+    "analog",
+    "digital",
+    "continuously",
+    "artificial intelligence"
+  ],
+  "name": "History - Computers",
+  "id": 27,
+  "uniqueId": 27,
+  "category": "vocabulary"
+}

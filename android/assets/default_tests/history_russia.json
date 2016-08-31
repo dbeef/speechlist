@@ -1,0 +1,22 @@
+{
+  "sentences": "Russia is a sovereign <<||>> state in northern Eurasia. Extending across the entirety of northern Asia and much of <<||>> Europe, Russia spans eleven <<||>> zones and incorporates a wide range of environments and landforms. It shares <<||>> borders with Japan by the Sea of Okhotsk and the US state of Alaska across the Bering <<||>>. The nation's history began with that of the East <<||>>, who emerged as a recognizable group in Europe between the 3rd and 8th <<||>> AD. The Grand Duchy of Moscow gradually reunified the surrounding Russian principalities, achieved <<||>> from the Golden Horde, and came to dominate the cultural and <<||>> legacy of Kievan Rus'. Following the Russian <<||>>, the Russian Soviet Federative Socialist Republic became the largest and leading <<||>> of the Union of Soviet Socialist Republics, the world's first constitutionally socialist <<||>>. Via wikipedia.org.
+  ",
+  "vocabulary": [
+    "transcontinental",
+    "Eastern",
+    "time",
+    "maritime",
+    "Strait",
+    "Slavs",
+    "centuries",
+    "independence",
+    "political",
+    "Revolution",
+    "constituent",
+    "state"
+  ],
+  "name": "History - Russia",
+  "id": 24,
+  "uniqueId": 24,
+  "category": "vocabulary"
+}

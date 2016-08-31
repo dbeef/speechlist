@@ -22,25 +22,28 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(647, 395),
 				new Vector2(6, 1), new Vector3(1, 1, 1));
-		menuHome.add("Version 0.4", new Vector2(692, 415), new Vector2(6, 1),
+		menuHome.add("Version 1 31.08.2016", new Vector2(672, 415), new Vector2(6, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("This app is 100% free.", new Vector2(650, 305),
+		menuHome.add("This app is 100% free.", new Vector2(650, 310),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add(
-				"If you like it, please support me on patreon: <danielzalega>",
-				new Vector2(520, 270), new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add("to help maintaining servers.", new Vector2(630, 235),
+				"If you like it, please support me on patreon: <3914681>",
+				new Vector2(540, 275), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("to help maintaining servers.", new Vector2(630, 240),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("You can also observe me on Facebook", new Vector2(580,
-				200), new Vector2(2, 1), new Vector3(1, 1, 1));
+				205), new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("to be up-to-date with my projects.",
-				new Vector2(605, 165), new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add("Enjoy, Daniel.", new Vector2(675, 130), new Vector2(2, 1),
+				new Vector2(605, 170), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("Enjoy, Daniel.", new Vector2(675, 135), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
-		
+		menuHome.add("All presented resources have been used concerning their licenses:", new Vector2(498, 100), new Vector2(2, 1),
+				new Vector3(1, 1, 1));
 		menuHome.add("icons designed by from Flaticon,", new Vector2(610, 70), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585, 35), new Vector2(2, 1),
+		menuHome.add("www.flaticon.com", new Vector2(655, 45), new Vector2(2, 1),
+				new Vector3(1, 1, 1));
+		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585, 20), new Vector2(2, 1),
 				new Vector3(1, 1, 1));		
 
 		return menuHome;
