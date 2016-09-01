@@ -113,7 +113,8 @@ public class SentencesFormatter {
 													.length() - 1));
 				}
 
-				if (formatted.get(linesCounter - 1).startsWith(".")
+				if ((formatted.get(linesCounter - 1).startsWith(".") || formatted
+						.get(linesCounter - 1).startsWith(";"))
 						&& isLetter(formatted.get(linesCounter - 2).charAt(
 								formatted.get(linesCounter - 2).length() - 1))) {
 					formatted.set(linesCounter - 2,

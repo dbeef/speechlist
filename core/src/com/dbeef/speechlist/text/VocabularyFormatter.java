@@ -25,7 +25,7 @@ public class VocabularyFormatter {
 		for (int a = 0; a < output.length; a++)
 			charactersInOutput += output[a].length();
 
-		if (charactersInOutput > 90){
+		if (charactersInOutput > 50){
 			String[] s = new String[3];
 			s[0] = "Over " + output.length;
 			s[1] = "lines of";

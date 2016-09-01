@@ -294,7 +294,7 @@ public class ActionManager {
 				if (testButtons.get(a).getY() < 120)
 					buttons_with_Y_below_120++;
 
-				testButtons.get(a).setMaxDrawingY(530);
+				testButtons.get(a).setMaxDrawingY(540);
 				testButtons.get(a).setMinDrawingY(85);
 			}
 			for (int a = 0; a < testButtons.size; a++) {

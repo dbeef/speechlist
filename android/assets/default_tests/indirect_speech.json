@@ -1,0 +1,17 @@
+{
+  "sentences": "I like apples; He said that he <<||>> apples. We are riding; They claimed that they <<||>>. You have sinned; I was told that I <<||>>. They finished all the wine earlier; He thought they <<||>> all the wine earlier. I would do anything you asked; He said he would do anything she <<||>>. The match will end in a draw; He predicted that the match <<||>> in a draw. We may attend; She told us that they <<||>> attend. The earth orbits the sun; Copernicus stated that the earth <<||>> the sun. Via wikipedia.org",
+  "vocabulary": [
+    "liked",
+    "were riding",
+    "had sinned",
+    "had finished",
+    "asked",
+    "would end",
+    "might",
+    "orbits"
+  ],
+  "name": "Indirect speech",
+  "id": 35,
+  "uniqueId": 35,
+  "category": "tenses"
+}

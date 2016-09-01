@@ -1,0 +1,27 @@
+{
+  "sentences": "Apollo 11 was the first <<||>> that landed humans on the Moon. Mission <<||>> Neil Armstrong and pilot Buzz Aldrin landed the <<||>> module Eagle on July 20, 1969. Armstrong became the first to step onto the lunar <<||>> six hours later on July 21; Aldrin <<||>> about 20 minutes later. They spent about two and a quarter hours together outside the <<||>>, and collected 47.5 <<||>> of lunar material for return to Earth. Michael Collins <<||>> the command module Columbia alone in lunar <<||>> while they were on the Moon's surface. Armstrong and Aldrin spent just under a day on the lunar surface before <<||>> with Columbia in lunar orbit. Launched by a Saturn V <<||>> from Kennedy Space Center in Merritt Island, Florida, on July 16, Apollo 11 was the fifth <<||>> of NASA's Apollo program. <<||>> on live TV to a world-wide audience, Armstrong stepped onto the lunar surface and <<||>> the event as 'one small step for man, one giant <<||>> for [a] mankind.' Apollo 11 effectively ended the <<||>> and fulfilled a national goal proposed in 1961 by US President John F. Kennedy: 'before this decade <<||>>, of landing a man on the Moon and returning him safely to <<||>>.' Via wikipedia.org",
+  "vocabulary": [
+    "spaceflight",
+    "commander",
+    "lunar",
+    "surface",
+    "joined him",
+    "spacecraft",
+    "pounds",
+    "piloted",
+    "orbit",
+    "rendezvousing",
+    "rocket",
+    "manned mission",
+    "Broadcast",
+    "described",
+    "leap",
+    "Space Race",
+    "is out",
+    "the Earth"
+  ],
+  "name": "History - Apollo 11",
+  "id": 28,
+  "uniqueId": 28,
+  "category": "vocabulary"
+}

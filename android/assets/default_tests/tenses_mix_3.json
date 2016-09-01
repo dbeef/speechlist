@@ -1,0 +1,15 @@
+{
+  "sentences": "The novels in the trilogy are titled The Hunger Games, Catching Fire, and Mockingjay. The novels <<||>> developed into films, with the film adaptation of Mockingjay split into two parts. The Hunger Games trilogy <<||>> sold into 56 territories in 51 languages to date. All three books <<||>> favorably received. By the end of the week I <<||>> working here for four months. I imagine we will already <<||>> eating when you arrive. He <<||>> sitting in his study at this time. Via wikipedia.org",
+  "vocabulary": [
+    "have all been",
+    "has been",
+    "have been",
+    "will have been",
+    "be",
+    "will be"
+  ],
+  "name": "Tenses mix III",
+  "id": 32,
+  "uniqueId": 32,
+  "category": "tenses"
+}
