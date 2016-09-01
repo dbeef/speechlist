@@ -41,7 +41,7 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuHome.add("icons designed by from Flaticon,", new Vector2(610, 70), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
-		menuHome.add("www.flaticon.com", new Vector2(655, 45), new Vector2(2, 1),
+		menuHome.add("Some contents from  'wikipedia.org'  and  'smart-words.org'", new Vector2(515, 45), new Vector2(2, 1),
 				new Vector3(1, 1, 1));
 		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585, 20), new Vector2(2, 1),
 				new Vector3(1, 1, 1));		

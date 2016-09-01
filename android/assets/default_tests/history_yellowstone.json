@@ -1,0 +1,20 @@
+{
+  "sentences": "Yellowstone National Park is a national park <<||>> primarily in the US state of Wyoming, although it also <<||>> into Montana and Idaho. Yellowstone Park is the largest and <<||>> megafauna location in the Continental United States. (...) In an effort to minimize the chances of <<||>> fires and threats to people and structures, park employees do more than just monitor the <<||>> for fire. Controlled burns are prescribed fires which are <<||>> started to remove dead timber under conditions which allow fire fighters an <<||>> to carefully control where and how much wood is consumed. Yellowstone climate is greatly influenced by <<||>>, with lower elevations generally found to be warmer year round. Hunting is not <<||>>, though it is allowed in the surrounding national forests during <<||>>. Fishing is a popular activity, and a Yellowstone Park <<||>> is required to fish in park waters. Via wikipedia.org",
+  "vocabulary": [
+    "located",
+    "extends",
+    "most famous",
+    "out of control",
+    "potential",
+    "deliberately",
+    "opportunity",
+    "altitude",
+    "permitted",
+    "open season",
+    "fishing license"
+  ],
+  "name": "History - Yellowstone",
+  "id": 40,
+  "uniqueId": 40,
+  "category": "vocabulary"
+}

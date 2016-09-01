@@ -605,11 +605,6 @@ public class InputInterpreter implements GestureListener {
 		solutionInput.setCurrentTestUniqueID(testsManager.getTest(
 				testsButtons.get(clickedButtonIndex).getName()).getUniqueId());
 
-		System.out.println("sending id to solution"
-				+ testsManager.getTest(
-						testsButtons.get(clickedButtonIndex).getName())
-						.getUniqueId());
-
 		vocabularyButtons = solutionInput.getVocabularyButtons();
 	}
 
@@ -637,17 +632,10 @@ public class InputInterpreter implements GestureListener {
 					testsButtons.get(a).move(0, 0.4f * (initialPanY - panY));
 				}
 
-				System.out
-						.println("soltionInput != null" + solutionInput != null);
-				System.out.println("solutionInput.getVisibility()"
-						+ solutionInput.getVisibility());
-
+				
 				if (solutionInput != null
 						&& solutionInput.getVisibility() == true) {
-					System.out.println("True, now for");
 					for (int a = 0; a < solutionInput.getVocabularyButtons().size; a++) {
-						System.out.println("Moving");
-
 						solutionInput.getVocabularyButtons().get(a)
 								.move(0, 0.5f * (initialPanY - panY));
 					}
@@ -668,7 +656,6 @@ public class InputInterpreter implements GestureListener {
 				if (solvingButtons.get(a).checkCollision(x, y) == true) {
 					solvingButtons.get(a).setTexture(assetsManager.wordSet);
 					solvingButtons.get(a).blink();
-					System.out.println("showing");
 					solutionInput.show(a);
 				}
 		}
