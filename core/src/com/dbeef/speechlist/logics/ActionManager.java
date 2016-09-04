@@ -1,5 +1,7 @@
 package com.dbeef.speechlist.logics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +14,7 @@ import com.dbeef.speechlist.files.TestsManager;
 import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.SolutionInput;
 import com.dbeef.speechlist.gui.TestButton;
-import com.dbeef.speechlist.input.InputInterpreter;
+import com.dbeef.speechlist.input.InputGestures;
 import com.dbeef.speechlist.internet.DownloadableTestsManager;
 import com.dbeef.speechlist.internet.RESTClient;
 import com.dbeef.speechlist.models.Test;
@@ -27,7 +29,7 @@ public class ActionManager {
 	TimeSpentObserver timeSpentObserver;
 	DownloadableTestsManager downloadableTestsManager;
 	RESTClient client;
-	InputInterpreter inputInterpreter;
+	InputGestures inputInterpreter;
 	TestsManager testsManager;
 	Button home;
 	Button tests;
@@ -108,6 +110,12 @@ public class ActionManager {
 		if (startedLoadingAssets == true && assetsManager.loaded == false)
 			delta = 0;
 
+		 if (Gdx.input.isKeyPressed(Keys.BACK)) {
+			 if(solutionInput != null && solutionInput.getVisibility() == true){
+				 solutionInput.hide();
+			 }
+		 }
+		
 		optimizeRendering();
 		updateInitialScreenLogics(delta);
 		updateAssetsLoaderLogics();
@@ -204,7 +212,7 @@ public class ActionManager {
 		}
 
 		if (camera.position.x > (Variables.INITIAL_SCREEN_POSITION + Variables.HOME_SCREEN_POSITION) / 2 && initiatedInput == false) {
-			inputInterpreter = new InputInterpreter();
+			inputInterpreter = new InputGestures();
 			inputInterpreter.loadGesturesReceivers(camera, guiCamera, home,
 					tests, downloads, accept, decline, left, right,
 					testsButtons, menuBrief, solvingScreens, testsManager);

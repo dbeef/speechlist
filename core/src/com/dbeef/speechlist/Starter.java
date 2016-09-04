@@ -38,7 +38,7 @@ public class Starter extends Game {
 		loadBasicTextures();
 		createFonts();
 		createScreens();
-
+		Gdx.input.setCatchBackKey(true);
 		this.setScreen(new ScreenBoard(this));
 	}
 

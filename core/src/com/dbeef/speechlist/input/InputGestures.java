@@ -22,7 +22,7 @@ import com.dbeef.speechlist.text.GeneratedTestStringsSetter;
 import com.dbeef.speechlist.text.VocabularyFormatter;
 import com.dbeef.speechlist.utils.Variables;
 
-public class InputInterpreter implements GestureListener {
+public class InputGestures implements GestureListener {
 
 	ResultsManager resultsManager;
 
@@ -325,8 +325,9 @@ public class InputInterpreter implements GestureListener {
 		return false;
 	}
 
-	public InputInterpreter() {
+	public InputGestures() {
 		Gdx.input.setInputProcessor(new GestureDetector(this));
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	public Vector3 getLastTouchPosition() {
@@ -632,7 +633,6 @@ public class InputInterpreter implements GestureListener {
 					testsButtons.get(a).move(0, 0.4f * (initialPanY - panY));
 				}
 
-				
 				if (solutionInput != null
 						&& solutionInput.getVisibility() == true) {
 					for (int a = 0; a < solutionInput.getVocabularyButtons().size; a++) {
