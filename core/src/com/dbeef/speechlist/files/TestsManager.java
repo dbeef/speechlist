@@ -79,7 +79,14 @@ public class TestsManager {
 			dirHandle = Gdx.files.internal("default_tests");
 		} else {
 			// ApplicationType.Desktop
+			
 			dirHandle = Gdx.files.internal("./bin/default_tests");
+		
+			//On OS X '/bin/' part causes problems with loading tests
+			
+			if (dirHandle.exists() == false)
+				dirHandle = Gdx.files.internal("./default_tests");
+		
 		}
 		for (FileHandle entry : dirHandle.list()) {
 			System.out.println(entry.name());

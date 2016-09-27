@@ -2,6 +2,7 @@ package com.dbeef.speechlist;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.dbeef.speechlist.internet.HTTPRequest;
+import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.screen.Screen;
 
 public class Starter extends Game {
@@ -105,14 +108,14 @@ public class Starter extends Game {
 		generator.dispose();
 
 		fonts = new Array<BitmapFont>();
-		
+
 		fonts.add(ralewayThinItalic12);
 		fonts.add(ralewayThinItalic16);
 		fonts.add(ralewayThinItalic32);
 		fonts.add(ralewayRegular32);
 		fonts.add(ralewayMedium38);
 		fonts.add(ralewayBlack42);
-		
+
 	}
 
 	void loadBasicTextures() {

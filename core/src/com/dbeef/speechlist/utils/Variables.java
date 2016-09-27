@@ -19,6 +19,8 @@ public class Variables {
 	public static final int SOLVING_SCREEN_VOCABULARY_SPAN_Y = 60;
 	public static final int SCREEN_WIDTH = 480;
 
+	public static final String WEBSERVICE_ADRESS = "http://155.133.44.54:8080/UserManagement/rest/TestService/";
+
 	public static final String TASK_RETRIEVE_TEST = "RETRIEVE_TEST";
 	public static final String TASK_RETRIEVE_TEST_NAME = "RETRIEVE_TEST_NAME";
 	public static final String CATEGORY_VOCABULARY = "vocabulary";
@@ -28,5 +30,5 @@ public class Variables {
 
 	public static final boolean DEBUG_MODE = true;
 	public static final boolean DEBUG_INPUT = false;
-	
+
 }

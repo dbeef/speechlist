@@ -1,17 +1,14 @@
 package com.dbeef.speechlist.internet;
 
-import javax.ws.rs.core.MediaType;
-
+import com.badlogic.gdx.utils.Json;
 import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.models.UniqueIdContainer;
 import com.dbeef.speechlist.utils.Variables;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 public class RESTClient extends Thread {
 
 	boolean FAILED;
+
 	boolean UNIQUE_IDS_RETRIEVED;
 	boolean TEST_RETRIEVED;
 	boolean TEST_NAME_RETRIEVED;
@@ -56,20 +53,23 @@ public class RESTClient extends Thread {
 	}
 
 	void getUniqueIds() {
+		System.out.println("Started getting unique ids");
 		try {
-			Client client = Client.create();
 
-			WebResource webResource = client
-					.resource("http://annihilator:8080/UserManagement/rest/TestService/tests/uniqueids");
+			HTTPRequest request = new HTTPRequest();
 
-			ClientResponse response = webResource.accept("application/json")
-					.get(ClientResponse.class);
+			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/uniqueids");
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
+			while (request.isCURRENTLY_RETRIEVING() == true) {
+				// wait
+				System.out.println("a");
 			}
-			uniqueIdContainer = response.getEntity(UniqueIdContainer.class);
+			System.out.println("Unique ids retrieved " + UNIQUE_IDS_RETRIEVED);
+
+			if (request.isFAILED() == false)
+				uniqueIdContainer = new Json()
+						.fromJson(UniqueIdContainer.class,
+								request.getRETRIEVED_CONTENT());
 
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Unique IDs: \n");
@@ -78,6 +78,7 @@ public class RESTClient extends Thread {
 				}
 			}
 			UNIQUE_IDS_RETRIEVED = true;
+
 		} catch (Exception e) {
 			FAILED = true;
 			UNIQUE_IDS_RETRIEVED = false;
@@ -93,21 +94,21 @@ public class RESTClient extends Thread {
 	}
 
 	public void getTest(int uniqueId) {
+		System.out.println("Started getting particular test");
 		try {
-			Client client = Client.create();
 
-			WebResource webResource = client
-					.resource("http://annihilator:8080/UserManagement/rest/TestService/tests/"
-							+ Integer.toString(uniqueId));
+			HTTPRequest request = new HTTPRequest();
 
-			ClientResponse response = webResource.accept("application/json")
-					.get(ClientResponse.class);
+			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/"
+					+ Integer.toString(uniqueId));
 
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
+			while (request.isCURRENTLY_RETRIEVING() == true) {
+				// wait
 			}
-			test = response.getEntity(Test.class);
+			if (request.isFAILED() == false)
+				test = new Json().fromJson(Test.class,
+						request.getRETRIEVED_CONTENT());
+
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test: \n");
 				System.out.println(test.getName());
@@ -124,21 +125,19 @@ public class RESTClient extends Thread {
 	}
 
 	public void getTestName(int uniqueId) {
+		System.out.println("Started getting particular test name");
 		try {
-			Client client = Client.create();
+			HTTPRequest request = new HTTPRequest();
 
-			WebResource webResource = client
-					.resource("http://annihilator:8080/UserManagement/rest/TestService/tests/"
-							+ Integer.toString(uniqueId) + "/name");
+			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/"
+					+ Integer.toString(uniqueId) + "/name");
 
-			ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
-					.get(ClientResponse.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
+			while (request.isCURRENTLY_RETRIEVING() == true) {
+				// wait
 			}
-			testName = response.getEntity(String.class);
+			if (request.isFAILED() == false)
+				testName = request.getRETRIEVED_CONTENT();
+
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test name: \n");
 				System.out.println(testName);
@@ -153,5 +152,4 @@ public class RESTClient extends Thread {
 			}
 		}
 	}
-
 }
