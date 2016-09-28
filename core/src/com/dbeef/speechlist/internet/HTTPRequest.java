@@ -12,7 +12,7 @@ public class HTTPRequest {
 	private boolean CURRENTLY_RETRIEVING;
 	private String RETRIEVED_CONTENT;
 
-	public void sendRequest(final String url) {
+	public void sendRequest(final String url, String header) {
 
 		// http://www.mets-blog.com/libgdx-http-request-json/
 
@@ -20,8 +20,10 @@ public class HTTPRequest {
 
 		request.setUrl(url);
 		
-		request.setHeader("Content-Type", "application/json");
-		request.setHeader("Accept", "application/json");
+		System.out.println("Starting retrieving from url - " + url);
+		
+		request.setHeader("Content-Type", header);
+		request.setHeader("Accept", header);
 
 		CURRENTLY_RETRIEVING = true;
 
@@ -31,9 +33,11 @@ public class HTTPRequest {
 
 				int statusCode = httpResponse.getStatus().getStatusCode();
 				if (statusCode != HttpStatus.SC_OK) {
-					if (Variables.DEBUG_MODE == true)
+					if (Variables.DEBUG_MODE == true){
 						System.out.println("Request Failed");
-					return;
+						System.out.println("Status code:" + statusCode);
+					}
+						return;
 				}
 
 				String responseJson = httpResponse.getResultAsString();
@@ -51,7 +55,10 @@ public class HTTPRequest {
 			public void failed(Throwable t) {
 	
 				if (Variables.DEBUG_MODE == true)
+				{	
 					System.out.println("Request Failed Completely");
+					System.out.println(t.getMessage());
+				}
 				FAILED = true;
 				CURRENTLY_RETRIEVING = false;
 			}

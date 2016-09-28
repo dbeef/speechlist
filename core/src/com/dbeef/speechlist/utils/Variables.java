@@ -21,6 +21,9 @@ public class Variables {
 
 	public static final String WEBSERVICE_ADRESS = "http://155.133.44.54:8080/UserManagement/rest/TestService/";
 
+	public static final String HEADER_APPLICATION_JSON = "application/json";
+	public static final String HEADER_TEXT_PLAIN = "text/plain";
+	
 	public static final String TASK_RETRIEVE_TEST = "RETRIEVE_TEST";
 	public static final String TASK_RETRIEVE_TEST_NAME = "RETRIEVE_TEST_NAME";
 	public static final String CATEGORY_VOCABULARY = "vocabulary";

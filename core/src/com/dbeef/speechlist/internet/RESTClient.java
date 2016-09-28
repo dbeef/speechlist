@@ -58,11 +58,11 @@ public class RESTClient extends Thread {
 
 			HTTPRequest request = new HTTPRequest();
 
-			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/uniqueids");
+			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/uniqueids", Variables.HEADER_APPLICATION_JSON);
 
 			while (request.isCURRENTLY_RETRIEVING() == true) {
 				// wait
-				System.out.println("a");
+				System.out.println("Currently retrieving uniqueIds");
 			}
 			System.out.println("Unique ids retrieved " + UNIQUE_IDS_RETRIEVED);
 
@@ -100,10 +100,11 @@ public class RESTClient extends Thread {
 			HTTPRequest request = new HTTPRequest();
 
 			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/"
-					+ Integer.toString(uniqueId));
+					+ Integer.toString(uniqueId), Variables.HEADER_APPLICATION_JSON);
 
 			while (request.isCURRENTLY_RETRIEVING() == true) {
 				// wait
+			System.out.println("Currently retrieving");
 			}
 			if (request.isFAILED() == false)
 				test = new Json().fromJson(Test.class,
@@ -130,10 +131,11 @@ public class RESTClient extends Thread {
 			HTTPRequest request = new HTTPRequest();
 
 			request.sendRequest(Variables.WEBSERVICE_ADRESS + "tests/"
-					+ Integer.toString(uniqueId) + "/name");
+					+ Integer.toString(uniqueId) + "/name", Variables.HEADER_TEXT_PLAIN);
 
 			while (request.isCURRENTLY_RETRIEVING() == true) {
 				// wait
+			System.out.println("Currently retrieving");
 			}
 			if (request.isFAILED() == false)
 				testName = request.getRETRIEVED_CONTENT();
