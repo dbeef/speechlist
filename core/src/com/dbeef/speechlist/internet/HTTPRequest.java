@@ -11,17 +11,22 @@ public class HTTPRequest {
 	private boolean FAILED;
 	private boolean CURRENTLY_RETRIEVING;
 	private String RETRIEVED_CONTENT;
-
-	public void sendRequest(final String url, String header) {
+	private String url;
+	
+	public void sendRequest(final String url, String header, String method, String content) {
 
 		// http://www.mets-blog.com/libgdx-http-request-json/
 
-		Net.HttpRequest request = new Net.HttpRequest(HttpMethods.GET);
+		Net.HttpRequest request = new Net.HttpRequest(method);
 
+		this.url = url;
 		request.setUrl(url);
 		
 		System.out.println("Starting retrieving from url - " + url);
 		
+		if(content != null)
+		request.setContent(content);
+		request.setTimeOut(12000);
 		request.setHeader("Content-Type", header);
 		request.setHeader("Accept", header);
 
@@ -32,7 +37,11 @@ public class HTTPRequest {
 			public void handleHttpResponse(Net.HttpResponse httpResponse) {
 
 				int statusCode = httpResponse.getStatus().getStatusCode();
-				if (statusCode != HttpStatus.SC_OK) {
+				if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED) {
+				
+					  FAILED = true;
+					  CURRENTLY_RETRIEVING = false;
+					
 					if (Variables.DEBUG_MODE == true){
 						System.out.println("Request Failed");
 						System.out.println("Status code:" + statusCode);
@@ -75,6 +84,10 @@ public class HTTPRequest {
 
 	public String getRETRIEVED_CONTENT() {
 		return RETRIEVED_CONTENT;
+	}
+	
+	public String getURL(){
+		return url;
 	}
 
 	public boolean isCURRENTLY_RETRIEVING() {

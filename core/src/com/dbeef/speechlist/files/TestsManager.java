@@ -14,9 +14,9 @@ public class TestsManager {
 	Array<Test> tests = new Array<Test>();
 
 	public TestsManager() {
-		loadExternalStorageTests();
-		loadInternalStorageTests();
-		loadHardcodedTests();
+	//	loadExternalStorageTests();
+	//	loadInternalStorageTests();
+	//	loadHardcodedTests();
 	}
 
 	public Array<Test> getTests() {

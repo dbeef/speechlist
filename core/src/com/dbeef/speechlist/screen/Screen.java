@@ -246,6 +246,9 @@ public class Screen {
 		if (stringsFontAndAlpha.get(strings.indexOf(search, true)).y > 1)
 			stringsFontAndAlpha.get(strings.indexOf(search, true)).y = 1;
 
+		if (stringsFontAndAlpha.get(strings.indexOf(search, true)).y < 0)
+			stringsFontAndAlpha.get(strings.indexOf(search, true)).y = 0;
+		
 		return stringsFontAndAlpha.get(strings.indexOf(search, true)).y;
 	}
 

@@ -70,7 +70,6 @@ public class ActionManager {
 	boolean wasPannedBefore = false;
 	boolean initialCameraMovementsDone = false;
 	boolean logoCameOnScreen = false;
-	boolean loadingTextAdded = false;
 	boolean assetsLoaded = false;
 	boolean readyToGoMenu = false;
 	boolean startedLoadingAssets = false;
@@ -132,24 +131,59 @@ public class ActionManager {
 		if (Math.abs(camera.position.x - 240) < 1) {
 			logoCameOnScreen = true;
 		}
-		if (logoCameOnScreen == true && loadingTextAdded == false) {
-			initial.add("loading...", new Vector2(215, 350), new Vector2(2, 0),
-					new Vector3(1, 1, 1));
-			loadingTextAdded = true;
-		}
-		if (loadingTextAdded == true) {
+		if (logoCameOnScreen == true) {
 			timerLoading += delta;
 			if (timerLoading > 0.01) {
 				timerLoading = 0;
+				
+				if (client.FAILED() == false) {
+					if (initial.changeStringAlpha(
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+							0) == 0 && downloadableTestsManager != null
+							&& downloadableTestsManager
+									.RETRIEVED_DOWNLOADABLES() == true)
+							initial.changeStringAlpha(
+									Variables.INITIAL_TEXT_LOADING_ASSETS,
+									0.1f);
 
-				if (initial.changeStringAlpha("loading...", 0) < 1)
-					initial.changeStringAlpha("loading...", 0.005f);
+					if (initial.changeStringAlpha(
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+							0) > 0
+							&& client.getUNIQUE_IDS_RETRIEVED())
+						initial.changeStringAlpha(
+								Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+								-0.05f);
+					else
+					{
+						initial.changeStringAlpha(
+								Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+								0.1f);	
+					}
+					
+				} else {
+					initial.changeStringAlpha(
+							Variables.INITIAL_TEXT_LOADING_ASSETS, -0.05f);
+					initial.changeStringAlpha(
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+							-0.05f);
+
+					if (initial.changeStringAlpha(
+							Variables.INITIAL_TEXT_LOADING_ASSETS, 0) == 0
+							&& initial
+									.changeStringAlpha(
+											Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+											0) == 0)
+						initial.changeStringAlpha(
+								Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER,
+								0.1f);
+				}
 			}
+
 		}
 	}
 
 	void updateAssetsLoaderLogics() {
-		if (loadingTextAdded == true) {
+		if (logoCameOnScreen == true) {
 			if (startedLoadingAssets == false) {
 				assetsManager = new AssetsManager();
 				testsManager = new TestsManager();
@@ -236,8 +270,11 @@ public class ActionManager {
 		}
 
 		if (readyToGoMenu == true
-				&& (initial.changeStringAlpha("loading...", 0) == 1)
-				&& initialCameraMovementsDone == false) {
+				&& (initial.changeStringAlpha(
+						Variables.INITIAL_TEXT_LOADING_ASSETS, 0) == 1 || initial
+						.changeStringAlpha(
+								Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER,
+								0) == 1) && initialCameraMovementsDone == false) {
 			camera.move(Variables.HOME_SCREEN_POSITION);
 			guiCamera.move(Variables.HOME_SCREEN_POSITION);
 			initialCameraMovementsDone = true;
@@ -417,8 +454,8 @@ public class ActionManager {
 	}
 
 	void manageMenuDownloadsElements() throws InterruptedException {
-		
-		if (loadingTextAdded == true && client != null
+
+		if (logoCameOnScreen == true && client != null
 				&& client.getUNIQUE_IDS_RETRIEVED() == true
 				&& downloadableTestsManager == null && testsManager != null) {
 
@@ -430,7 +467,7 @@ public class ActionManager {
 					testsManager.getTests());
 		}
 
-		if (loadingTextAdded == true && downloadableTestsManager != null
+		if (logoCameOnScreen == true && downloadableTestsManager != null
 				&& downloadableTestsManager.RETRIEVED_DOWNLOADABLES()
 				&& addedDownloadables == false) {
 
@@ -446,12 +483,30 @@ public class ActionManager {
 				downloadableTestsButtons.get(a).loadTick(assetsManager.checked);
 			}
 
+			int buttons_with_Y_below_120 = 0;
+
+			for (int a = 0; a < downloadableTestsButtons.size; a++) {
+				if (downloadableTestsButtons.get(a).getY() < 120)
+					buttons_with_Y_below_120++;
+
+				downloadableTestsButtons.get(a).setMaxDrawingY(540);
+				downloadableTestsButtons.get(a).setMinDrawingY(85);
+			}
+			for (int a = 0; a < downloadableTestsButtons.size; a++) {
+				downloadableTestsButtons.get(a).setMaxMovingY(
+						(int) downloadableTestsButtons.get(a).getY()
+								+ (buttons_with_Y_below_120 - 1) * 80);
+				downloadableTestsButtons.get(a).setMovingMinY(
+						(int) downloadableTestsButtons.get(a).getY());
+			}
+
 			for (int a = 0; a < downloadableTestsButtons.size; a++) {
 				menuDownloads.add(downloadableTestsButtons.get(a));
 				// Need to make something like getNameWithCategory or getName +
 				// getCategory
 				// Or if not, downloads will have just a simple menu without
 				// categories
+
 			}
 			testsButtons.addAll(downloadableTestsButtons);
 			addedDownloadables = true;
@@ -459,7 +514,6 @@ public class ActionManager {
 
 		if (assetsManager != null && assetsManager.loaded == true) {
 			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == true) {
-				System.out.println("Deleting default downloads screen strings");
 				menuDownloads.removeTextureWithPosition(new Vector2(1560, 200));
 				menuDownloads = new DefaultStringsSetter()
 						.deleteMenuDownloadsStrings(menuDownloads);

@@ -9,6 +9,17 @@ public class DefaultStringsSetter {
 
 	Variables variables = new Variables();
 
+	public Screen setInitialStrings(Screen initial){
+		initial.add(Variables.INITIAL_TEXT_LOADING_ASSETS,
+				new Vector2(200, 350), new Vector2(2, 0), new Vector3(1, 1, 1));
+		initial.add(Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, new Vector2(180, 350),
+				new Vector2(2, 0), new Vector3(1, 1, 1));
+		initial.add(Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER, new Vector2(140, 350),
+				new Vector2(2, 0), new Vector3(1, 1, 1));
+	
+		return initial;
+	}
+	
 	public Screen setMenuHomeStrings(Screen menuHome) {
 		menuHome.add("Summary", new Vector2(655, 660), new Vector2(3, 1),
 				new Vector3(1, 1, 1));

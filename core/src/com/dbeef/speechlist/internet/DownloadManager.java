@@ -32,6 +32,7 @@ public class DownloadManager extends Thread {
 			// System.out.println("waiting");
 			// Here, check for any connection interrupt
 		}
+
 		System.out.println("All clients retrieved test name");
 
 		addRetrievedTestsNamesToArray();
@@ -41,7 +42,7 @@ public class DownloadManager extends Thread {
 
 	boolean allClientsRetrievedTestName() {
 		for (int a = 0; a < clients.size(); a++) {
-			if (clients.get(a).TEST_NAME_RETRIEVED == false)
+			if (clients.get(a).TESTS_NAMES_CONTAINER_RETRIEVED == false)
 				return false;
 		}
 		return true;
@@ -60,13 +61,27 @@ public class DownloadManager extends Thread {
 
 	void startRetrievingTestsNamesThatAreNotOnTheDevice(
 			UniqueIdContainer uniqueIdContainer) {
+
+		int index = 0;
 		for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
+			if (uniqueIdContainer.getUniqueIds()[a] != -1)
+				index++;
+		}
+
+		UniqueIdContainer idsOfTestsNamesToDownload = new UniqueIdContainer();
+		idsOfTestsNamesToDownload.setUniqueIds(new int[index]);
+
+		for (int a = 0, b = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
 			if (uniqueIdContainer.getUniqueIds()[a] != -1) {
-				RESTClient client = new RESTClient();
-				client.run(Variables.TASK_RETRIEVE_TEST_NAME, a);
-				clients.add(client);
+				idsOfTestsNamesToDownload.getUniqueIds()[b] = uniqueIdContainer
+						.getUniqueIds()[a];
+				b++;
 			}
 		}
+
+		RESTClient client = new RESTClient();
+		client.run(idsOfTestsNamesToDownload);
+		clients.add(client);
 	}
 
 	void addRetrievedTestsNamesToArray() {
@@ -75,7 +90,11 @@ public class DownloadManager extends Thread {
 			System.out.println("Test names retrieved:");
 
 		for (int a = 0; a < clients.size(); a++) {
-			names.add(clients.get(a).getTestName());
+			if (clients.get(a) != null)
+				for (int b = 0; b < clients.get(a).testNamesContainer
+						.getNames().length; b++)
+					names.add(clients.get(a).testNamesContainer.getNames()[b]);
+
 			if (Variables.DEBUG_MODE == true)
 				System.out
 						.println("Retrieved: " + clients.get(a).getTestName());

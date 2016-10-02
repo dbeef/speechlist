@@ -25,6 +25,7 @@ public class AssetsManager extends Thread {
 	public Texture tenses;
 	public Texture idioms;
 	public Texture vocabulary;
+	public Texture antenna;
 	public Texture mainBackground_middle;
 
 	public boolean loaded;
@@ -52,6 +53,7 @@ public class AssetsManager extends Thread {
 		various = new Texture("icons/various.png");
 		idioms = new Texture("icons/idioms.png");
 		tenses = new Texture("icons/tenses.png");
+		antenna = new Texture("icons/antenna.png");
 		vocabulary = new Texture("icons/vocabulary.png");
 		mainBackground_middle = new Texture("backgrounds/mainBackground_middle.png");
 
