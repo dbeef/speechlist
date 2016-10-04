@@ -2,7 +2,6 @@ package com.dbeef.speechlist.internet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
-import com.badlogic.gdx.Net.HttpMethods;
 import com.badlogic.gdx.net.HttpStatus;
 import com.dbeef.speechlist.utils.Variables;
 
@@ -58,6 +57,8 @@ public class HTTPRequest {
 					System.out.println(url);
 				} catch (Exception exception) {
 					exception.printStackTrace();
+					CURRENTLY_RETRIEVING = false;
+					FAILED = true;
 				}
 			}
 

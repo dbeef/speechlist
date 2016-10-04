@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class TestButton extends Button {
 
+	int uniqueId;
+
 	static final double gravity = 1.10f;
 	double gravityTimer = 0;
 	double originPositionX;
@@ -130,13 +132,13 @@ public class TestButton extends Button {
 		if (maxDrawingY != -1 && minDrawingY != -1) {
 
 			if (y > maxDrawingY) {
-			
+
 				disabled = true;
 				this.deselect();
 				tick.deselect();
-				
-				alpha -= delta*8;
-				fontAlpha -= delta*8;
+
+				alpha -= delta * 8;
+				fontAlpha -= delta * 8;
 
 				if (alpha < 0)
 					alpha = 0;
@@ -144,8 +146,8 @@ public class TestButton extends Button {
 					fontAlpha = 0;
 
 			}
-			
-			if(y > maxDrawingY + 150){
+
+			if (y > maxDrawingY + 150) {
 				alpha = 0;
 				fontAlpha = 0;
 			}
@@ -153,8 +155,8 @@ public class TestButton extends Button {
 				disabled = true;
 				this.deselect();
 				tick.deselect();
-				alpha -= delta*6;
-				fontAlpha -= delta*6;
+				alpha -= delta * 6;
+				fontAlpha -= delta * 6;
 
 				if (alpha < 0f)
 					alpha = 0f;
@@ -163,15 +165,15 @@ public class TestButton extends Button {
 			}
 			if (y > minDrawingY && y < maxDrawingY) {
 
-				if(disabled == true)
-				alpha += delta;
-			
-				fontAlpha += delta*3;
+				if (disabled == true)
+					alpha += delta;
 
-				if (alpha > 0.1f){
+				fontAlpha += delta * 3;
+
+				if (alpha > 0.1f) {
 					alpha = 0.1f;
 				}
-				if (fontAlpha > 1){
+				if (fontAlpha > 1) {
 					fontAlpha = 1;
 					disabled = false;
 				}
@@ -262,7 +264,16 @@ public class TestButton extends Button {
 	public void setMovingMinY(int minMovingY) {
 		this.minMovingY = minMovingY;
 	}
+
 	public boolean getDisabled() {
 		return disabled;
+	}
+
+	public int getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(int uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 }

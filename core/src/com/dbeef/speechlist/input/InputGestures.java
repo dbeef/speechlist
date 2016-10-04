@@ -16,6 +16,9 @@ import com.dbeef.speechlist.gui.Button;
 import com.dbeef.speechlist.gui.SolutionInput;
 import com.dbeef.speechlist.gui.SolutionInputButton;
 import com.dbeef.speechlist.gui.TestButton;
+import com.dbeef.speechlist.internet.RESTClient;
+import com.dbeef.speechlist.logics.TestButtonsDispenser;
+import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.screen.Screen;
 import com.dbeef.speechlist.text.DefaultStringsSetter;
 import com.dbeef.speechlist.text.GeneratedTestStringsSetter;
@@ -24,13 +27,13 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class InputGestures implements GestureListener {
 
+	RESTClient client = new RESTClient();
+	
 	ResultsManager resultsManager;
 
 	Button testsBackButton;
 	Screen[] tests_local;
-	Screen[] tests_server;
 	Button[] testCategories_local;
-	Button[] testCategories_server;
 	SolutionInput solutionInput;
 	Array<TestButton> vocabularyButtons;
 	AssetsManager assetsManager;
@@ -480,11 +483,23 @@ public class InputGestures implements GestureListener {
 		for (int a = 0; a < testsButtons.size; a++) {
 			if (testsButtons.get(a).getSelection() == true) {
 				if (testsButtons.get(a).checkCollisionTick((int) x, (int) y) == true) {
-					testsButtons.get(a).highlight();
-					tests.deselect();
-					camera.move(Variables.BRIEF_SCREEN_POSITION);
-					addMenuBriefStrings(a);
-					addMenuSphinxStrings(a);
+					if (!testsButtons.get(a).getCategory()
+							.equals(Variables.CATEGORY_DOWNLOADABLE)) {
+						testsButtons.get(a).highlight();
+						tests.deselect();
+						camera.move(Variables.BRIEF_SCREEN_POSITION);
+						addMenuBriefStrings(a);
+						addMenuSphinxStrings(a);
+					}
+					else
+					{
+						client.run(Variables.TASK_RETRIEVE_TEST, testsButtons.get(a).getUniqueId());
+						TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(assetsManager, testsButtons, tests_local, null, client);
+						Array<Test> tests = new Array<Test>();
+						tests.add(client.getTest());
+						testButtonsDispenser.addTestButtons(tests);
+						testsManager.getTests().add(client.getTest());
+					}
 				}
 			}
 
@@ -513,11 +528,17 @@ public class InputGestures implements GestureListener {
 			}
 		}
 
+		if (downloads.getSelection() == true) {
+			anyCategorySelected = true;
+			currentCategory = Variables.CATEGORY_DOWNLOADABLE;
+		}
+
 		if (anyCategorySelected == true) {
 			for (int a = 0; a < testsButtons.size; a++) {
 				if (testsButtons.get(a).checkCollision((int) x, (int) y) == true
 						&& testsButtons.get(a).getCategory()
 								.equals(currentCategory)) {
+
 					anyCollisions = true;
 
 					for (int b = 0; b < testsButtons.size; b++)
@@ -676,7 +697,7 @@ public class InputGestures implements GestureListener {
 
 				tests_local[a].show();
 			}
-		for (int a = 0; a < testCategories_server.length; a++)
+		for (int a = 0; a < testCategories_local.length; a++)
 			if (testCategories_local[a].checkCollision(x, y) == true) {
 				testCategories_local[a].blink();
 			}
@@ -705,20 +726,17 @@ public class InputGestures implements GestureListener {
 		this.solutionInput = solutionInput;
 	}
 
-	public void setTestCategories(Button[] testCategories_local,
-			Button[] testCategories_server) {
+	public void setTestCategories(Button[] testCategories_local) {
 		this.testCategories_local = testCategories_local;
-		this.testCategories_server = testCategories_server;
 	}
 
 	public void setResultsManager(ResultsManager resultsManager) {
 		this.resultsManager = resultsManager;
 	}
 
-	public void setTestScreens(Screen[] tests_local, Screen[] tests_server,
+	public void setTestScreens(Screen[] tests_local,
 			Button testsBackButton) {
 		this.tests_local = tests_local;
-		this.tests_server = tests_server;
 		this.testsBackButton = testsBackButton;
 	}
 }

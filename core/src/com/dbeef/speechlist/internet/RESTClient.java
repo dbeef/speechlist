@@ -129,10 +129,11 @@ public class RESTClient extends Thread {
 			if (request.isFAILED() == false)
 				test = new Json().fromJson(Test.class,
 						request.getRETRIEVED_CONTENT());
-
+			
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test: \n");
 				System.out.println(test.getName());
+				System.out.println(request.getRETRIEVED_CONTENT());
 			}
 			TEST_RETRIEVED = true;
 		} catch (Exception e) {

@@ -90,11 +90,17 @@ public class DownloadManager extends Thread {
 			System.out.println("Test names retrieved:");
 
 		for (int a = 0; a < clients.size(); a++) {
-			if (clients.get(a) != null)
+			if (clients.get(a) != null && clients.get(a).testNamesContainer != null)
 				for (int b = 0; b < clients.get(a).testNamesContainer
-						.getNames().length; b++)
+						.getNames().length; b++){
+				
 					names.add(clients.get(a).testNamesContainer.getNames()[b]);
-
+				
+				}
+			else
+			{
+				RETRIEVED_DOWNLOADABLES = false;
+			}
 			if (Variables.DEBUG_MODE == true)
 				System.out
 						.println("Retrieved: " + clients.get(a).getTestName());

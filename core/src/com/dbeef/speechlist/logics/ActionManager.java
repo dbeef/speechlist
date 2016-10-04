@@ -31,6 +31,7 @@ public class ActionManager {
 	RESTClient client;
 	InputGestures inputInterpreter;
 	TestsManager testsManager;
+
 	Button home;
 	Button tests;
 	Button downloads;
@@ -40,10 +41,8 @@ public class ActionManager {
 	Button right;
 
 	Screen[] tests_local;
-	Screen[] tests_server;
 
 	Button[] testCategories_local;
-	Button[] testCategories_server;
 
 	AssetsManager assetsManager;
 	Camera camera;
@@ -95,11 +94,9 @@ public class ActionManager {
 		this.mainBackground = mainBackground;
 		this.solutionInput = solutionInput;
 		this.tests_local = tests_local;
-		this.tests_server = tests_server;
 		client = new RESTClient();
 		client.start();
 		testCategories_local = new Button[4];
-		testCategories_server = new Button[4];
 		resultsManager = new ResultsManager();
 		timeSpentObserver = new TimeSpentObserver(resultsManager.getTimeSpent());
 	}
@@ -135,47 +132,42 @@ public class ActionManager {
 			timerLoading += delta;
 			if (timerLoading > 0.01) {
 				timerLoading = 0;
-				
+
 				if (client.FAILED() == false) {
 					if (initial.changeStringAlpha(
-							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
-							0) == 0 && downloadableTestsManager != null
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, 0) == 0
+							&& downloadableTestsManager != null
 							&& downloadableTestsManager
 									.RETRIEVED_DOWNLOADABLES() == true)
-							initial.changeStringAlpha(
-									Variables.INITIAL_TEXT_LOADING_ASSETS,
-									0.1f);
+						initial.changeStringAlpha(
+								Variables.INITIAL_TEXT_LOADING_ASSETS, 0.02f);
 
 					if (initial.changeStringAlpha(
-							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
-							0) > 0
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, 0) > 0
 							&& client.getUNIQUE_IDS_RETRIEVED())
 						initial.changeStringAlpha(
 								Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
 								-0.05f);
-					else
-					{
+					else {
 						initial.changeStringAlpha(
 								Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
-								0.1f);	
+								0.02f);
 					}
-					
+
 				} else {
 					initial.changeStringAlpha(
 							Variables.INITIAL_TEXT_LOADING_ASSETS, -0.05f);
 					initial.changeStringAlpha(
-							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
-							-0.05f);
+							Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, -0.05f);
 
 					if (initial.changeStringAlpha(
 							Variables.INITIAL_TEXT_LOADING_ASSETS, 0) == 0
-							&& initial
-									.changeStringAlpha(
-											Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
-											0) == 0)
+							&& initial.changeStringAlpha(
+									Variables.INITIAL_TEXT_ARGUING_WITH_SERVER,
+									0) == 0)
 						initial.changeStringAlpha(
 								Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER,
-								0.1f);
+								0.0065f);
 				}
 			}
 
@@ -237,15 +229,11 @@ public class ActionManager {
 				s.startRendering();
 			for (int a = 0; a < tests_local.length; a++)
 				tests_local[a].stopRendering();
-			for (int a = 0; a < tests_local.length; a++)
-				tests_server[a].stopRendering();
 		} else {
 			for (Screen s : solvingScreens)
 				s.stopRendering();
 			for (int a = 0; a < tests_local.length; a++)
 				tests_local[a].startRendering();
-			for (int a = 0; a < tests_local.length; a++)
-				tests_server[a].startRendering();
 
 			menuDownloads.startRendering();
 		}
@@ -261,10 +249,8 @@ public class ActionManager {
 			inputInterpreter.loadMainBackground(mainBackground);
 			inputInterpreter.setAssetsManager(assetsManager);
 			inputInterpreter.setSolutionInput(solutionInput);
-			inputInterpreter.setTestCategories(testCategories_local,
-					testCategories_server);
-			inputInterpreter.setTestScreens(tests_local, tests_server,
-					testsBackButton);
+			inputInterpreter.setTestCategories(testCategories_local);
+			inputInterpreter.setTestScreens(tests_local, testsBackButton);
 			inputInterpreter.setResultsManager(resultsManager);
 			initiatedInput = true;
 		}
@@ -305,59 +291,13 @@ public class ActionManager {
 	}
 
 	void initiateTestsButtons() {
+
 		testsButtons = new Array<TestButton>();
 		Array<Test> tests = testsManager.getTests();
+		TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(
+				assetsManager, testsButtons, tests_local, menuDownloads, client);
+		testButtonsDispenser.addTestButtons(tests);
 
-		for (int a = 0; a < tests.size; a++) {
-			testsButtons.add(new TestButton(960, 500 - 80 * a,
-					assetsManager.glareButtonVignette, tests.get(a).getName()));
-			testsButtons.get(a).loadTick(assetsManager.checked);
-			testsButtons.get(a).setCategory(tests.get(a).getCategory());
-		}
-
-		for (int a = 0; a < testsButtons.size; a++) {
-			if (testsButtons.get(a).getCategory()
-					.equals(Variables.CATEGORY_VOCABULARY)) {
-				testsButtons.get(a).setPosition(960,
-						500 - 80 * tests_local[0].getTestsButtons().size);
-				tests_local[0].add(testsButtons.get(a));
-			} else if (testsButtons.get(a).getCategory()
-					.equals(Variables.CATEGORY_IDIOMS)) {
-				testsButtons.get(a).setPosition(960,
-						500 - 80 * tests_local[1].getTestsButtons().size);
-				tests_local[1].add(testsButtons.get(a));
-			} else if (testsButtons.get(a).getCategory()
-					.equals(Variables.CATEGORY_TENSES)) {
-				testsButtons.get(a).setPosition(960,
-						500 - 80 * tests_local[2].getTestsButtons().size);
-				tests_local[2].add(testsButtons.get(a));
-			} else if (testsButtons.get(a).getCategory()
-					.equals(Variables.CATEGORY_VARIOUS)) {
-				testsButtons.get(a).setPosition(960,
-						500 - 80 * tests_local[3].getTestsButtons().size);
-				tests_local[3].add(testsButtons.get(a));
-			}
-		}
-
-		for (int b = 0; b < tests_local.length; b++) {
-			int buttons_with_Y_below_120 = 0;
-			Array<TestButton> testButtons = tests_local[b].getTestsButtons();
-
-			for (int a = 0; a < testButtons.size; a++) {
-				if (testButtons.get(a).getY() < 120)
-					buttons_with_Y_below_120++;
-
-				testButtons.get(a).setMaxDrawingY(540);
-				testButtons.get(a).setMinDrawingY(85);
-			}
-			for (int a = 0; a < testButtons.size; a++) {
-				testButtons.get(a).setMaxMovingY(
-						(int) testButtons.get(a).getY()
-								+ (buttons_with_Y_below_120 - 1) * 80);
-				testButtons.get(a).setMovingMinY(
-						(int) testButtons.get(a).getY());
-			}
-		}
 	}
 
 	void optimizeRendering() {
@@ -434,23 +374,6 @@ public class ActionManager {
 		menuDownloads.add(assetsManager.sadPhone, new Vector2(1560, 200));
 		menuDownloads = new DefaultStringsSetter()
 				.setMenuDownloadsStrings(menuDownloads);
-		/*
-		 * testCategories_server = new Button[4]; testCategories_server[0] = new
-		 * Button( Variables.DOWNLOADS_SCREEN_POSITION- 230, 350,
-		 * assetsManager.vocabulary); testCategories_server[1] = new Button(
-		 * Variables.DOWNLOADS_SCREEN_POSITION+ assetsManager.idioms.getWidth()
-		 * - 220, 350, assetsManager.idioms); testCategories_server[2] = new
-		 * Button( Variables.DOWNLOADS_SCREEN_POSITION- 220, 50,
-		 * assetsManager.tenses); testCategories_server[3] = new Button(
-		 * Variables.DOWNLOADS_SCREEN_POSITION+ assetsManager.idioms.getWidth()
-		 * - 220, 50, assetsManager.various);
-		 * 
-		 * menuDownloads.add(testCategories_server[0]);
-		 * menuDownloads.add(testCategories_server[1]);
-		 * menuDownloads.add(testCategories_server[2]);
-		 * menuDownloads.add(testCategories_server[3]);
-		 */
-
 	}
 
 	void manageMenuDownloadsElements() throws InterruptedException {
@@ -473,42 +396,10 @@ public class ActionManager {
 
 			System.out.println("Adding downloadable tests buttons");
 
-			downloadableTestsButtons = new Array<TestButton>();
-
-			for (int a = 0; a < downloadableTestsManager.getNames().size(); a++) {
-				downloadableTestsButtons.add(new TestButton(
-						Variables.DOWNLOADS_SCREEN_POSITION - 240,
-						500 - 80 * a, assetsManager.glareButtonVignette,
-						downloadableTestsManager.getNames().get(a)));
-				downloadableTestsButtons.get(a).loadTick(assetsManager.checked);
-			}
-
-			int buttons_with_Y_below_120 = 0;
-
-			for (int a = 0; a < downloadableTestsButtons.size; a++) {
-				if (downloadableTestsButtons.get(a).getY() < 120)
-					buttons_with_Y_below_120++;
-
-				downloadableTestsButtons.get(a).setMaxDrawingY(540);
-				downloadableTestsButtons.get(a).setMinDrawingY(85);
-			}
-			for (int a = 0; a < downloadableTestsButtons.size; a++) {
-				downloadableTestsButtons.get(a).setMaxMovingY(
-						(int) downloadableTestsButtons.get(a).getY()
-								+ (buttons_with_Y_below_120 - 1) * 80);
-				downloadableTestsButtons.get(a).setMovingMinY(
-						(int) downloadableTestsButtons.get(a).getY());
-			}
-
-			for (int a = 0; a < downloadableTestsButtons.size; a++) {
-				menuDownloads.add(downloadableTestsButtons.get(a));
-				// Need to make something like getNameWithCategory or getName +
-				// getCategory
-				// Or if not, downloads will have just a simple menu without
-				// categories
-
-			}
-			testsButtons.addAll(downloadableTestsButtons);
+			TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(
+					assetsManager, testsButtons, tests_local, menuDownloads, client);
+			testButtonsDispenser.addDownloadableTestsButtons(downloadableTestsManager.getNames());
+			
 			addedDownloadables = true;
 		}
 
@@ -559,12 +450,7 @@ public class ActionManager {
 				tests_local[a].hide();
 				tests_local[a].add(testsBackButton);
 			}
-			for (int a = 0; a < tests_server.length; a++) {
-				tests_server[a].add(assetsManager.mainBackground_middle,
-						new Vector2(Variables.DOWNLOADS_SCREEN_POSITION - 240,
-								0));
-				tests_server[a].hide();
-			}
+
 			testScreensCreated = true;
 		}
 	}

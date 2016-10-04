@@ -14,13 +14,9 @@ public class TestsManager {
 	Array<Test> tests = new Array<Test>();
 
 	public TestsManager() {
-	//	loadExternalStorageTests();
-	//	loadInternalStorageTests();
-	//	loadHardcodedTests();
-	}
-
-	public Array<Test> getTests() {
-		return tests;
+		// loadExternalStorageTests();
+		// loadInternalStorageTests();
+		// loadHardcodedTests();
 	}
 
 	void loadExternalStorageTests() {
@@ -79,14 +75,14 @@ public class TestsManager {
 			dirHandle = Gdx.files.internal("default_tests");
 		} else {
 			// ApplicationType.Desktop
-			
+
 			dirHandle = Gdx.files.internal("./bin/default_tests");
-		
-			//On OS X '/bin/' part causes problems with loading tests
-			
+
+			// On OS X '/bin/' part causes problems with loading tests
+
 			if (dirHandle.exists() == false)
 				dirHandle = Gdx.files.internal("./default_tests");
-		
+
 		}
 		for (FileHandle entry : dirHandle.list()) {
 			System.out.println(entry.name());
@@ -165,6 +161,11 @@ public class TestsManager {
 		return new Test();
 	}
 
-	void saveDefaultDictionary() {
+	public Array<Test> getTests() {
+		return tests;
+	}
+
+	public void saveTestToExternalStorage(String testInJson) {
+
 	}
 }

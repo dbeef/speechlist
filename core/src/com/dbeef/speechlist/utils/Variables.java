@@ -32,6 +32,7 @@ public class Variables {
 	public static final String CATEGORY_IDIOMS = "idioms";
 	public static final String CATEGORY_TENSES = "tenses";
 	public static final String CATEGORY_VARIOUS = "various";
+	public static final String CATEGORY_DOWNLOADABLE = "downloadable";
 
 	public static final String INITIAL_TEXT_LOADING_ASSETS = "loading assets...";
 	public static final String INITIAL_TEXT_ARGUING_WITH_SERVER = "arguing with server...";
