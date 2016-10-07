@@ -41,7 +41,7 @@ public class TestButtonsDispenser {
 
 		int index = 0;
 		if(!names.isEmpty())
-		for (int a = 0; a < client.getUniqueIdContainer().getUniqueIds().length;) {
+		for (int a = 0; a < client.getUniqueIdContainer().getUniqueIds().length && index < names.size();) {
 
 			System.out.println(a);
 

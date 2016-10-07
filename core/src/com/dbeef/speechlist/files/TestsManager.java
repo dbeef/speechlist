@@ -15,8 +15,8 @@ public class TestsManager {
 
 	public TestsManager() {
 		loadExternalStorageTests();
-		//loadInternalStorageTests();
-		//loadHardcodedTests();
+		loadInternalStorageTests();
+		loadHardcodedTests();
 	}
 
 	void loadExternalStorageTests() {

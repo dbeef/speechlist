@@ -1,0 +1,19 @@
+{
+  "sentences": "Though working memory is often thought of as just <<||>> memory, it is more clearly defined as the <<||>> to remember information <<||>> distraction. The famously known capacity of memory of 7 plus or minus 2 is a <<||>> of both memory in working memory and long term memory. One of the classic experiments is by Ebbinghaus, who found the serial position effect where information from the beginning and end of list of random words were better <<||>> than those in the center. This primacy and <<||>> effect varies in intensity based on list length. Its typical U-shaped curve can be disrupted by an <<||>> word; this is known as the Von Restorff effect. Many models of working memory have been made. One of the most regarded is the Baddeley and Hitch model of working memory. It takes into <<||>> both visual and auditory stimuli, long-term memory to use as a reference, and a central processor to combine and understand it all. A large part of memory is forgetting, and there is a large debate among <<||>> of decay theory versus interference <<||>>. Via wikipedia.org",
+  "vocabulary": [
+     "short-term",
+     "ability",
+     "in the face of",
+     "combination",
+     "recalled",
+     "recency",
+     "attention grabbing",
+     "account",
+     "psychologists",
+     "theory"
+  ],
+  "name": "Human - Memory",
+  "id": 51,
+  "uniqueId": 51,
+  "category": "vocabulary"
+}
