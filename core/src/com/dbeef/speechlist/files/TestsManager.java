@@ -14,9 +14,9 @@ public class TestsManager {
 	Array<Test> tests = new Array<Test>();
 
 	public TestsManager() {
-		 loadExternalStorageTests();
-		 loadInternalStorageTests();
-		 loadHardcodedTests();
+		loadExternalStorageTests();
+		//loadInternalStorageTests();
+		//loadHardcodedTests();
 	}
 
 	void loadExternalStorageTests() {
@@ -165,7 +165,8 @@ public class TestsManager {
 		return tests;
 	}
 
-	public void saveTestToExternalStorage(String testInJson) {
-
+	public void saveTestToExternalStorage(String testInJson, String testName) {
+		FileHandle file = Gdx.files.external(testName + ".json");
+		file.writeString(testInJson, false);
 	}
 }

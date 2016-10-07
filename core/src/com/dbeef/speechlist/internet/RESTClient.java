@@ -51,9 +51,11 @@ public class RESTClient extends Thread {
 	public void run() {
 		getUniqueIds();
 	}
+
 	public void run(UniqueIdContainer uniqueIdContainer) {
-		getTestsNamesContainer(uniqueIdContainer);	
+		getTestsNamesContainer(uniqueIdContainer);
 	}
+
 	public void run(String task, int uniqueId) {
 		if (task.equals(Variables.TASK_RETRIEVE_TEST))
 			getTest(uniqueId);
@@ -126,16 +128,23 @@ public class RESTClient extends Thread {
 					timer = 0;
 				}
 			}
+			
+			
 			if (request.isFAILED() == false)
 				test = new Json().fromJson(Test.class,
 						request.getRETRIEVED_CONTENT());
-			
+			if(test.getName() != null){
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Test: \n");
 				System.out.println(test.getName());
 				System.out.println(request.getRETRIEVED_CONTENT());
 			}
 			TEST_RETRIEVED = true;
+			}
+			else
+			{
+				TEST_RETRIEVED = false;	
+			}
 		} catch (Exception e) {
 			FAILED = true;
 			TEST_RETRIEVED = false;
@@ -144,6 +153,7 @@ public class RESTClient extends Thread {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	public void getTestName(int uniqueId) {
@@ -158,12 +168,13 @@ public class RESTClient extends Thread {
 			while (request.isCURRENTLY_RETRIEVING() == true) {
 				// wait
 				timer += Gdx.graphics.getDeltaTime();
-				if(timer > 1f){
-					System.out.println("Currently retrieving particular test name");
+				if (timer > 1f) {
+					System.out
+							.println("Currently retrieving particular test name");
 					System.out.println(request.getURL());
-					timer =0;
+					timer = 0;
 				}
-			
+
 			}
 
 			if (request.isFAILED() == false)
@@ -190,33 +201,40 @@ public class RESTClient extends Thread {
 
 			HTTPRequest request = new HTTPRequest();
 
-			String uniqueIdContainerInString = new Json().toJson(uniqueIdContainer, UniqueIdContainer.class);
-					
-			request.sendRequest(
-					Variables.WEBSERVICE_ADRESS + "tests/testNamesContainer",
-					Variables.HEADER_APPLICATION_JSON, HttpMethods.POST, uniqueIdContainerInString);
+			String uniqueIdContainerInString = new Json().toJson(
+					uniqueIdContainer, UniqueIdContainer.class);
+
+			request.sendRequest(Variables.WEBSERVICE_ADRESS
+					+ "tests/testNamesContainer",
+					Variables.HEADER_APPLICATION_JSON, HttpMethods.POST,
+					uniqueIdContainerInString);
 
 			System.out.println(uniqueIdContainerInString);
-			
+
 			while (request.isCURRENTLY_RETRIEVING() == true) {
 				// wait
 				timer += Gdx.graphics.getDeltaTime();
 				if (timer > 1) {
-					System.out.println("Currently retrieving getTestsNamesContainer");
+					System.out
+							.println("Currently retrieving getTestsNamesContainer");
 					timer = 0;
 				}
 			}
 
 			if (request.isFAILED() == false)
-				testNamesContainer = new Json()
-						.fromJson(TestNamesContainer.class,
-								request.getRETRIEVED_CONTENT());
+				testNamesContainer = new Json().fromJson(
+						TestNamesContainer.class,
+						request.getRETRIEVED_CONTENT());
 
 			if (Variables.DEBUG_MODE == true) {
 				System.out.println("Output from Server - Unique IDs: \n");
-		//		for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
-		//			System.out.println(uniqueIdContainer.getUniqueIds()[a]);
-		//		}
+				// for (int a = 0; a < uniqueIdContainer.getUniqueIds().length;
+				// a++) {
+				// System.out.println(uniqueIdContainer.getUniqueIds()[a]);
+				// }
+				System.out.println("Our unique ids:");
+				for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++)
+					System.out.println(uniqueIdContainer.getUniqueIds()[a]);
 			}
 			TESTS_NAMES_CONTAINER_RETRIEVED = true;
 

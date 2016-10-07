@@ -30,17 +30,38 @@ public class TestButtonsDispenser {
 
 	public void addDownloadableTestsButtons(ArrayList<String> names) {
 
+		for (int a = 0; a < names.size(); a++) {
+			System.out.println(names.get(a));
+		}
+		for (int a = 0; a < client.getUniqueIdContainer().getUniqueIds().length; a++) {
+			System.out.println(client.getUniqueIdContainer().getUniqueIds()[a]);
+		}
+
 		Array<TestButton> downloadableTestButtons = new Array<TestButton>();
 
-		for (int a = 0; a < names.size(); a++) {
-			downloadableTestButtons.add(new TestButton(
-					Variables.DOWNLOADS_SCREEN_POSITION - 240, 500 - 80 * a,
-					assetsManager.glareButtonVignette, names.get(a)));
-			downloadableTestButtons.get(a).loadTick(assetsManager.download);
-			downloadableTestButtons.get(a).setCategory(
-					Variables.CATEGORY_DOWNLOADABLE);
-			downloadableTestButtons.get(a).setUniqueId(
-					client.getUniqueIdContainer().getUniqueIds()[a]);
+		int index = 0;
+		if(!names.isEmpty())
+		for (int a = 0; a < client.getUniqueIdContainer().getUniqueIds().length;) {
+
+			System.out.println(a);
+
+			while (a < client.getUniqueIdContainer().getUniqueIds().length && client.getUniqueIdContainer().getUniqueIds()[a] == -1
+					&& a < client.getUniqueIdContainer().getUniqueIds().length) {
+				a++;
+			}
+
+			
+			TestButton t = new TestButton(
+					Variables.DOWNLOADS_SCREEN_POSITION - 240, 500 - 80 * index,
+					assetsManager.glareButtonVignette, names.get(index));
+
+			t.loadTick(assetsManager.download);
+			t.setCategory(Variables.CATEGORY_DOWNLOADABLE);
+			t.setUniqueId(client.getUniqueIdContainer().getUniqueIds()[a]);
+
+			downloadableTestButtons.add(t);
+			a++;
+			index++;
 		}
 
 		int buttons_with_Y_below_120 = 0;
@@ -68,10 +89,10 @@ public class TestButtonsDispenser {
 
 	public void addTestButtons(Array<Test> tests) {
 
-		for(int a= 0;a<tests_local.length;a++){
+		for (int a = 0; a < tests_local.length; a++) {
 			tests_local[a].removeAllTestButtons();
 		}
-		
+
 		Array<TestButton> currentTestButtons = new Array<TestButton>();
 
 		for (int a = 0; a < tests.size; a++) {

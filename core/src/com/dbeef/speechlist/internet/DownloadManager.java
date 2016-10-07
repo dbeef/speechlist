@@ -9,6 +9,8 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class DownloadManager extends Thread {
 
+	int[] uniqueIdsToDownload;
+
 	boolean RETRIEVED_DOWNLOADABLES;
 
 	ArrayList<RESTClient> clients;
@@ -50,11 +52,17 @@ public class DownloadManager extends Thread {
 
 	void checkWhichTestsAreNotOnTheDevice(UniqueIdContainer uniqueIdContainer,
 			Array<Test> localTests) {
+
+		uniqueIdsToDownload = uniqueIdContainer.getUniqueIds();
+
 		for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
 			for (int b = 0; b < localTests.size; b++) {
 				if (uniqueIdContainer.getUniqueIds()[a] == localTests.get(b)
-						.getUniqueId())
-					uniqueIdContainer.getUniqueIds()[a] = -1;
+						.getUniqueId()) {
+					System.out.println("purging"
+							+ uniqueIdContainer.getUniqueIds()[a]);
+					uniqueIdsToDownload[a] = -1;
+				}
 			}
 		}
 	}
@@ -63,8 +71,8 @@ public class DownloadManager extends Thread {
 			UniqueIdContainer uniqueIdContainer) {
 
 		int index = 0;
-		for (int a = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
-			if (uniqueIdContainer.getUniqueIds()[a] != -1)
+		for (int a = 0; a < uniqueIdsToDownload.length; a++) {
+			if (uniqueIdsToDownload[a] != -1)
 				index++;
 		}
 
@@ -72,9 +80,8 @@ public class DownloadManager extends Thread {
 		idsOfTestsNamesToDownload.setUniqueIds(new int[index]);
 
 		for (int a = 0, b = 0; a < uniqueIdContainer.getUniqueIds().length; a++) {
-			if (uniqueIdContainer.getUniqueIds()[a] != -1) {
-				idsOfTestsNamesToDownload.getUniqueIds()[b] = uniqueIdContainer
-						.getUniqueIds()[a];
+			if (uniqueIdsToDownload[a] != -1) {
+				idsOfTestsNamesToDownload.getUniqueIds()[b] = uniqueIdsToDownload[a];
 				b++;
 			}
 		}
@@ -90,15 +97,13 @@ public class DownloadManager extends Thread {
 			System.out.println("Test names retrieved:");
 
 		for (int a = 0; a < clients.size(); a++) {
-			if (clients.get(a) != null && clients.get(a).testNamesContainer != null)
+			if (clients.get(a) != null
+					&& clients.get(a).testNamesContainer != null)
 				for (int b = 0; b < clients.get(a).testNamesContainer
-						.getNames().length; b++){
-				
+						.getNames().length; b++) {
 					names.add(clients.get(a).testNamesContainer.getNames()[b]);
-				
 				}
-			else
-			{
+			else {
 				RETRIEVED_DOWNLOADABLES = false;
 			}
 			if (Variables.DEBUG_MODE == true)

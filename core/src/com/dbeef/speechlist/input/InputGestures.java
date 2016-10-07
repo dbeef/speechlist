@@ -8,6 +8,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.dbeef.speechlist.camera.Camera;
 import com.dbeef.speechlist.files.AssetsManager;
 import com.dbeef.speechlist.files.ResultsManager;
@@ -28,7 +29,7 @@ import com.dbeef.speechlist.utils.Variables;
 public class InputGestures implements GestureListener {
 
 	RESTClient client = new RESTClient();
-	
+
 	ResultsManager resultsManager;
 
 	Button testsBackButton;
@@ -490,18 +491,26 @@ public class InputGestures implements GestureListener {
 						camera.move(Variables.BRIEF_SCREEN_POSITION);
 						addMenuBriefStrings(a);
 						addMenuSphinxStrings(a);
-					}
-					else
-					{
-						client.run(Variables.TASK_RETRIEVE_TEST, testsButtons.get(a).getUniqueId());
-						TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(assetsManager, testsButtons, tests_local, null, client);
+					} else {
 						
+						client.run(Variables.TASK_RETRIEVE_TEST, testsButtons
+								.get(a).getUniqueId());
+						
+						TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(
+								assetsManager, testsButtons, tests_local, null,
+								client);
+
 						Array<Test> tests = new Array<Test>();
 						tests.add(client.getTest());
 						tests.addAll(testsManager.getTests());
 
 						testButtonsDispenser.addTestButtons(tests);
 						testsManager.getTests().add(client.getTest());
+
+						testsManager
+								.saveTestToExternalStorage(new Json().toJson(
+										client.getTest(), Test.class), client
+										.getTest().getName());
 					}
 				}
 			}
@@ -737,8 +746,7 @@ public class InputGestures implements GestureListener {
 		this.resultsManager = resultsManager;
 	}
 
-	public void setTestScreens(Screen[] tests_local,
-			Button testsBackButton) {
+	public void setTestScreens(Screen[] tests_local, Button testsBackButton) {
 		this.tests_local = tests_local;
 		this.testsBackButton = testsBackButton;
 	}

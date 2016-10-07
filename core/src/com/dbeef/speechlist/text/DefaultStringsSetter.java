@@ -9,17 +9,17 @@ public class DefaultStringsSetter {
 
 	Variables variables = new Variables();
 
-	public Screen setInitialStrings(Screen initial){
+	public Screen setInitialStrings(Screen initial) {
 		initial.add(Variables.INITIAL_TEXT_LOADING_ASSETS,
-				new Vector2(190, 350), new Vector2(2, 0), new Vector3(1, 1, 1));
-		initial.add(Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, new Vector2(180, 350),
-				new Vector2(2, 0), new Vector3(1, 1, 1));
-		initial.add(Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER, new Vector2(145, 350),
-				new Vector2(2, 0), new Vector3(1, 1, 1));
-	
+				new Vector2(195, 350), new Vector2(2, 0), new Vector3(1, 1, 1));
+		initial.add(Variables.INITIAL_TEXT_ARGUING_WITH_SERVER, new Vector2(
+				180, 350), new Vector2(2, 0), new Vector3(1, 1, 1));
+		initial.add(Variables.INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER,
+				new Vector2(145, 350), new Vector2(2, 0), new Vector3(1, 1, 1));
+
 		return initial;
 	}
-	
+
 	public Screen setMenuHomeStrings(Screen menuHome) {
 		menuHome.add("Summary", new Vector2(655, 660), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
@@ -33,12 +33,11 @@ public class DefaultStringsSetter {
 				new Vector3(1, 1, 1));
 		menuHome.add("Copyright 2016 Daniel Zalega", new Vector2(647, 395),
 				new Vector2(6, 1), new Vector3(1, 1, 1));
-		menuHome.add("Version 2 30.09.2016", new Vector2(672, 415), new Vector2(6, 1),
-				new Vector3(1, 1, 1));
+		menuHome.add("Version 2 30.09.2016", new Vector2(672, 415),
+				new Vector2(6, 1), new Vector3(1, 1, 1));
 		menuHome.add("This app is 100% free.", new Vector2(650, 310),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add(
-				"If you like it, please support me on patreon: <3914681>",
+		menuHome.add("If you like it, please support me on patreon: <3914681>",
 				new Vector2(540, 285), new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("to help maintaining servers.", new Vector2(630, 260),
 				new Vector2(2, 1), new Vector3(1, 1, 1));
@@ -46,16 +45,22 @@ public class DefaultStringsSetter {
 				235), new Vector2(2, 1), new Vector3(1, 1, 1));
 		menuHome.add("to be up-to-date with my projects.",
 				new Vector2(605, 210), new Vector2(2, 1), new Vector3(1, 1, 1));
-		menuHome.add("Enjoy, Daniel.", new Vector2(675, 185), new Vector2(2, 1),
-				new Vector3(1, 1, 1));
-		menuHome.add("All presented resources have been used concerning their licenses:", new Vector2(498, 95), new Vector2(2, 1),
-				new Vector3(1, 1, 1));
-		menuHome.add("icons designed by from Flaticon,", new Vector2(610, 70), new Vector2(2, 1),
-				new Vector3(1, 1, 1));
-		menuHome.add("Some contents from  'wikipedia.org'  and  'smart-words.org'", new Vector2(515, 45), new Vector2(2, 1),
-				new Vector3(1, 1, 1));
-		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585, 20), new Vector2(2, 1),
-				new Vector3(1, 1, 1));		
+		menuHome.add("Enjoy, Daniel.", new Vector2(675, 185),
+				new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add(
+				"All presented resources have been used concerning their licenses:",
+				new Vector2(498, 145), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("icons designed by from Flaticon,", new Vector2(610, 120),
+				new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("placed under 'FREE LICENSE (WITH ATTRIBUTION)'",
+				new Vector2(540, 95), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("https://profile.flaticon.com/license/free", new Vector2(
+				575, 70), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add(
+				"Some contents from  'wikipedia.org'  and  'smart-words.org'",
+				new Vector2(515, 45), new Vector2(2, 1), new Vector3(1, 1, 1));
+		menuHome.add("using 'Raleway' font by Matt McInerney", new Vector2(585,
+				20), new Vector2(2, 1), new Vector3(1, 1, 1));
 
 		return menuHome;
 	}
@@ -93,21 +98,29 @@ public class DefaultStringsSetter {
 		return menuDownloads;
 	}
 
+	public Screen setMenuDownloadsStringsConnectionTrue(Screen menuDownloads) {
+		menuDownloads.removeAllStrings();
+		menuDownloads.add("Downloads", new Vector2(1600, 660),
+				new Vector2(3, 1), new Vector3(1, 1, 1));
+	
+		return menuDownloads;
+	}
+
 	public Screen setMenuTestsStrings(Screen menuTests) {
 		menuTests.add("Your tests", new Vector2(1133, 660), new Vector2(3, 1),
 				new Vector3(1, 1, 1));
-		menuTests.add("Vocabulary",
-				new Vector2(Variables.TESTS_SCREEN_POSITION - 190, 360),
-				new Vector2(3, 1), new Vector3(1, 1, 1));
+		menuTests.add("Vocabulary", new Vector2(
+				Variables.TESTS_SCREEN_POSITION - 190, 360), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
 		menuTests.add("Tenses", new Vector2(
-				Variables.TESTS_SCREEN_POSITION - 160, 90),
-				new Vector2(3, 1), new Vector3(1, 1, 1));
+				Variables.TESTS_SCREEN_POSITION - 160, 90), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
 		menuTests.add("Various", new Vector2(
-				Variables.TESTS_SCREEN_POSITION + 55, 90),
-				new Vector2(3, 1), new Vector3(1, 1, 1));
+				Variables.TESTS_SCREEN_POSITION + 55, 90), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
 		menuTests.add("Idioms", new Vector2(
-				Variables.TESTS_SCREEN_POSITION + 65, 360),
-				new Vector2(3, 1), new Vector3(1, 1, 1));
+				Variables.TESTS_SCREEN_POSITION + 65, 360), new Vector2(3, 1),
+				new Vector3(1, 1, 1));
 		return menuTests;
 	}
 

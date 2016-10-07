@@ -397,36 +397,35 @@ public class ActionManager {
 			TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(
 					assetsManager, testsButtons, tests_local, menuDownloads,
 					client);
+			
 			testButtonsDispenser
 					.addDownloadableTestsButtons(downloadableTestsManager
 							.getNames());
-
-			if (downloadableTestsButtons == null) {
 			
-				menuDownloads.removeAllStrings();
-				
+			menuDownloads = new DefaultStringsSetter().setMenuDownloadsStringsConnectionTrue(menuDownloads);
+			
+			if (downloadableTestsManager
+					.getNames() == null || downloadableTestsManager.getNames().isEmpty() == true ) {
 				menuDownloads.add(assetsManager.desert, new Vector2(1480, 200));
-			
-				menuDownloads
-						.add("Good job, cowboy!", new Vector2(1545, 170),
-								new Vector2(4, 1), new Vector3(1, 1, 1));
-				menuDownloads.add("You've got all the tests", new Vector2(1510, 135),
+				menuDownloads.add("Good job, cowboy!", new Vector2(1545, 170),
 						new Vector2(4, 1), new Vector3(1, 1, 1));
-				menuDownloads.add("that are on server.", new Vector2(1548, 100),
-						new Vector2(4, 1), new Vector3(1, 1, 1));
-			
+				menuDownloads.add("You've got all the tests", new Vector2(1510,
+						135), new Vector2(4, 1), new Vector3(1, 1, 1));
+				menuDownloads.add("that are on server.",
+						new Vector2(1548, 100), new Vector2(4, 1), new Vector3(
+								1, 1, 1));
+
 			}
 			addedDownloadables = true;
 		}
 
 		if (assetsManager != null && assetsManager.loaded == true) {
 			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == true) {
+
 				menuDownloads.removeTextureWithPosition(new Vector2(1560, 200));
-			
-				if(addedDownloadables == false)
-				menuDownloads = new DefaultStringsSetter()
-						.deleteMenuDownloadsStrings(menuDownloads);
-			
+				if (addedDownloadables == false)
+					menuDownloads = new DefaultStringsSetter()
+							.deleteMenuDownloadsStrings(menuDownloads);
 			}
 			if (client != null && client.getUNIQUE_IDS_RETRIEVED() == false
 					&& menuDownloads.textureArrayEmpty() == true) {
