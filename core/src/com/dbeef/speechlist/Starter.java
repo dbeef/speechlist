@@ -133,7 +133,7 @@ public class Starter extends Game {
 				new Vector3(1, 1, 1));
 		initial.add(mainBackground, new Vector2(0, 0));
 		initial.add(mainBackground, new Vector2(-480, 0));
-		initial.add(logo, new Vector2(180, 480));
+		initial.add(logo, new Vector2(175, 480));
 		initial = new DefaultStringsSetter().setInitialStrings(initial);
 		
 		gui = new Screen(fonts);
