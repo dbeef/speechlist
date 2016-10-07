@@ -25,6 +25,7 @@ public class AssetsManager extends Thread {
 	public Texture tenses;
 	public Texture idioms;
 	public Texture vocabulary;
+	public Texture desert;
 	public Texture antenna;
 	public Texture download;
 	public Texture mainBackground_middle;
@@ -57,6 +58,7 @@ public class AssetsManager extends Thread {
 		antenna = new Texture("icons/antenna.png");
 		vocabulary = new Texture("icons/vocabulary.png");
 		download = new Texture("icons/download.png");
+		desert = new Texture("icons/desert.png");
 		mainBackground_middle = new Texture("backgrounds/mainBackground_middle.png");
 
 		glareButtonVignette.setFilter(TextureFilter.Linear,
@@ -69,6 +71,7 @@ public class AssetsManager extends Thread {
 		clock.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		chart.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		checked.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		desert.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		sadPhone.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		cross.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		left.setFilter(TextureFilter.Linear, TextureFilter.Linear);

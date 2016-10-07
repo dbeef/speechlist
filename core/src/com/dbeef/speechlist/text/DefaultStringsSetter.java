@@ -73,7 +73,6 @@ public class DefaultStringsSetter {
 	public Screen setMenuDownloadsStrings(Screen menuDownloads) {
 		menuDownloads.add("Downloads", new Vector2(1600, 660),
 				new Vector2(3, 1), new Vector3(1, 1, 1));
-
 		menuDownloads.add("We're sorry", new Vector2(1575, 550), new Vector2(5,
 				1), new Vector3(1, 1, 1));
 		menuDownloads
