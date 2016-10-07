@@ -495,8 +495,11 @@ public class InputGestures implements GestureListener {
 					{
 						client.run(Variables.TASK_RETRIEVE_TEST, testsButtons.get(a).getUniqueId());
 						TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(assetsManager, testsButtons, tests_local, null, client);
+						
 						Array<Test> tests = new Array<Test>();
 						tests.add(client.getTest());
+						tests.addAll(testsManager.getTests());
+
 						testButtonsDispenser.addTestButtons(tests);
 						testsManager.getTests().add(client.getTest());
 					}

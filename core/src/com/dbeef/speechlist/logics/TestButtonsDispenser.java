@@ -68,6 +68,10 @@ public class TestButtonsDispenser {
 
 	public void addTestButtons(Array<Test> tests) {
 
+		for(int a= 0;a<tests_local.length;a++){
+			tests_local[a].removeAllTestButtons();
+		}
+		
 		Array<TestButton> currentTestButtons = new Array<TestButton>();
 
 		for (int a = 0; a < tests.size; a++) {

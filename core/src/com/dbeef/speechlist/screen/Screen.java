@@ -320,4 +320,7 @@ public class Screen {
 	public boolean getVisibility() {
 		return isVisible;
 	}
+	public void removeAllTestButtons(){
+		testButtons.clear();
+	}
 }

@@ -291,13 +291,11 @@ public class ActionManager {
 	}
 
 	void initiateTestsButtons() {
-
 		testsButtons = new Array<TestButton>();
 		Array<Test> tests = testsManager.getTests();
 		TestButtonsDispenser testButtonsDispenser = new TestButtonsDispenser(
 				assetsManager, testsButtons, tests_local, menuDownloads, client);
 		testButtonsDispenser.addTestButtons(tests);
-
 	}
 
 	void optimizeRendering() {
