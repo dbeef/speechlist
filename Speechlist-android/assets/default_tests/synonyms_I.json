@@ -1,0 +1,22 @@
+{
+  "sentences": "Add a word matching to presented ones. Idea, aim, ambition, apperception,	arrangement; <<||>>. 	Conflict,	contention,	contradiction, contrast; <<||>>. Quarrel, disagree, bicker, conflict; <<||>>. Auto, automobile, pickup; <<||>>. Bill, capital, salary, wage; <<||>>. Apartment, box, building, home; <<||>>. Avenue, artery, drive, expressway; <<||>>. Motion picture, flick, videotape, film; <<||>>. Flat, smooth, even, plain; <<||>>. Muggy, soaked, foggy, rainy; <<||>>. Tropical, blazing, torrid, warm; <<||>>. Ancient, elderly, mature, decrepit; <<||>>. Gorgeus, charming, delightful, wonderful; <<||>>.",
+  "vocabulary": [
+    "plan",
+    "difference",
+    "argue",
+    "van",
+    "wealth",
+    "condo",
+    "road",
+    "movie",
+    "plane",
+    "wet",
+    "hot",
+    "old",
+    "beautiful"
+  ],
+  "name": "Synonyms I",
+  "id": 23,
+  "uniqueId": 23,
+  "category": "vocabulary"
+}

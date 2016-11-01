@@ -1,0 +1,19 @@
+{
+  "sentences": "The Enigma machine was a portable <<||>> machine used to encrypt and <<||>> secret messages. <<||>> precisely, Enigma was a family of related electro-mechanical <<||>> — there is a variety of different models. The Enigma was used commercially from <<||>> 1920s on, and was also adopted by military and governmental services of a number of nations — most famously, by Nazi Germany before and during World War II. The German military model, the Wehrmacht Enigma, is the version most commonly <<||>>. Allied <<||>> were, in many cases, able to decrypt messages protected by the machine (see cryptanalysis of the Enigma). The <<||>> gained through this source — codenamed Ultra — was a significant <<||>> to the Allied war effort. Some historians have suggested that the end of the European war was <<||>> by up to a year or more because of the decryption of German ciphers. Via wikipedia.org",
+  "vocabulary": [
+     "cipher",
+     "decrypt",
+     "More",
+     "rotor machines",
+     "the early",
+     "discussed",
+     "codebreakers",
+     "intelligence",
+     "aid",
+     "hastened"
+  ],
+  "name": "History - Enigma",
+  "id": 50,
+  "uniqueId": 50,
+  "category": "vocabulary"
+}

@@ -1,0 +1,20 @@
+{
+  "sentences": "The Nobel Prize is a set of <<||>> international awards bestowed in a number of categories by Swedish and Norwegian institutions in recognition of academic, cultural, and/or scientific advances. The <<||>> of the Swedish inventor Alfred Nobel established the prizes in 1895. The prizes in Chemistry, Literature, Peace, Physics, and Physiology or Medicine were first <<||>> in 1901. The related Nobel Memorial Prize in Economic Sciences was <<||>> by Sweden's central bank in 1968. Medals made before 1980 were struck in 23 carat gold, and later from 18 carat green gold <<||>> with a 24 carat gold coating. Between 1901 and 2015, the Nobel Prizes and the Prize in Economic Sciences were awarded 573 times to 900 people and <<||>>. With some receiving the Nobel Prize more than once, this makes a total of 870 <<||>> (822 men and 48 women) and 23 organizations. The prize ceremonies take place annually in Stockholm, Sweden (with the <<||>> of the peace prize, which is held in Oslo, Norway). Each <<||>>, or laureate, receives a gold medal, a diploma, and a sum of money that has been decided by the Nobel Foundation. (As of 2012, each prize was worth about 1.2, 0.93, 0.6 million USD.) The Nobel Prize is widely <<||>> as the most prestigious award available in the fields of literature, medicine, physics, chemistry, peace, and economics. The prize is not awarded <<||>>; however, if a person is awarded a prize and dies before receiving it, the prize may still be presented. Via wikipedia.org",
+  "vocabulary": [
+    "annual",
+    "will",
+    "awarded",
+    "established",
+    "plated",
+    "organizations",
+    "individuals",
+    "exception",
+    "recipient",
+    "regarded",
+    "posthumously"
+  ],
+  "name": "History - Nobel Prize",
+  "id": 55,
+  "uniqueId": 55,
+  "category": "vocabulary"
+}

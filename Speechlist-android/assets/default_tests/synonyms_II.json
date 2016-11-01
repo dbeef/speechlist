@@ -1,0 +1,22 @@
+{
+  "sentences": "Add a word matching to presented ones. Cooking, cousine, snack, fare; <<||>>. Economical, low-cost, low-priced; <<||>>. Call up, contact, dial, call; <<||>>. Bleak, snowy, wintry, chilled; <<||>>. Rapid, agile, nimble, swift; <<||>>. Boring, humdrum, dull, trite; <<||>>. Absorbing, captivating, compelling, fascinating; <<||>>. Amusing, droll, hillarous, silly; <<||>>. Comparable, related, alike, matching; <<||>>. Think, realize, assume, consider; <<||>>. Examine, identify, look, detect; <<||>>. Youngster, infant, teenager, youth; <<||>>. Self-respect, ego, dignity, honor; <<||>>.",
+  "vocabulary": [
+    "food",
+    "cheap",
+    "phone",
+    "cool",
+    "fast",
+    "uninteresting",
+    "entertaining",
+    "funny",
+    "like",
+    "determine",
+    "see",
+    "kid",
+    "pride"
+  ],
+  "name": "Synonyms II",
+  "id": 29,
+  "uniqueId": 29,
+  "category": "vocabulary"
+}
