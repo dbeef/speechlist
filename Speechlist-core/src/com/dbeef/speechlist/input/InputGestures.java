@@ -22,6 +22,7 @@ import com.dbeef.speechlist.internet.RESTClient;
 import com.dbeef.speechlist.logics.TestButtonsDispenser;
 import com.dbeef.speechlist.models.Test;
 import com.dbeef.speechlist.screen.Screen;
+import com.dbeef.speechlist.screen.StringWithDescription;
 import com.dbeef.speechlist.text.BriefingVocabularyFormatter;
 import com.dbeef.speechlist.text.DefaultGUIStringsSetter;
 import com.dbeef.speechlist.text.FormattedTestSentencesSetter;
@@ -34,6 +35,7 @@ public class InputGestures implements GestureListener {
 
 	ResultsManager resultsManager;
 
+	Screen gui;
 	Button testsBackButton;
 	Screen[] tests_local;
 	Button[] testCategories_local;
@@ -42,7 +44,8 @@ public class InputGestures implements GestureListener {
 	AssetsManager assetsManager;
 
 	int currentSolvingScreen;
-
+	int solvingScreensCounter;
+	
 	BriefingVocabularyFormatter vocabularyFormatter;
 
 	boolean wasPannedBefore;
@@ -212,9 +215,13 @@ public class InputGestures implements GestureListener {
 								* Variables.SCREEN_WIDTH
 								- Variables.SCREEN_WIDTH);
 
-					if (solvingScreens.size - 1 > 1 && currentSolvingScreen > 1)
+					if (solvingScreens.size - 1 > 1 && currentSolvingScreen > 1) {
 						currentSolvingScreen--;
-
+						gui.setStringWithDescription(
+								Integer.toString(currentSolvingScreen) + "/"
+										+ Integer.toString(solvingScreensCounter - 1),
+								Variables.CURRENT_SOLVING_SCREEN_NUMBER);
+					}
 				}
 
 				if (tests.getSelection() == true) {
@@ -235,8 +242,14 @@ public class InputGestures implements GestureListener {
 				if (camera.position.x > Variables.SOLVING_SCREEN_POSITION
 						&& bracketsInput.getVisibility() == false) {
 					right.blink();
-					if (currentSolvingScreen + 1 <= solvingScreens.size)
+					if (currentSolvingScreen + 1 <= solvingScreens.size) {
 						currentSolvingScreen++;
+						gui.setStringWithDescription(
+								Integer.toString(currentSolvingScreen) + "/"
+										+ Integer.toString(solvingScreensCounter - 1),
+								Variables.CURRENT_SOLVING_SCREEN_NUMBER);
+
+					}
 					camera.move(Variables.SPHINX_SCREEN_POSITION
 							+ (currentSolvingScreen - 1)
 							* Variables.SCREEN_WIDTH);
@@ -360,9 +373,9 @@ public class InputGestures implements GestureListener {
 		this.mainBackground = mainBackground;
 	}
 
-	public void loadGesturesReceivers(Camera camera, Camera guiCamera,
-			Button home, Button tests, Button downloads, Button accept,
-			Button decline, Button left, Button right,
+	public void loadGesturesReceivers(Screen gui, Camera camera,
+			Camera guiCamera, Button home, Button tests, Button downloads,
+			Button accept, Button decline, Button left, Button right,
 			Array<TestButton> testsButtons, Screen menuBrief,
 			Array<Screen> solvingScreens, TestsManager testsManager) {
 		this.camera = camera;
@@ -378,6 +391,7 @@ public class InputGestures implements GestureListener {
 		this.testsManager = testsManager;
 		this.solvingScreens = solvingScreens;
 		this.menuBrief = menuBrief;
+		this.gui = gui;
 		assetsLoaded = true;
 	}
 
@@ -489,8 +503,8 @@ public class InputGestures implements GestureListener {
 			TestButton testButton = testsButtons.get(a);
 			if (testButton.getSelection() == true) {
 				if (testButton.checkCollisionTick((int) x, (int) y) == true) {
-					if (!testButton.getCategory()
-							.equals(Variables.CATEGORY_DOWNLOADABLE)) {
+					if (!testButton.getCategory().equals(
+							Variables.CATEGORY_DOWNLOADABLE)) {
 						testButton.highlight();
 						tests.deselect();
 						camera.move(Variables.BRIEF_SCREEN_POSITION);
@@ -559,10 +573,9 @@ public class InputGestures implements GestureListener {
 
 		if (anyCategorySelected == true) {
 			for (int a = 0; a < testsButtons.size; a++) {
-		TestButton testButton = testsButtons.get(a);
+				TestButton testButton = testsButtons.get(a);
 				if (testButton.checkCollision((int) x, (int) y) == true
-						&& testButton.getCategory()
-								.equals(currentCategory)) {
+						&& testButton.getCategory().equals(currentCategory)) {
 
 					anyCollisions = true;
 
@@ -655,6 +668,15 @@ public class InputGestures implements GestureListener {
 						.getVocabulary());
 		bracketsInput.setCurrentTestUniqueID(testsManager.getTest(
 				testsButtons.get(clickedButtonIndex).getName()).getUniqueId());
+		
+		solvingScreensCounter = generatedTestStringsSetter.getSolvingScreensCounter();
+		
+		StringWithDescription s = new StringWithDescription("1/" + Integer.toString(solvingScreensCounter-1),
+				Variables.CURRENT_SOLVING_SCREEN_NUMBER, new Vector2(1187, 65),
+				new Vector3(1, 1, 1), new Vector2(2, 1));
+
+		gui.removeAllStrings();
+		gui.add(s);
 
 		vocabularyButtons = bracketsInput.getVocabularyButtons();
 	}

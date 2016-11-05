@@ -23,11 +23,11 @@ public class Variables {
 
 	public static final String HEADER_APPLICATION_JSON = "application/json";
 	public static final String HEADER_TEXT_PLAIN = "text/plain";
-	
+
 	public static final String TASK_RETRIEVE_TEST = "RETRIEVE_TEST";
 	public static final String TASK_RETRIEVE_TEST_NAME = "RETRIEVE_TEST_NAME";
-	public static final String TASK_RETRIEVE_TESTS_NAMES_CONTAINER = "TASK_RETRIEVE_TESTS_NAMES_CONTAINER";	
-	
+	public static final String TASK_RETRIEVE_TESTS_NAMES_CONTAINER = "TASK_RETRIEVE_TESTS_NAMES_CONTAINER";
+
 	public static final String CATEGORY_VOCABULARY = "vocabulary";
 	public static final String CATEGORY_IDIOMS = "idioms";
 	public static final String CATEGORY_TENSES = "tenses";
@@ -37,7 +37,9 @@ public class Variables {
 	public static final String INITIAL_TEXT_LOADING_ASSETS = "loading assets...";
 	public static final String INITIAL_TEXT_ARGUING_WITH_SERVER = "arguing with server...";
 	public static final String INITIAL_TEXT_FAILED_TO_CONNECT_TO_SERVER = "failed to connect tests server...";
-	
+
+	public static final String CURRENT_SOLVING_SCREEN_NUMBER = "CURRENT_SOLVING_SCREEN_NUMBER";
+
 	public static final boolean DEBUG_MODE = false;
 	public static final boolean DEBUG_INPUT = false;
 }

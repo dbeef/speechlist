@@ -14,10 +14,7 @@ public class Screen {
 
 	Array<Texture> textures;
 	Array<Vector2> texturesPositions;
-	Array<String> strings;
-	Array<Vector2> stringsPositions;
-	Array<Vector2> stringsFontAndAlpha;
-	Array<Vector3> stringsColors;
+	Array<StringWithDescription> describedStrings;
 	Array<Sprite> sprites;
 	Array<Button> buttons;
 	Array<TestButton> testButtons;
@@ -39,13 +36,10 @@ public class Screen {
 	public Screen(Array<BitmapFont> fonts) {
 		textures = new Array<Texture>();
 		texturesPositions = new Array<Vector2>();
-		strings = new Array<String>();
-		stringsPositions = new Array<Vector2>();
+		describedStrings = new Array<StringWithDescription>();
 		sprites = new Array<Sprite>();
 		buttons = new Array<Button>();
 		testButtons = new Array<TestButton>();
-		stringsColors = new Array<Vector3>();
-		stringsFontAndAlpha = new Array<Vector2>();
 
 		this.ralewayThinItalic12 = fonts.get(0);
 		this.ralewayThinItalic16 = fonts.get(1);
@@ -67,10 +61,25 @@ public class Screen {
 
 	public void add(String s, Vector2 position, Vector2 fontAndAlpha,
 			Vector3 color) {
-		strings.add(s);
-		stringsPositions.add(position);
-		stringsFontAndAlpha.add(fontAndAlpha);
-		stringsColors.add(color);
+
+		StringWithDescription stringWithDescription = new StringWithDescription(
+				s, "default description", position, color, fontAndAlpha);
+		describedStrings.add(stringWithDescription);
+	}
+
+	public void add(StringWithDescription s) {
+		describedStrings.add(s);
+	}
+
+
+	public void setStringWithDescription(String s, String description) {
+		int size = describedStrings.size;
+		for (int a = 0; a < size; a++) {
+			StringWithDescription stringWithDescription = describedStrings
+					.get(a);
+			if (stringWithDescription.getDescription().equals(description))
+				stringWithDescription.setString(s);
+		}
 	}
 
 	public void add(Button button) {
@@ -146,19 +155,21 @@ public class Screen {
 	}
 
 	public void renderStrings(Batch batch) {
-		int size = strings.size;
+		int size = describedStrings.size;
 		for (int a = 0; a < size; a++) {
 
-			boolean shouldBeRendered = (stringsColors.get(a).z
+			boolean shouldBeRendered = (describedStrings.get(a).getColor().z
 					- (1 - screenAlpha) >= 0);
 
 			if (shouldBeRendered) {
 
-				Vector2 currentFontIDAndAlpha = stringsFontAndAlpha.get(a);
-				String currentString = strings.get(a);
+				Vector2 currentFontIDAndAlpha = describedStrings.get(a)
+						.getCurrentFontIDAndAlpha();
+				String currentString = describedStrings.get(a).getString();
 				BitmapFont currentFont;
-				Vector3 currentStringColor = stringsColors.get(a);
-				Vector2 currentStringPosition = stringsPositions.get(a);
+				Vector3 currentStringColor = describedStrings.get(a).getColor();
+				Vector2 currentStringPosition = describedStrings.get(a)
+						.getPosition();
 
 				switch ((int) currentFontIDAndAlpha.x) {
 				case 1: {
@@ -227,10 +238,20 @@ public class Screen {
 
 	public float changeStringAlpha(String search, float accumulator) {
 
-		if (strings.indexOf(search, true) != -1) {
+		boolean found = false;
+		int index = 0;
+		int size = describedStrings.size;
+		for (int a = 0; a < size; a++) {
+			if (describedStrings.get(a).getString().equals(search)) {
+				found = true;
+				index = a;
+			}
+		}
 
-			Vector2 fontIDAndAlpha = stringsFontAndAlpha.get(strings.indexOf(
-					search, true));
+		if (found == true) {
+
+			Vector2 fontIDAndAlpha = describedStrings.get(index)
+					.getCurrentFontIDAndAlpha();
 
 			fontIDAndAlpha.y += accumulator;
 
@@ -269,32 +290,26 @@ public class Screen {
 	}
 
 	public void removeAllStrings() {
-		strings.clear();
-		stringsPositions.clear();
-		stringsFontAndAlpha.clear();
-		stringsColors.clear();
+		describedStrings.clear();
 	}
 
 	public void removeStringsWithPosition(Vector2 position) {
 
-		int size = strings.size;
+		int size = describedStrings.size;
 		for (int a = 0; a < size; a++) {
-			if (stringsPositions.get(a).x == position.x
-					&& stringsPositions.get(a).y == position.y) {
-				strings.removeIndex(a);
-				stringsPositions.removeIndex(a);
-				stringsFontAndAlpha.removeIndex(a);
-				stringsColors.removeIndex(a);
+			if (describedStrings.get(a).getPosition().x == position.x
+					&& describedStrings.get(a).getPosition().y == position.y) {
+				describedStrings.removeIndex(a);
 			}
 		}
 	}
 
 	public void removeStringContaining(String containing) {
-		int size = strings.size;
+		int size = describedStrings.size;
 		for (int a = 0; a < size; a++) {
-			String s = strings.get(a);
+			String s = describedStrings.get(a).getString();
 			if (s.contains(containing))
-				strings.removeValue(s, true);
+				describedStrings.removeIndex(a);
 		}
 	}
 

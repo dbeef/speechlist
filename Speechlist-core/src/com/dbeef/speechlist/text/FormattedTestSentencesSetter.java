@@ -11,6 +11,8 @@ import com.dbeef.speechlist.utils.Variables;
 
 public class FormattedTestSentencesSetter {
 	
+	int solvingScreensCounter;
+	
 	Array<Screen> solvingScreens;
 	Array<Bracket> solvingButtons;
 	
@@ -20,6 +22,10 @@ public class FormattedTestSentencesSetter {
 
 	public Array<Bracket> getSolvingButtons() {
 		return solvingButtons;
+	}
+	
+	public int getSolvingScreensCounter(){
+		return solvingScreensCounter;
 	}
 
 	public FormattedTestSentencesSetter(String sentences,
@@ -35,7 +41,7 @@ public class FormattedTestSentencesSetter {
 		Array<Vector2> buttonPositions = sentencesFormatter
 				.getVocabularyPositions();
 
-		int solvingScreensCounter = 1;
+		solvingScreensCounter = 1;
 		int screenWidth = Variables.SCREEN_WIDTH;
 		int solvingScreenPosition = Variables.SOLVING_SCREEN_POSITION;
 		int solvingScreenVocabularyPositionY = Variables

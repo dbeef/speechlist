@@ -302,7 +302,7 @@ public class ActionManager {
 		if (camera.position.x > (Variables.INITIAL_SCREEN_POSITION + Variables.HOME_SCREEN_POSITION) / 2
 				&& initiatedInput == false) {
 			inputInterpreter = new InputGestures();
-			inputInterpreter.loadGesturesReceivers(camera, guiCamera, home,
+			inputInterpreter.loadGesturesReceivers(gui,camera, guiCamera, home,
 					tests, downloads, accept, decline, left, right,
 					testsButtons, menuBrief, solvingScreens, testsManager);
 			inputInterpreter.setInitialCameraMovementsDone();
@@ -517,8 +517,8 @@ public class ActionManager {
 	}
 
 	void addMenuBriefStaticElements() {
-		accept = new Button(1115, 20, assetsManager.checked);
-		decline = new Button(1215, 20, assetsManager.cross);
+		accept = new Button(1105, 20, assetsManager.checked);
+		decline = new Button(1225, 20, assetsManager.cross);
 		left = new Button(970, 25, assetsManager.left);
 		right = new Button(1360, 25, assetsManager.right);
 		decline.setMultiplier(4);
